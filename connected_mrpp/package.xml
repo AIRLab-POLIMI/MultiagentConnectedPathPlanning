@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>connected_mrpp</name>
+  <version>1.0.0</version>
+  <description>Multi-robot connected path planning on grids</description>
+
+  <maintainer email="davide.tateo@polimi.it">Davide Tateo</maintainer>
+
+  <license>GPLv3</license>
+
+  <author email="davide.tateo@polimi.it">Davide Tateo</author>
+  <author email="alessandro.riva@polimi.it">Alessandro Riva</author>
+  <author email="jacopo.banfi@polimi.it">Jacopo Banfi</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <!-- depend>costmap_2d</depend>
+  <depend>nav_core</depend>
+  <depend>geometry_msgs</depend>
+  <depend>angles</depend -->
+
+</package>
