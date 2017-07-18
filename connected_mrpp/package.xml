@@ -9,7 +9,7 @@
   <license>GPLv3</license>
 
   <author email="davide.tateo@polimi.it">Davide Tateo</author>
-  <author email="alessandro.riva@polimi.it">Alessandro Riva</author>
+  <author email="alessandro.riva@polimi.it">Davide Tateo</author>
   <author email="jacopo.banfi@polimi.it">Jacopo Banfi</author>
 
   <buildtool_depend>catkin</buildtool_depend>

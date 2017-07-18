@@ -1,91 +1,66 @@
 /*
- * rrt_planning,
+ * connected_mrpp,
  *
  *
- * Copyright (C) 2016 Alessandro Riva
+ * Copyright (C) 2016 Davide Tateo
  * Versione 1.0
  *
- * This file is part of rrt_planning.
+ * This file is part of connected_mrpp.
  *
- * rrt_planning is free software: you can redistribute it and/or modify
+ * connected_mrpp is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * rrt_planning is distributed in the hope that it will be useful,
+ * connected_mrpp is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with rrt_planning.  If not, see <http://www.gnu.org/licenses/>.
+ *  along with connected_mrpp.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-#include "rrt_planning/ThetaStarPlanner.h"
 
 #include <pluginlib/class_list_macros.h>
 #include <visualization_msgs/Marker.h>
+#include "connected_mrpp/Planner.h"
 
-
-//register this planner as a BaseGlobalPlanner plugin
-PLUGINLIB_EXPORT_CLASS(rrt_planning::ThetaStarPlanner, nav_core::BaseGlobalPlanner)
 
 using namespace std;
 using namespace Eigen;
 
 //Default Constructor
-namespace rrt_planning
+namespace connected_mrpp
 {
 
-const Cell ThetaStarPlanner::S_NULL = make_pair(-1, -1);
+const Cell Planner::S_NULL = make_pair(-1, -1);
 
-ThetaStarPlanner::ThetaStarPlanner()
+
+Planner::Planner(Grid& grid) : grid(grid)
 {
-    grid = nullptr;
-    map = nullptr;
+
 }
 
-ThetaStarPlanner::ThetaStarPlanner(std::string name, costmap_2d::Costmap2DROS* costmap_ros)
-{
-    initialize(name, costmap_ros);
-}
-
-
-void ThetaStarPlanner::initialize(std::string name, costmap_2d::Costmap2DROS* costmap_ros)
-{
-    double discretization;
-
-    //Get parameters from ros parameter server
-    ros::NodeHandle private_nh("~/" + name);
-    private_nh.param("discretization", discretization, 0.2);
-    pub = private_nh.advertise<visualization_msgs::Marker>("/visualization_marker", 1);
-
-    map = new ROSMap(costmap_ros);
-    grid = new Grid(*map, discretization);
-
-    visualizer.initialize(private_nh);
-}
-
-bool ThetaStarPlanner::makePlan(const geometry_msgs::PoseStamped& start,
+bool Planner::makePlan(const geometry_msgs::PoseStamped& start,
                                 const geometry_msgs::PoseStamped& goal,
                                 std::vector<geometry_msgs::PoseStamped>& plan)
 {
     clearInstance();
-    visualizer.clean();
+    //visualizer.clean();
 
     //Init the position of the special states
-    s_start = grid->convertPose(start);
-    s_goal = grid->convertPose(goal);
+    s_start = grid.convertPose(start);
+    s_goal = grid.convertPose(goal);
 
     //Test starting position
-    if(!grid->isFree(s_start))
+    if(!grid.isFree(s_start))
     {
         ROS_INFO("Invalid starting position");
         return false;
     }
 
     //Test target position
-    if(!grid->isFree(s_goal))
+    if(!grid.isFree(s_goal))
     {
         ROS_INFO("Invalid target position");
         return false;
@@ -94,7 +69,7 @@ bool ThetaStarPlanner::makePlan(const geometry_msgs::PoseStamped& start,
     //Init variables
     g[s_start] = 0.0;
     parent[s_start] = s_start;
-    open.insert(s_start, grid->heuristic(s_start, s_goal));
+    open.insert(s_start, grid.heuristic(s_start, s_goal));
     parent[s_goal] = S_NULL;
 
     ROS_INFO("Planner started");
@@ -109,7 +84,7 @@ bool ThetaStarPlanner::makePlan(const geometry_msgs::PoseStamped& start,
 
         if(s == s_goal) break;
 
-        for(auto s_next: grid->getNeighbors(s))
+        for(auto s_next: grid.getNeighbors(s))
             if(closed.count(s_next) == 0)
             {
                 if(!open.contains(s_next))
@@ -125,7 +100,7 @@ bool ThetaStarPlanner::makePlan(const geometry_msgs::PoseStamped& start,
     //Publish plan
     vector<VectorXd> path;
     auto state = s_goal;
-    path.push_back(grid->toMapPose(state.first, state.second));
+    path.push_back(grid.toMapPose(state.first, state.second));
     do
     {
         state = parent.at(state);
@@ -136,19 +111,19 @@ bool ThetaStarPlanner::makePlan(const geometry_msgs::PoseStamped& start,
             return false;
         }
 
-        path.push_back(grid->toMapPose(state.first, state.second));
+        path.push_back(grid.toMapPose(state.first, state.second));
     }
     while(state != s_start);
 
     reverse(path.begin(), path.end());
     publishPlan(path, plan, start.header.stamp, start, goal);
-    visualizer.displayPlan(plan);
+    //visualizer.displayPlan(plan);
 
     return true;
 }
 
 
-void ThetaStarPlanner::updateVertex(Cell s, Cell s_next)
+void Planner::updateVertex(Cell s, Cell s_next)
 {
     double g_old = g.at(s_next);
 
@@ -159,37 +134,37 @@ void ThetaStarPlanner::updateVertex(Cell s, Cell s_next)
         if(open.contains(s_next))
             open.remove(s_next);
 
-        double frontierCost = g.at(s_next) + grid->heuristic(s_next, s_goal);
+        double frontierCost = g.at(s_next) + grid.heuristic(s_next, s_goal);
 
         open.insert(s_next, frontierCost);
     }
 }
 
 
-void ThetaStarPlanner::computeCost(Cell s, Cell s_next)
+void Planner::computeCost(Cell s, Cell s_next)
 {
 
-    if(grid->lineOfSight(parent.at(s), s_next))
+    if(grid.lineOfSight(parent.at(s), s_next))
     {
         //Path 2
-        if(g.at(parent.at(s)) + grid->cost(parent.at(s), s_next) <= g.at(s_next))
+        if(g.at(parent.at(s)) + grid.cost(parent.at(s), s_next) <= g.at(s_next))
         {
             parent.at(s_next) = parent.at(s);
-            g.at(s_next) = g.at(parent.at(s)) + grid->cost(parent.at(s), s_next);
+            g.at(s_next) = g.at(parent.at(s)) + grid.cost(parent.at(s), s_next);
         }
     }
     else
     {
         //Path 1
-        if(g.at(s) + grid->cost(s, s_next) <= g.at(s_next))
+        if(g.at(s) + grid.cost(s, s_next) <= g.at(s_next))
         {
             parent.at(s_next) = s;
-            g.at(s_next) = g.at(s) + grid->cost(s, s_next);
+            g.at(s_next) = g.at(s) + grid.cost(s, s_next);
         }
     }
 }
 
-void ThetaStarPlanner::publishPlan(std::vector<Eigen::VectorXd>& path, std::vector<geometry_msgs::PoseStamped>& plan,
+void Planner::publishPlan(std::vector<Eigen::VectorXd>& path, std::vector<geometry_msgs::PoseStamped>& plan,
                                    const ros::Time& stamp, const geometry_msgs::PoseStamped& start, const geometry_msgs::PoseStamped& goal)
 {
     plan.push_back(start);
@@ -229,7 +204,7 @@ void ThetaStarPlanner::publishPlan(std::vector<Eigen::VectorXd>& path, std::vect
 }
 
 
-void ThetaStarPlanner::clearInstance()
+void Planner::clearInstance()
 {
     open.clear();
     closed.clear();
@@ -238,7 +213,7 @@ void ThetaStarPlanner::clearInstance()
 }
 
 
-void ThetaStarPlanner::displayOpen()
+/*void Planner::displayOpen()
 {
 
     visualization_msgs::Marker marker;
@@ -267,7 +242,7 @@ void ThetaStarPlanner::displayOpen()
     {
         geometry_msgs::Point p;
 
-        VectorXd pos = grid->toMapPose(s->getNode().first, s->getNode().second);
+        VectorXd pos = grid.toMapPose(s->getNode().first, s->getNode().second);
 
         p.x = pos(0);
         p.y = pos(1);
@@ -279,7 +254,7 @@ void ThetaStarPlanner::displayOpen()
     pub.publish(marker);
 }
 
-void ThetaStarPlanner::displayNeighbours(const Cell& cell)
+void Planner::displayNeighbours(const Cell& cell)
 {
 
     visualization_msgs::Marker marker;
@@ -304,11 +279,11 @@ void ThetaStarPlanner::displayNeighbours(const Cell& cell)
     marker.color.g = 1.0;
     marker.color.b = 0.0;
 
-    for(auto& s : grid->getNeighbors(cell))
+    for(auto& s : grid.getNeighbors(cell))
     {
         geometry_msgs::Point p;
 
-        VectorXd pos = grid->toMapPose(s.first, s.second);
+        VectorXd pos = grid.toMapPose(s.first, s.second);
 
         p.x = pos(0);
         p.y = pos(1);
@@ -320,7 +295,7 @@ void ThetaStarPlanner::displayNeighbours(const Cell& cell)
     pub.publish(marker);
 }
 
-void ThetaStarPlanner::displayObstacles(const Cell& cell)
+void Planner::displayObstacles(const Cell& cell)
 {
 
     static visualization_msgs::Marker marker;
@@ -345,11 +320,11 @@ void ThetaStarPlanner::displayObstacles(const Cell& cell)
     marker.color.g = 0.0;
     marker.color.b = 0.0;
 
-    for(auto& s : grid->getObstacles(cell))
+    for(auto& s : grid.getObstacles(cell))
     {
         geometry_msgs::Point p;
 
-        VectorXd pos = grid->toMapPose(s.first, s.second);
+        VectorXd pos = grid.toMapPose(s.first, s.second);
 
         p.x = pos(0);
         p.y = pos(1);
@@ -363,7 +338,7 @@ void ThetaStarPlanner::displayObstacles(const Cell& cell)
 
 
 
-void ThetaStarPlanner::displayClosed()
+void Planner::displayClosed()
 {
 
     visualization_msgs::Marker marker;
@@ -392,7 +367,7 @@ void ThetaStarPlanner::displayClosed()
     {
         geometry_msgs::Point p;
 
-        VectorXd pos = grid->toMapPose(s.first, s.second);
+        VectorXd pos = grid.toMapPose(s.first, s.second);
 
         p.x = pos(0);
         p.y = pos(1);
@@ -404,7 +379,7 @@ void ThetaStarPlanner::displayClosed()
     pub.publish(marker);
 }
 
-void ThetaStarPlanner::displayCost(const Cell& cell, double g_old)
+void Planner::displayCost(const Cell& cell, double g_old)
 {
     visualization_msgs::Marker marker;
     marker.header.frame_id = "map";
@@ -427,24 +402,14 @@ void ThetaStarPlanner::displayCost(const Cell& cell, double g_old)
     marker.text = "g: " + std::to_string(g.at(cell)) + " g_old: " + std::to_string(g_old);
 
 
-    VectorXd pos = grid->toMapPose(cell.first, cell.second);
+    VectorXd pos = grid.toMapPose(cell.first, cell.second);
 
     marker.pose.position.x = pos(0);
     marker.pose.position.y = pos(1);
     marker.pose.position.z = 0;
 
     pub.publish(marker);
-}
-
-
-ThetaStarPlanner::~ThetaStarPlanner()
-{
-    if(grid)
-        delete grid;
-
-    if(map)
-        delete map;
-}
+}*/
 
 
 };

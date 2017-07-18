@@ -21,34 +21,32 @@
  *  along with connected_mrpp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_CONNECTED_MRPP_THETASTAR_FRONTIERNODE_H_
-#define INCLUDE_CONNECTED_MRPP_THETASTAR_FRONTIERNODE_H_
+#ifndef INCLUDE_CONNECTED_MRPP_MAP_ROSMAP_H_
+#define INCLUDE_CONNECTED_MRPP_MAP_ROSMAP_H_
 
-#include "connected_mrpp/Cell.h"
+#include "connected_mrpp/map/Map.h"
+#include "costmap_2d/costmap_2d_ros.h"
+#include "costmap_2d/costmap_2d.h"
 
 namespace connected_mrpp
 {
-class FrontierNode
+
+class ROSMap : public Map
 {
 public:
-    inline FrontierNode(const Cell& node, double cost):
-        node(node), cost(cost) { }
+    ROSMap(costmap_2d::Costmap2DROS* costmap_ros);
 
-    inline Cell getNode() const
-    {
-        return node;
-    }
+    virtual bool isFree(const Eigen::VectorXd& p) override;
+    virtual unsigned char getCost(const Eigen::VectorXd& p) override;
 
-    inline double getCost() const
-    {
-        return cost;
-    }
+    virtual ~ROSMap();
+
 
 private:
-    Cell node;
-    double cost;
+    costmap_2d::Costmap2DROS* costmap_ros;
+    costmap_2d::Costmap2D* costmap;
 };
 
 }
 
-#endif /* INCLUDE_CONNECTED_MRPP_THETASTAR_FRONTIERNODE_H_ */
+#endif /* INCLUDE_CONNECTED_MRPP_MAP_ROSMAP_H_ */

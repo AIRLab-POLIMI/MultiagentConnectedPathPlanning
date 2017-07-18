@@ -21,34 +21,28 @@
  *  along with connected_mrpp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_CONNECTED_MRPP_THETASTAR_FRONTIERNODE_H_
-#define INCLUDE_CONNECTED_MRPP_THETASTAR_FRONTIERNODE_H_
+#ifndef INCLUDE_CONNECTED_MRPP_MAP_DEBUGMAP_H_
+#define INCLUDE_CONNECTED_MRPP_MAP_DEBUGMAP_H_
 
-#include "connected_mrpp/Cell.h"
+#include "connected_mrpp/map/Map.h"
 
 namespace connected_mrpp
 {
-class FrontierNode
+
+class DebugMap : public Map
 {
 public:
-    inline FrontierNode(const Cell& node, double cost):
-        node(node), cost(cost) { }
+    DebugMap();
 
-    inline Cell getNode() const
-    {
-        return node;
-    }
+    virtual bool isFree(const Eigen::VectorXd& p) override;
+    virtual unsigned char getCost(const Eigen::VectorXd& p) override;
 
-    inline double getCost() const
-    {
-        return cost;
-    }
+    virtual ~DebugMap();
 
 private:
-    Cell node;
-    double cost;
+
 };
 
 }
 
-#endif /* INCLUDE_CONNECTED_MRPP_THETASTAR_FRONTIERNODE_H_ */
+#endif /* INCLUDE_CONNECTED_MRPP_MAP_DEBUGMAP_H_ */
