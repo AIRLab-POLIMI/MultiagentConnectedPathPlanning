@@ -30,12 +30,13 @@
 
 using namespace std;
 using namespace Eigen;
+using namespace std::rel_ops;
 
 //Default Constructor
 namespace connected_mrpp
 {
 
-const Cell Planner::PI_NULL(vector());
+const Configuration Planner::PI_NULL;
 
 
 Planner::Planner(Grid& grid) : grid(grid)
@@ -71,7 +72,7 @@ bool Planner::makePlan(const Configuration& start,
     //Init variables
     g[pi_start] = 0.0;
     parent[pi_start] = pi_start;
-    open.insert(pi_start, grid.heuristic(pi_start, pi_goal));
+    open.insert(pi_start, computeHeuristic(pi_start));
     parent[pi_goal] = PI_NULL;
 
     ROS_INFO("Planner started");
@@ -120,8 +121,9 @@ Configuration Planner::findBestConfiguration(Configuration& pi)
 		costMap[pi] = 0;
 		g_local[pi] = costMap;
 
-		PriorityQueue queue;
-		queue.insert(pi, grid.heuristic(pi, pi_goal));
+		PartialConfQueue queue;
+		PartialConfiguration pi_a = pi;
+		queue.insert(pi_a, computeHeuristic(pi));
 		open_local[pi] = queue;
 	}
 
@@ -135,9 +137,9 @@ Configuration Planner::findBestConfiguration(Configuration& pi)
 		if(a.count == a.agent.size()
 				&& isConnected(a)
 				&& closed.count(a) == 0
-				&& a != pi)
+				&& static_cast<Configuration>(a) != pi)
 		{
-			sons[pi] = a;
+			sons[pi].push_back(a);
 			return a;
 		}
 
@@ -145,7 +147,7 @@ Configuration Planner::findBestConfiguration(Configuration& pi)
 		{
 			double g = pi_g[a] + computeCost(a, a_n);
 			pi_g[a_n] = g;
-			double cost = g + grid.heuristic(a_n, pi_goal);
+			double cost = g + computeHeuristic(a_n);
 			pi_open.insert(a, cost);
 		}
 	}
@@ -165,7 +167,7 @@ void Planner::updateConfiguration(Configuration& pi, Configuration& pi_n)
 
         g[pi_n] = g[pi] + d;
 
-        double frontierCost = g[pi_n] + grid.heuristic(pi_n, pi_goal);
+        double frontierCost = g[pi_n] + computeHeuristic(pi_n);
 
         open.insert(pi_n, frontierCost);
     }
@@ -178,14 +180,22 @@ double Planner::bestLeafCost(Configuration& pi)
 	double best = numeric_limits<double>::infinity();
 	for(auto& son : sonList)
 	{
-		double current = g[son];
-		best = min(best, current);
+		if(closed.count(son) == 0)
+		{
+			double current = g[son];
+			best = min(best, current);
+		}
 	}
 
 	return best;
 }
 
 double Planner::computeCost(Configuration& pi, Configuration& pi_n)
+{
+	return 0;
+}
+
+double Planner::computeHeuristic(Configuration& pi)
 {
 	return 0;
 }

@@ -24,17 +24,18 @@
 #ifndef INCLUDE_CONNECTED_MRPP_THETASTAR_FRONTIERNODE_H_
 #define INCLUDE_CONNECTED_MRPP_THETASTAR_FRONTIERNODE_H_
 
-#include "connected_mrpp/Cell.h"
+#include "connected_mrpp/Configuration.h"
 
 namespace connected_mrpp
 {
+template<class T>
 class FrontierNode
 {
 public:
-    inline FrontierNode(const Cell& node, double cost):
+    inline FrontierNode(const T& node, double cost):
         node(node), cost(cost) { }
 
-    inline Cell getNode() const
+    inline const T& getNode() const
     {
         return node;
     }
@@ -45,7 +46,7 @@ public:
     }
 
 private:
-    Cell node;
+    const T& node;
     double cost;
 };
 

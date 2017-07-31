@@ -29,35 +29,103 @@
 namespace connected_mrpp
 {
 
+template<class T>
+struct DefaultCmp
+{
+    bool operator()(const FrontierNode<T>* a, const FrontierNode<T>* b) const
+    {
+        return (a->getCost() < b->getCost()) ||
+               ((a->getCost() == b->getCost()) && (a->getNode() < b->getNode()));
+    }
+};
+
+template<class T, class C>
 class PriorityQueue
 {
-    struct Cmp
-    {
-        bool operator()(const FrontierNode* a, const FrontierNode* b) const
-        {
-            return (a->getCost() < b->getCost()) ||
-                   ((a->getCost() == b->getCost()) && (a->getNode() < b->getNode()));
-        }
-    };
-
-
 public:
-    void insert(const Cell& cell, double cost);
-    void remove(const Cell& cell);
-    bool contains(const Cell& cell) const;
-    bool empty() const;
-    Cell pop();
-    void clear();
+    void insert(const T& node, double cost)
+    {
+        FrontierNode<T>* frontierNode = new FrontierNode<T>(node, cost);
+        auto res = open.insert(frontierNode);
+        openMap[node] = frontierNode;
 
-    std::set<FrontierNode*, Cmp>::iterator begin();
-    std::set<FrontierNode*, Cmp>::iterator end();
+        assert(res.second);
 
-    ~PriorityQueue();
+        assert(open.size() == openMap.size());
+    }
+
+    void remove(const T& node)
+    {
+        FrontierNode<T>* f = openMap.at(node);
+        open.erase(f);
+        openMap.erase(node);
+
+        delete f;
+
+        assert(open.size() == openMap.size());
+    }
+
+    bool contains(const T& node) const
+    {
+        assert(open.size() == openMap.size());
+        return openMap.count(node) == 1;
+    }
+
+    bool empty() const
+    {
+        assert(open.size() == openMap.size());
+        return open.empty();
+    }
+
+    T pop()
+    {
+        auto it = open.begin();
+        auto ptr = *it;
+
+        open.erase(it);
+
+        T node = ptr->getNode();
+        openMap.erase(node);
+
+        delete ptr;
+
+        assert(open.size() == openMap.size());
+
+        return node;
+    }
+
+    void clear()
+    {
+        for(auto f: open)
+            delete f;
+
+        open.clear();
+        openMap.clear();
+
+    }
+
+    typename std::set<FrontierNode<T>*, C>::iterator begin()
+    {
+        assert(open.size() == openMap.size());
+        return open.begin();
+    }
+
+    typename std::set<FrontierNode<T>*, C>::iterator end()
+    {
+        assert(open.size() == openMap.size());
+        return open.end();
+    }
+
+    ~PriorityQueue()
+    {
+        assert(open.size() == openMap.size());
+        clear();
+    }
 
 
 private:
-    std::set<FrontierNode*, Cmp> open;
-    std::map<std::pair<int, int>, FrontierNode*> openMap;
+    std::set<FrontierNode<T>*, C> open;
+    std::map<T, FrontierNode<T>*> openMap;
 
 };
 

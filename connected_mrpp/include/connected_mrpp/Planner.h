@@ -26,7 +26,7 @@
 
 #include <Eigen/Dense>
 
-
+#include "connected_mrpp/Grid.h"
 #include "connected_mrpp/Configuration.h"
 #include "connected_mrpp/PriorityQueue.h"
 
@@ -50,6 +50,7 @@ private:
     void updateConfiguration(Configuration& pi, Configuration& pi_n);
     double bestLeafCost(Configuration& pi);
     double computeCost(Configuration& pi, Configuration& pi_n);
+    double computeHeuristic(Configuration& pi);
     std::vector<PartialConfiguration> successors(PartialConfiguration& a);
 
     void clearInstance();
@@ -68,7 +69,10 @@ private:
 
 private:
     typedef std::map<Configuration, double> CostMap;
-
+    typedef DefaultCmp<Configuration> ConfComp;
+    typedef DefaultCmp<PartialConfiguration> PartialConfComp;
+    typedef PriorityQueue<Configuration, ConfComp> ConfQueue;
+    typedef PriorityQueue<PartialConfiguration, PartialConfComp> PartialConfQueue;
 
 private:
     static const Configuration PI_NULL;
@@ -80,14 +84,14 @@ private:
 
     //Principal Routine data structure
     CostMap g;
-    PriorityQueue open;
+    ConfQueue open;
     std::map<Configuration, Configuration> parent;
     std::set<Configuration> closed;
     std::map<Configuration, std::vector<Configuration>> sons;
 
     //Local search data structure
     std::map<Configuration, CostMap> g_local;
-    std::map<Configuration, PriorityQueue> open_local;
+    std::map<Configuration, PartialConfQueue> open_local;
 
 };
 

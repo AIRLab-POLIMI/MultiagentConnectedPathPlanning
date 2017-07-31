@@ -28,14 +28,57 @@ using namespace std;
 namespace connected_mrpp
 {
 
+Configuration::Configuration()
+{
+
+}
+
 Configuration::Configuration(vector<Cell>& agent) :
 		agent(agent)
 {
 
 }
 
+bool Configuration::operator==(const Configuration& rhs) const
+{
+	if(agent.size() == rhs.agent.size())
+	{
+		for(int i = 0; i < agent.size(); i++)
+		{
+			if(agent[i] != rhs.agent[i])
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+bool Configuration::operator< (const Configuration& rhs) const
+{
+	if(agent.size() == rhs.agent.size())
+	{
+		for(int i = 0; i < agent.size(); i++)
+		{
+			if(agent[i] < rhs.agent[i])
+			{
+				return true;
+			}
+			else if(agent[i] > rhs.agent[i])
+			{
+				return false;
+			}
+		}
+	}
+
+	return false;
+}
+
 PartialConfiguration::PartialConfiguration(Configuration& configuration) :
-		agent(configuration.agent), count(0)
+			Configuration(configuration.agent), count(0)
 {
 
 }

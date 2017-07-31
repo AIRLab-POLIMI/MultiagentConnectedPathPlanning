@@ -26,12 +26,18 @@
 
 #include "connected_mrpp/Cell.h"
 
+#include <utility>
+#include <vector>
+
 namespace connected_mrpp
 {
 
 struct Configuration
 {
+	Configuration();
 	Configuration(std::vector<Cell>& agent);
+	bool operator==(const Configuration& rhs) const;
+	bool operator< (const Configuration& rhs) const;
 	std::vector<Cell> agent;
 };
 

@@ -94,8 +94,6 @@ std::vector<Cell> Grid::getObstacles(const Cell& s)
 
 double Grid::cost(const Cell& s, const Cell& s_next)
 {
-    //TODO no obstacles (8-connected)?
-
     int X1 = s.first;
     int Y1 = s.second;
 
