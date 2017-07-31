@@ -39,7 +39,7 @@ namespace connected_mrpp
 const Configuration Planner::PI_NULL;
 
 
-Planner::Planner(Grid& grid) : grid(grid)
+Planner::Planner(Graph& graph) : graph(graph)
 {
 
 }
@@ -208,7 +208,7 @@ std::vector<PartialConfiguration> Planner::successors(PartialConfiguration& a)
 	{
 		auto v = a.agent[a.count];
 
-		auto neighbours = grid.getNeighbors(v);
+		auto neighbours = graph.getNeighbors(v);
 		neighbours.push_back(v);
 
 		for(auto& v_n : neighbours)

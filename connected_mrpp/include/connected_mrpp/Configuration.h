@@ -24,8 +24,6 @@
 #ifndef INCLUDE_CONNECTED_MRPP_CONFIGURATION_H_
 #define INCLUDE_CONNECTED_MRPP_CONFIGURATION_H_
 
-#include "connected_mrpp/Cell.h"
-
 #include <utility>
 #include <vector>
 
@@ -35,10 +33,10 @@ namespace connected_mrpp
 struct Configuration
 {
 	Configuration();
-	Configuration(std::vector<Cell>& agent);
+	Configuration(std::vector<int>& agent);
 	bool operator==(const Configuration& rhs) const;
 	bool operator< (const Configuration& rhs) const;
-	std::vector<Cell> agent;
+	std::vector<int> agent;
 };
 
 struct PartialConfiguration : public Configuration

@@ -33,7 +33,7 @@ Configuration::Configuration()
 
 }
 
-Configuration::Configuration(vector<Cell>& agent) :
+Configuration::Configuration(vector<int>& agent) :
 		agent(agent)
 {
 

@@ -30,32 +30,53 @@
 #include <costmap_2d/costmap_2d.h>
 
 #include "connected_mrpp/map/Map.h"
-#include "connected_mrpp/Cell.h"
 
 namespace connected_mrpp
 {
 
-class Grid
+class Graph
 {
 
 public:
-    Grid(Map& map, double gridResolution);
-    double cost(const Cell& s, const Cell& s_next);
-    double heuristic(const Cell& s, const Cell& s_next);
-    bool lineOfSight(const Cell& s, const Cell& s_next);
-    std::vector<Cell> getNeighbors(const Cell& s);
-    std::vector<Cell> getObstacles(const Cell& s);
-    Cell convertPose(const geometry_msgs::PoseStamped& msg);
-    bool isFree(const Cell& s);
+    virtual double cost(int v, int v_next) = 0;
+    virtual double heuristic(int v, int v_next) = 0;
+    virtual std::vector<int> getNeighbors(int v) = 0;
+    virtual std::vector<int> getObstacles(int v) = 0;
+    virtual bool isFree(int v) = 0;
+
+    virtual ~Graph()
+    {
+
+    }
+
+};
+
+class Graph2D : public Graph
+{
+public:
+	Graph2D(Map& map, double gridResolution);
+
+    virtual double cost(int v, int v_next);
+    virtual double heuristic(int v, int v_next);
+    virtual std::vector<int> getNeighbors(int v);
+    virtual std::vector<int> getObstacles(int v);
+    virtual bool isFree(int v);
+
+public:
+    void convert(int v, int& x, int& y);
+    int convert(int x, int y);
+	int convertPose(const geometry_msgs::PoseStamped& msg);
     Eigen::VectorXd toMapPose(int X, int Y);
 
 private:
-    Map& map;
+	Map& map;
 
-    double gridResolution;	// Cell edges in meters
+    double gridResolution;
     unsigned int maxX;
     unsigned int maxY;
+
 };
+
 
 }
 

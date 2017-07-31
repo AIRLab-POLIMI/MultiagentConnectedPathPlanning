@@ -26,9 +26,9 @@
 
 #include <Eigen/Dense>
 
-#include "connected_mrpp/Grid.h"
 #include "connected_mrpp/Configuration.h"
 #include "connected_mrpp/PriorityQueue.h"
+#include "connected_mrpp/Graph.h"
 
 namespace connected_mrpp
 {
@@ -37,7 +37,7 @@ class Planner
 {
 
 public:
-	Planner(Grid& grid);
+	Planner(Graph& grid);
 
     bool makePlan(const Configuration& start,
                   const Configuration& goal,
@@ -77,7 +77,7 @@ private:
 private:
     static const Configuration PI_NULL;
 
-    Grid& grid;
+    Graph& graph;
 
     Configuration pi_start;
     Configuration pi_goal;
