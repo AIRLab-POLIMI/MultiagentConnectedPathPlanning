@@ -28,11 +28,14 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 # ------------------------ BUILD -------------------------------
 
 file(GLOB_RECURSE cmrpp_SOURCE src/*.cpp)
-
+list(REMOVE_ITEM cmrpp_SOURCE "src/testGeneral.cpp")
 
 add_library(cmrpp_planner ${cmrpp_SOURCE})
                         
-target_link_libraries(cmrpp_planner ${catkin_LIBRARIES})                        
+target_link_libraries(cmrpp_planner ${catkin_LIBRARIES})     
+
+add_executable(cmrpp_test "src/testGeneral.cpp") 
+target_link_libraries(cmrpp_test cmrpp_planner ${catkin_LIBRARIES})       
                         
                         
 # ------------------------ TESTS -------------------------------  

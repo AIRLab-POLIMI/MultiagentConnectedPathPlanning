@@ -2,7 +2,7 @@
  * connected_mrpp,
  *
  *
- * Copyright (C) 2016 Davide Tateo
+ * Copyright (C) 2017 Davide Tateo
  * Versione 1.0
  *
  * This file is part of connected_mrpp.
@@ -21,17 +21,14 @@
  *  along with connected_mrpp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cmath>
-#include <Eigen/Dense>
-#include "connected_mrpp/Graph.h"
+#include "connected_mrpp/graph/Grid.h"
 
 using namespace std;
 
 namespace connected_mrpp
 {
 
-
-Graph2D::Graph2D(Map& map, double gridResolution): map(map),
+Grid::Grid(Map& map, double gridResolution): map(map),
     gridResolution(gridResolution)
 {
     Bounds bounds = map.getBounds();
@@ -41,7 +38,7 @@ Graph2D::Graph2D(Map& map, double gridResolution): map(map),
 }
 
 
-vector<int> Graph2D::getNeighbors(int v)
+vector<int> Grid::getNeighbors(int v)
 {
     int X, Y;
     convert(v, X, Y);
@@ -66,7 +63,7 @@ vector<int> Graph2D::getNeighbors(int v)
     return neighbors;
 }
 
-std::vector<int> Graph2D::getObstacles(int v)
+std::vector<int> Grid::getObstacles(int v)
 {
 	int X, Y;
 	convert(v, X, Y);
@@ -92,7 +89,7 @@ std::vector<int> Graph2D::getObstacles(int v)
 }
 
 
-double Graph2D::cost(int v, int v_next)
+double Grid::cost(int v, int v_next)
 {
     int X1, Y1;
     int X2, Y2;
@@ -103,7 +100,7 @@ double Graph2D::cost(int v, int v_next)
 }
 
 
-double Graph2D::heuristic(int v, int v_next)
+double Grid::heuristic(int v, int v_next)
 {
     int X1, Y1;
     int X2, Y2;
@@ -113,8 +110,19 @@ double Graph2D::heuristic(int v, int v_next)
     return sqrt( (X2-X1)*(X2-X1) + (Y2-Y1)*(Y2-Y1) );
 }
 
+bool Grid::isConnected(std::vector<int>& v_list)
+{
+	//TODO implement
+	return true;
+}
 
-int Graph2D::convertPose(const geometry_msgs::PoseStamped& msg)
+Grid::~Grid()
+{
+
+}
+
+
+/*int Grid::convertPose(const geometry_msgs::PoseStamped& msg)
 {
     auto& t_ros = msg.pose.position;
 
@@ -124,10 +132,10 @@ int Graph2D::convertPose(const geometry_msgs::PoseStamped& msg)
     int Y_index = floor( (t_ros.y - bounds.minY) / gridResolution );
 
     return convert(X_index, Y_index);
-}
+}*/
 
 
-Eigen::VectorXd Graph2D::toMapPose(int X, int Y)
+Eigen::VectorXd Grid::toMapPose(int X, int Y)
 {
     Bounds bounds = map.getBounds();
 
@@ -140,7 +148,7 @@ Eigen::VectorXd Graph2D::toMapPose(int X, int Y)
 }
 
 
-bool Graph2D::isFree(int v)
+bool Grid::isFree(int v)
 {
 	int X, Y;
 	convert(v, X, Y);
@@ -150,13 +158,13 @@ bool Graph2D::isFree(int v)
     return map.isFree(pos);
 }
 
-void Graph2D::convert(int v, int& x, int& y)
+void Grid::convert(int v, int& x, int& y)
 {
 	x = v % maxX;
 	y = v / maxX;
 }
 
-int Graph2D::convert(int x, int y)
+int Grid::convert(int x, int y)
 {
 	return x + maxX*y;
 }

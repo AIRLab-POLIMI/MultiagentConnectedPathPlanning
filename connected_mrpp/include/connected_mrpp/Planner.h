@@ -28,7 +28,7 @@
 
 #include "connected_mrpp/Configuration.h"
 #include "connected_mrpp/PriorityQueue.h"
-#include "connected_mrpp/Graph.h"
+#include "connected_mrpp/graph/Graph.h"
 
 namespace connected_mrpp
 {
