@@ -26,19 +26,20 @@
 
 #include "connected_mrpp/graph/Graph.h"
 
-#include <lemon/list_graph.h>
-#include <lemon/concepts/graph.h>
+#include <boost/graph/adjacency_list.hpp>
 
 #include <map>
 
 namespace connected_mrpp
 {
 
+typedef boost::adjacency_list<> GraphStructure;
+
 class GenericGraph : public Graph
 {
 public:
-	GenericGraph(lemon::ListDigraph& physicalGraph,
-				 lemon::ListDigraph& comunicationGraph);
+	GenericGraph(GraphStructure& physicalGraph,
+				GraphStructure& comunicationGraph);
 
     virtual double cost(int v, int v_next) override;
     virtual double heuristic(int v, int v_next) override;
@@ -48,10 +49,10 @@ public:
     virtual ~GenericGraph();
 
 private:
-    lemon::ListDigraph& physicalGraph;
-    lemon::ListDigraph& comunicationGraph;
+    GraphStructure& physicalGraph;
+    GraphStructure& comunicationGraph;
 
-    std::map<int, lemon::ListDigraph::NodeMap<double>*> costmaps;
+    std::map<int, std::vector<int>> costmaps;
 };
 
 }

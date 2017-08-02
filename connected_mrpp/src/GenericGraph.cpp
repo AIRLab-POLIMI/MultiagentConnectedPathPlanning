@@ -23,16 +23,18 @@
 
 #include "connected_mrpp/graph/GenericGraph.h"
 
-#include <lemon/connectivity.h>
-#include <lemon/dijkstra.h>
+#include <boost/graph/filtered_graph.hpp>
+#include <boost/graph/connected_components.hpp>
+#include <boost/graph/dijkstra_shortest_paths.hpp>
+#include <boost/property_map/property_map.hpp>
 
-using namespace lemon;
+using namespace boost;
 
 namespace connected_mrpp
 {
 
-GenericGraph::GenericGraph(lemon::ListDigraph& physicalGraph,
-						   lemon::ListDigraph& comunicationGraph) :
+GenericGraph::GenericGraph(GraphStructure& physicalGraph,
+						   GraphStructure& comunicationGraph) :
 									physicalGraph(physicalGraph),
 									comunicationGraph(comunicationGraph)
 {
@@ -47,30 +49,26 @@ double GenericGraph::heuristic(int v, int v_next)
 {
 	if(costmaps.count(v_next) == 0)
 	{
-		ListDigraph::ArcMap<double> len(physicalGraph, 1.0);
+		std::vector<int> d(num_vertices(physicalGraph));
 
-		auto* distMap = new ListDigraph::NodeMap<double>(physicalGraph);
+		auto n = vertex(v, physicalGraph);
+		breadth_first_search(physicalGraph, n, make_bfs_visitor(record_distances(d, boost::on_tree_edge())));
 
-		costmaps[v_next] = distMap;
-
-		auto n = ListDigraph::nodeFromId(v_next);
-		dijkstra(physicalGraph, len).distMap(*distMap).run(n);
+		costmaps[v_next] = d;
 	}
 
-	auto n = ListDigraph::nodeFromId(v);
-
-	return (*costmaps[v_next])[n];
+	return costmaps[v_next][v];
 }
 
 std::vector<int> GenericGraph::getNeighbors(int v)
 {
 	std::vector<int> neighbours;
 
-	auto n = ListDigraph::nodeFromId(v);
-	for (ListDigraph::OutArcIt arcIt(physicalGraph, n); arcIt != INVALID; ++arcIt)
+	auto iterator = adjacent_vertices(v, physicalGraph);
+
+	for(auto v_next = iterator.first; v_next != iterator.second; v_next++)
 	{
-		ListDigraph::Node n2 = physicalGraph.oppositeNode(n, arcIt);
-		neighbours.push_back(ListDigraph::id(n2));
+		neighbours.push_back(*v_next);
 	}
 
 	return neighbours;
@@ -78,22 +76,18 @@ std::vector<int> GenericGraph::getNeighbors(int v)
 
 bool GenericGraph::isConnected(std::vector<int>& v_list)
 {
-	ListDigraph::NodeMap<bool> nf(comunicationGraph, false);
+	std::set<unsigned int> v_set(v_list.begin(), v_list.end());
 
-	for(auto v : v_list)
-	{
-		nf[ListDigraph::nodeFromId(v)] = true;
-	}
 
-	return connected(undirector(filterNodes(comunicationGraph, nf)));
+	auto subgraph = make_vertex_subset_filter(comunicationGraph, v_set);
+
+	unsigned int components[v_list.size()];
+	return  connected_components(subgraph, components) == 1;
 }
 
 GenericGraph::~GenericGraph()
 {
-	for(auto& v : costmaps)
-	{
-		delete v.second;
-	}
+
 }
 
 }
