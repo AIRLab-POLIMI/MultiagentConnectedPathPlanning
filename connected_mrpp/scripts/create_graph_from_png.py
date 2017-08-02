@@ -131,7 +131,7 @@ if __name__ == "__main__":
         G_E, im_array = create_phys_graph_grid()
         G_E.write(gflags.FLAGS.output_phys + '_' + gflags.FLAGS.phys_discr_type + '_' + \
                   str(gflags.FLAGS.cell_size) + '_' + gflags.FLAGS.comm_discr_type + '_' + \
-                  str(gflags.FLAGS.range) + '.graphml', format='graphml')
+                  str(gflags.FLAGS.range) + '.net', format='dimacs')
     else:
         print 'Error! Physical discretization not supported!'
         exit(1)
@@ -140,7 +140,7 @@ if __name__ == "__main__":
         G_C = create_comm_graph_range(G_E, im_array)
         G_C.write(gflags.FLAGS.output_comm + '_' + gflags.FLAGS.phys_discr_type + '_' + \
                   str(gflags.FLAGS.cell_size) + '_' + gflags.FLAGS.comm_discr_type + '_' + \
-                  str(gflags.FLAGS.range) + '.graphml', format='graphml')
+                  str(gflags.FLAGS.range) + '.net', format='dimacs')
     else:
         print 'Error! Comm discretization not supported!'
         exit(1)
