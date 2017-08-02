@@ -31,7 +31,7 @@ def is_grid_cell(im_array, i, j, rows, cols):
         for w in range(j, j + gflags.FLAGS.cell_size):
             if w >= cols: return False
 
-        if im_array[k][w] == 0: return False
+            if im_array[k][w] == 0: return False
 
     return True
 
@@ -113,12 +113,12 @@ def create_comm_graph_range(G_E, im_array=None):
 
     if gflags.FLAGS.debug:
         plt.imshow(im_array)
-        bu = gflags.FLAGS.cell_size / 2
-        for edge in G_C.es.select(_source=456):
+        bu = gflags.FLAGS.cell_size / 2 + 1
+        for edge in G_C.es.select(_source=0):
             v1 = G_C.vs[edge.source]
             v2 = G_C.vs[edge.target]
             plt.plot([v1['y_coord'] + bu ,v2['y_coord'] + bu],[v1['x_coord'] + bu, v2['x_coord'] + bu],'b')
-        for edge in G_C.es.select(_target=456):
+        for edge in G_C.es.select(_target=0):
             v1 = G_C.vs[edge.source]
             v2 = G_C.vs[edge.target]
             plt.plot([v1['y_coord'] + bu ,v2['y_coord'] + bu],[v1['x_coord'] + bu, v2['x_coord'] + bu],'b')
@@ -129,18 +129,32 @@ def create_comm_graph_range(G_E, im_array=None):
 if __name__ == "__main__":
     if gflags.FLAGS.phys_discr_type == 'uniform_grid':
         G_E, im_array = create_phys_graph_grid()
+        #workaround for dimacs format (lemon compatible)
+        G_E['source'] = 0
+        G_E['target'] = 0
+        G_E.es['capacity'] = 1
+        G_E.write_dimacs(gflags.FLAGS.output_phys + '_' + gflags.FLAGS.phys_discr_type + '_' + \
+                  str(gflags.FLAGS.cell_size) + '_' + gflags.FLAGS.comm_discr_type + '_' + \
+                  str(gflags.FLAGS.range) + '.dimacs')
+        #write also graphml file containing attributes
         G_E.write(gflags.FLAGS.output_phys + '_' + gflags.FLAGS.phys_discr_type + '_' + \
                   str(gflags.FLAGS.cell_size) + '_' + gflags.FLAGS.comm_discr_type + '_' + \
-                  str(gflags.FLAGS.range) + '.net', format='dimacs')
+                  str(gflags.FLAGS.range) + '.graphml', format='graphml')
     else:
         print 'Error! Physical discretization not supported!'
         exit(1)
 
     if gflags.FLAGS.comm_discr_type == 'range':
         G_C = create_comm_graph_range(G_E, im_array)
+        G_C['source'] = 0
+        G_C['target'] = 0
+        G_C.es['capacity'] = 1
+        G_C.write_dimacs(gflags.FLAGS.output_comm + '_' + gflags.FLAGS.phys_discr_type + '_' + \
+                  str(gflags.FLAGS.cell_size) + '_' + gflags.FLAGS.comm_discr_type + '_' + \
+                  str(gflags.FLAGS.range) + '.dimacs')
         G_C.write(gflags.FLAGS.output_comm + '_' + gflags.FLAGS.phys_discr_type + '_' + \
                   str(gflags.FLAGS.cell_size) + '_' + gflags.FLAGS.comm_discr_type + '_' + \
-                  str(gflags.FLAGS.range) + '.net', format='dimacs')
+                  str(gflags.FLAGS.range) + '.graphml', format='graphml')
     else:
         print 'Error! Comm discretization not supported!'
         exit(1)
