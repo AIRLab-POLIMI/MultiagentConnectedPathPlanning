@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 
-find_package(catkin)
+find_package(catkin REQUIRED COMPONENTS roscpp)
 project(connected_mrpp)
 
 catkin_package()

@@ -43,6 +43,16 @@ template<class T, class C>
 class PriorityQueue
 {
 public:
+	PriorityQueue()
+	{
+	}
+
+	PriorityQueue(C&& comparator) :
+			open(comparator)
+	{
+
+	}
+
     void insert(const T& node, double cost)
     {
         FrontierNode<T>* frontierNode = new FrontierNode<T>(node, cost);

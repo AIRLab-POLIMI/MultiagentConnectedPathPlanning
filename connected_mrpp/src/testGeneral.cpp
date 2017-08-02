@@ -23,6 +23,7 @@
 
 
 #include <fstream>
+#include <string>
 #include <lemon/dimacs.h>
 
 #include "connected_mrpp/graph/GenericGraph.h"
@@ -32,8 +33,9 @@ using namespace connected_mrpp;
 
 int main(int argc, char** argv)
 {
-	std::ifstream fsP("suca");
-	std::ifstream fsC("tua");
+	std::string basePath = "/home/dave/ros-extra/src/connectedmrpp/connected_mrpp/data/";
+	std::ifstream fsP(basePath+"offices_phys_uniform_grid_11_range_150.net");
+	std::ifstream fsC(basePath+"offices_comm_uniform_grid_11_range_150.net");
 
 	lemon::ListDigraph gP;
 	lemon::ListDigraph gC;

@@ -39,7 +39,7 @@ namespace connected_mrpp
 const Configuration Planner::PI_NULL;
 
 
-Planner::Planner(Graph& graph) : graph(graph)
+Planner::Planner(Graph& graph) : graph(graph), open(ConfComp(parent))
 {
 
 }
@@ -235,6 +235,39 @@ void Planner::clearInstance()
     //clear local search data structure
     open_local.clear();
     g_local.clear();
+}
+
+Planner::ConfComp::ConfComp(map<Configuration, Configuration>& parent) :
+    		    		parent(parent)
+{
+
+}
+
+bool Planner::ConfComp::operator()(const FrontierNode<Configuration>* a, const FrontierNode<Configuration>* b) const
+{
+	if(a->getCost() < b->getCost())
+	{
+		return true;
+	}
+	else if(a->getCost() == b->getCost())
+	{
+		if(parent[a->getNode()] == b->getNode())
+		{
+			return true;
+		}
+		else if(parent[b->getNode()] == a->getNode())
+		{
+			return false;
+		}
+		else
+		{
+			return a->getNode() < b->getNode();
+		}
+	}
+	else
+	{
+		return false;
+	}
 }
 
 

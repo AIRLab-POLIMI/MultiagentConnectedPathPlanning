@@ -55,23 +55,20 @@ private:
 
     void clearInstance();
 
-    /*void publishPlan(std::vector<Eigen::VectorXd>& path,
-    				 std::vector<geometry_msgs::PoseStamped>& plan,
-					 const ros::Time& stamp,
-					 const geometry_msgs::PoseStamped& start,
-					 const geometry_msgs::PoseStamped& goal);*/
-
-    /*void displayClosed();
-    void displayOpen();
-    void displayNeighbours(const Cell& cell);
-    void displayObstacles(const Cell& cell);
-    void displayCost(const Cell& cell, double g_old);*/
-
 private:
     typedef std::map<Configuration, double> CostMap;
-    typedef DefaultCmp<Configuration> ConfComp;
-    typedef DefaultCmp<PartialConfiguration> PartialConfComp;
+
+    struct ConfComp
+    {
+    	ConfComp(std::map<Configuration, Configuration>& parent);
+        bool operator()(const FrontierNode<Configuration>* a,
+        			const FrontierNode<Configuration>* b) const;
+
+    	std::map<Configuration, Configuration>& parent;
+    };
+
     typedef PriorityQueue<Configuration, ConfComp> ConfQueue;
+    typedef DefaultCmp<PartialConfiguration> PartialConfComp;
     typedef PriorityQueue<PartialConfiguration, PartialConfComp> PartialConfQueue;
 
 private:
