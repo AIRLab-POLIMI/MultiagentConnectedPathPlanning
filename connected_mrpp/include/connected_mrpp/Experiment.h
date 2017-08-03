@@ -45,8 +45,8 @@ public:
 
     std::string getPhysGraph();
     std::string getCommGraph();
-    std::vector<int> getStartConfig();
-    std::vector<int> getGoalConfig();
+    std::vector<int>& getStartConfig();
+    std::vector<int>& getGoalConfig();
 
 private:
     std::string physGraph;

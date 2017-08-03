@@ -23,6 +23,7 @@
 
 
 #include <fstream>
+#include <iostream>
 #include <string>
 
 
@@ -38,7 +39,7 @@ using namespace connected_mrpp;
 
 int main(int argc, char** argv)
 {
-	std::string basePath = "/home/banfi/catkin_ws/src/connectedmrpp/connected_mrpp/data/";
+	std::string basePath = "/home/dave/ros/src/connectedmrpp/connected_mrpp/data/";
     std::string expFile = "prova.exp";
 
     Experiment exp(basePath, expFile);
@@ -46,8 +47,8 @@ int main(int argc, char** argv)
     cout << exp.getPhysGraph() << endl;
     cout << exp.getCommGraph() << endl;
 
-	std::ifstream fsP(basePath + exp.getPhysGraph());
-	std::ifstream fsC(basePath + exp.getCommGraph());
+	std::ifstream fsP(exp.getPhysGraph());
+	std::ifstream fsC(exp.getCommGraph());
 
 	GraphStructure physical;
 	GraphStructure comunication;
@@ -60,8 +61,8 @@ int main(int argc, char** argv)
 
 	Planner planner(graph);
 
-	Configuration start;
-	Configuration goal;
+	Configuration start(exp.getStartConfig());
+	Configuration goal(exp.getGoalConfig());
 
 	planner.makePlan(start, goal);
 

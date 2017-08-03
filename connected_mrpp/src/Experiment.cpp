@@ -78,7 +78,7 @@ Experiment::Experiment(std::string basePath, std::string filename)
             }
         }           
     }
-    std::cout << "Experiment successfully read.\n";
+    std::cout << "Experiment successfully read." <<std::endl;
 
 }
 
@@ -92,12 +92,12 @@ std::string Experiment::getCommGraph()
 	return commGraph;
 }
 
-std::vector<int> Experiment::getStartConfig()
+std::vector<int>& Experiment::getStartConfig()
 {
 	return startConfig;
 }
 
-std::vector<int> Experiment::getGoalConfig()
+std::vector<int>& Experiment::getGoalConfig()
 {
 	return goalConfig;
 }
