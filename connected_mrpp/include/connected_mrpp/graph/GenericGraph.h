@@ -33,7 +33,8 @@
 namespace connected_mrpp
 {
 
-typedef boost::adjacency_list<> GraphStructure;
+typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS,
+		boost::property<boost::vertex_color_t, boost::default_color_type>> GraphStructure;
 
 class GenericGraph : public Graph
 {
@@ -52,7 +53,7 @@ private:
     GraphStructure& physicalGraph;
     GraphStructure& comunicationGraph;
 
-    std::map<int, std::vector<int>> costmaps;
+    std::map<int, std::vector<size_t>> costmaps;
 };
 
 }

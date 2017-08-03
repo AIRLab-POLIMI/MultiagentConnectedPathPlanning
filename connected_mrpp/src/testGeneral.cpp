@@ -27,14 +27,34 @@
 
 
 #include "connected_mrpp/graph/GenericGraph.h"
+#include "connected_mrpp/Planner.h"
+
+#include <boost/graph/graphml.hpp>
 
 using namespace std;
+using namespace boost;
 using namespace connected_mrpp;
 
 int main(int argc, char** argv)
 {
-	std::string basePath = "/home/dave/ros-extra/src/connectedmrpp/connected_mrpp/data/";
+	std::string basePath = "/home/dave/ros/src/connectedmrpp/connected_mrpp/data/";
 	std::ifstream fsP(basePath+"offices_phys_uniform_grid_11_range_150.graphml");
 	std::ifstream fsC(basePath+"offices_comm_uniform_grid_11_range_150.graphml");
+
+	GraphStructure physical;
+	GraphStructure comunication;
+
+	dynamic_properties dpP(ignore_other_properties), dpC(ignore_other_properties);
+	read_graphml(fsP, physical, dpP);
+	read_graphml(fsC, comunication, dpC);
+
+	GenericGraph graph(physical, comunication);
+
+	Planner planner(graph);
+
+	Configuration start;
+	Configuration goal;
+
+	planner.makePlan(start, goal);
 
 }

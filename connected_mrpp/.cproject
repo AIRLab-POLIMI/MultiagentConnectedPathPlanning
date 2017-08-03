@@ -18,7 +18,7 @@
 					<folderInfo id="cdt.managedbuild.toolchain.gnu.base.5737851.564671085" name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.base.1673592828" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.base">
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.GNU_ELF" id="cdt.managedbuild.target.gnu.platform.base.446165220" name="Debug Platform" osList="linux,hpux,aix,qnx" superClass="cdt.managedbuild.target.gnu.platform.base"/>
-							<builder buildPath="/home/dave/ros-extra" cleanBuildTarget="clean --pkg connected_mrpp" command="catkin_make" id="cdt.managedbuild.target.gnu.builder.base.813200928" incrementalBuildTarget="--pkg connected_mrpp" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.base">
+							<builder buildPath="${workspace_loc}/../../" cleanBuildTarget="clean --pkg connected_mrpp" command="catkin_make" id="cdt.managedbuild.target.gnu.builder.base.813200928" incrementalBuildTarget="--pkg connected_mrpp" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.base">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name=""/>
 								</outputEntries>

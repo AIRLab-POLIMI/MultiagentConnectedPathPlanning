@@ -12,7 +12,7 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 # ----------------------- LIBRARIES ---------------------------
 
 find_package(Eigen3 REQUIRED)
-find_package(Boost 1.53 REQUIRED)
+find_package(Boost 1.53 REQUIRED COMPONENTS graph)
 
 include_directories(${EIGEN3_INCLUDE_DIR})
 
@@ -35,7 +35,7 @@ add_library(cmrpp_planner ${cmrpp_SOURCE})
 target_link_libraries(cmrpp_planner ${catkin_LIBRARIES})     
 
 add_executable(cmrpp_test "src/testGeneral.cpp") 
-target_link_libraries(cmrpp_test cmrpp_planner ${catkin_LIBRARIES})       
+target_link_libraries(cmrpp_test cmrpp_planner ${catkin_LIBRARIES} ${Boost_LIBRARIES})       
                         
                         
 # ------------------------ TESTS -------------------------------  

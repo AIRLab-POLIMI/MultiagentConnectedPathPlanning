@@ -42,17 +42,18 @@ GenericGraph::GenericGraph(GraphStructure& physicalGraph,
 
 double GenericGraph::GenericGraph::cost(int v, int v_next)
 {
-	return v == v_next ? 0 : 1; //TODO in teoria bisogna cercare se sono vicini...
+	return v == v_next ? 0 : 1;
 }
 
 double GenericGraph::heuristic(int v, int v_next)
 {
 	if(costmaps.count(v_next) == 0)
 	{
-		std::vector<int> d(num_vertices(physicalGraph));
+		std::vector<size_t> d(num_vertices(physicalGraph));
 
 		auto n = vertex(v, physicalGraph);
-		breadth_first_search(physicalGraph, n, make_bfs_visitor(record_distances(d, boost::on_tree_edge())));
+		auto distanceVisitor = make_bfs_visitor(record_distances(&d[0], boost::on_tree_edge()));
+		breadth_first_search(physicalGraph, n, visitor(distanceVisitor));
 
 		costmaps[v_next] = d;
 	}
@@ -82,7 +83,7 @@ bool GenericGraph::isConnected(std::vector<int>& v_list)
 	auto subgraph = make_vertex_subset_filter(comunicationGraph, v_set);
 
 	unsigned int components[v_list.size()];
-	return  connected_components(subgraph, components) == 1;
+	return connected_components(subgraph, components) == 1;
 }
 
 GenericGraph::~GenericGraph()

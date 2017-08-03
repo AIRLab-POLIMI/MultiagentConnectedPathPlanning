@@ -23,8 +23,6 @@
 
 
 #include <ros/ros.h>
-#include <pluginlib/class_list_macros.h>
-#include <visualization_msgs/Marker.h>
 #include "connected_mrpp/Planner.h"
 
 
@@ -45,8 +43,7 @@ Planner::Planner(Graph& graph) : graph(graph), open(ConfComp(parent))
 }
 
 bool Planner::makePlan(const Configuration& start,
-        			   const Configuration& goal,
-					   std::vector<Configuration>& plan)
+        			   const Configuration& goal)
 {
     clearInstance();
     //visualizer.clean();
@@ -84,7 +81,10 @@ bool Planner::makePlan(const Configuration& start,
         Configuration pi = open.pop();
 
         if(pi == pi_goal)
+        {
+        	ROS_INFO("Plan found");
         	return true;
+        }
 
         auto&& pi_n = findBestConfiguration(pi);
 
@@ -104,6 +104,8 @@ bool Planner::makePlan(const Configuration& start,
         	closed.insert(pi);
         }
     }
+
+    ROS_INFO("No plan found");
 
     return false;
 }

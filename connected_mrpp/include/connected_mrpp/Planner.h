@@ -37,11 +37,10 @@ class Planner
 {
 
 public:
-	Planner(Graph& grid);
+	Planner(Graph& graph);
 
     bool makePlan(const Configuration& start,
-                  const Configuration& goal,
-                  std::vector<Configuration>& plan);
+                  const Configuration& goal);
 
 private:
     bool isConnected(Configuration& pi);
