@@ -28,6 +28,7 @@
 
 #include "connected_mrpp/graph/GenericGraph.h"
 #include "connected_mrpp/Planner.h"
+#include "connected_mrpp/Experiment.h"
 
 #include <boost/graph/graphml.hpp>
 
@@ -37,9 +38,16 @@ using namespace connected_mrpp;
 
 int main(int argc, char** argv)
 {
-	std::string basePath = "/home/dave/ros/src/connectedmrpp/connected_mrpp/data/";
-	std::ifstream fsP(basePath+"offices_phys_uniform_grid_11_range_150.graphml");
-	std::ifstream fsC(basePath+"offices_comm_uniform_grid_11_range_150.graphml");
+	std::string basePath = "/home/banfi/catkin_ws/src/connectedmrpp/connected_mrpp/data/";
+    std::string expFile = "prova.exp";
+
+    Experiment exp(basePath, expFile);
+
+    cout << exp.getPhysGraph() << endl;
+    cout << exp.getCommGraph() << endl;
+
+	std::ifstream fsP(basePath + exp.getPhysGraph());
+	std::ifstream fsC(basePath + exp.getCommGraph());
 
 	GraphStructure physical;
 	GraphStructure comunication;
