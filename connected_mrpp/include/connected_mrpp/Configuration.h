@@ -26,6 +26,7 @@
 
 #include <utility>
 #include <vector>
+#include <iostream>
 
 namespace connected_mrpp
 {
@@ -42,8 +43,32 @@ struct Configuration
 struct PartialConfiguration : public Configuration
 {
 	PartialConfiguration(Configuration& configuration);
+	bool operator==(const PartialConfiguration& rhs) const;
+	bool operator< (const PartialConfiguration& rhs) const;
 	unsigned int count;
 };
+
+
+inline std::ostream& operator<<(std::ostream& os, const Configuration& pi)
+{
+	os << "[ ";
+    for(auto v : pi.agent)
+    {
+    	os << v << " ";
+    }
+
+    os << "]";
+
+    return os;
+}
+
+
+inline std::ostream& operator<<(std::ostream& os, const PartialConfiguration& pi)
+{
+	os << static_cast<Configuration>(pi) << " - " << pi.count;
+
+    return os;
+}
 
 }
 

@@ -92,9 +92,9 @@ public:
         auto it = open.begin();
         auto ptr = *it;
 
-        open.erase(it);
-
         T node = ptr->getNode();
+
+        open.erase(it);
         openMap.erase(node);
 
         delete ptr;

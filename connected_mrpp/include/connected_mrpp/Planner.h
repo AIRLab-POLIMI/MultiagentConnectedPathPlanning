@@ -42,6 +42,8 @@ public:
     bool makePlan(const Configuration& start,
                   const Configuration& goal);
 
+    std::vector<Configuration> getPlan();
+
 private:
     bool isConnected(Configuration& pi);
     Configuration findBestConfiguration(Configuration& pi);
@@ -56,6 +58,7 @@ private:
 
 private:
     typedef std::map<Configuration, double> CostMap;
+    typedef std::map<Configuration, double> PartialCostMap;
 
     struct ConfComp
     {
@@ -86,7 +89,7 @@ private:
     std::map<Configuration, std::vector<Configuration>> sons;
 
     //Local search data structure
-    std::map<Configuration, CostMap> g_local;
+    std::map<Configuration, PartialCostMap> g_local;
     std::map<Configuration, PartialConfQueue> open_local;
 
 };

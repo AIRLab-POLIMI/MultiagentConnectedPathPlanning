@@ -83,5 +83,21 @@ PartialConfiguration::PartialConfiguration(Configuration& configuration) :
 
 }
 
+bool PartialConfiguration::operator==(const PartialConfiguration& rhs) const
+{
+	const Configuration& self = *this;
+	const Configuration& rhs_c = rhs;
+
+	return self == rhs_c && count == rhs.count;
+}
+
+bool PartialConfiguration::operator< (const PartialConfiguration& rhs) const
+{
+	const Configuration& self = *this;
+	const Configuration& rhs_c = rhs;
+
+	return count < rhs.count ||  (count == rhs.count && self < rhs_c);
+}
+
 
 }

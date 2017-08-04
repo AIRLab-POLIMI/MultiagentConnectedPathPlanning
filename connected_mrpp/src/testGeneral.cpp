@@ -26,7 +26,6 @@
 #include <iostream>
 #include <string>
 
-
 #include "connected_mrpp/graph/GenericGraph.h"
 #include "connected_mrpp/Planner.h"
 #include "connected_mrpp/Experiment.h"
@@ -39,8 +38,16 @@ using namespace connected_mrpp;
 
 int main(int argc, char** argv)
 {
-	std::string basePath = "/home/dave/ros/src/connectedmrpp/connected_mrpp/data/";
-    std::string expFile = "prova.exp";
+	if(argc < 3)
+	{
+		cout << "Missing basepath and experiment file" << endl;
+		return -1;
+	}
+
+	std::string basePath(argv[1]);
+    std::string expFile(argv[2]);
+
+    cout << "Loading experiment: " << basePath+expFile << endl;
 
     Experiment exp(basePath, expFile);
 
@@ -57,6 +64,7 @@ int main(int argc, char** argv)
 	read_graphml(fsP, physical, dpP);
 	read_graphml(fsC, comunication, dpC);
 
+
 	GenericGraph graph(physical, comunication);
 
 	Planner planner(graph);
@@ -64,6 +72,17 @@ int main(int argc, char** argv)
 	Configuration start(exp.getStartConfig());
 	Configuration goal(exp.getGoalConfig());
 
-	planner.makePlan(start, goal);
+	bool found = planner.makePlan(start, goal);
+
+	if(found)
+	{
+		std::cout << "Computed plan: " << std::endl;
+		auto&& plan = planner.getPlan();
+
+		for(auto& c : plan)
+		{
+			std::cout << c << std::endl;
+		}
+	}
 
 }

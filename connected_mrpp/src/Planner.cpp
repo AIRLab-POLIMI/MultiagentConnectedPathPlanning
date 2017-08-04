@@ -86,7 +86,7 @@ bool Planner::makePlan(const Configuration& start,
         	return true;
         }
 
-        auto&& pi_n = findBestConfiguration(pi);
+        auto pi_n = findBestConfiguration(pi);
 
         if(pi_n != PI_NULL)
         {
@@ -110,23 +110,39 @@ bool Planner::makePlan(const Configuration& start,
     return false;
 }
 
+vector<Configuration> Planner::getPlan()
+{
+	vector<Configuration> plan;
+
+	auto& current = pi_goal;
+
+	while(current != pi_start && current != PI_NULL)
+	{
+		plan.push_back(current);
+		current = parent[current];
+	}
+
+	plan.push_back(pi_start);
+
+	reverse(plan.begin(), plan.end());
+
+	return plan;
+}
+
 bool Planner::isConnected(Configuration& pi)
 {
-	return true;
+	return graph.isConnected(pi.agent);
 }
 
 Configuration Planner::findBestConfiguration(Configuration& pi)
 {
 	if(g_local.count(pi) == 0)
 	{
-		CostMap costMap;
-		costMap[pi] = 0;
-		g_local[pi] = costMap;
+		PartialConfiguration pi_a(pi);
 
-		PartialConfQueue queue;
-		PartialConfiguration pi_a = pi;
-		queue.insert(pi_a, computeHeuristic(pi));
-		open_local[pi] = queue;
+		g_local[pi][pi_a] = 0;
+
+		open_local[pi].insert(pi_a, computeHeuristic(pi));
 	}
 
 	auto& pi_open = open_local[pi];
@@ -150,7 +166,8 @@ Configuration Planner::findBestConfiguration(Configuration& pi)
 			double g = pi_g[a] + computeCost(a, a_n);
 			pi_g[a_n] = g;
 			double cost = g + computeHeuristic(a_n);
-			pi_open.insert(a, cost);
+
+			pi_open.insert(a_n, cost);
 		}
 	}
 
@@ -194,12 +211,28 @@ double Planner::bestLeafCost(Configuration& pi)
 
 double Planner::computeCost(Configuration& pi, Configuration& pi_n)
 {
-	return 0;
+	double cost = 0;
+	for(unsigned int i = 0; i < pi.agent.size(); i++)
+	{
+		auto v = pi.agent[i];
+		auto v_n = pi_n.agent[i];
+		cost += graph.cost(v, v_n);
+	}
+
+	return cost;
 }
 
 double Planner::computeHeuristic(Configuration& pi)
 {
-	return 0;
+	double cost = 0;
+	for(unsigned int i = 0; i < pi.agent.size(); i++)
+	{
+		auto v = pi.agent[i];
+		auto v_n = pi_goal.agent[i];
+		cost += graph.heuristic(v, v_n);
+	}
+
+	return cost;
 }
 
 std::vector<PartialConfiguration> Planner::successors(PartialConfiguration& a)

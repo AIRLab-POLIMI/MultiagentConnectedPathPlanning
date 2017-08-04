@@ -46,7 +46,7 @@ public:
     }
 
 private:
-    const T& node;
+    T node;
     double cost;
 };
 
