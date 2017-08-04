@@ -167,10 +167,6 @@ Configuration Planner::findBestConfiguration(Configuration& pi)
 			pi_g[a_n] = g;
 			double cost = g + computeHeuristic(a_n);
 
-			std::cout << "partialConf: " << a_n << std::endl;
-			std::cout << "g: " << g << std::endl;
-			std::cout << "c: " << cost << std::endl;
-
 			pi_open.insert(a_n, cost);
 		}
 	}
