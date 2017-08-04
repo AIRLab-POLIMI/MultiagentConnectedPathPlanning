@@ -1,3 +1,3 @@
 # Connected multy robot path planning
 
-This package implement a solution to multy robot path planning on grids, with comunication constraints.
+This package implements a solution to connected multirobot path planning on (multi)graphs.
