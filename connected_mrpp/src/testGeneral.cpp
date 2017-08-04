@@ -47,9 +47,9 @@ int main(int argc, char** argv)
 	std::string basePath(argv[1]);
     std::string expFile(argv[2]);
 
-    cout << "Loading experiment: " << basePath+expFile << endl;
+    cout << "Loading experiment: " << basePath + "data/" + expFile << endl;
 
-    Experiment exp(basePath, expFile);
+    Experiment exp(basePath + "data/", expFile);
 
     cout << exp.getPhysGraph() << endl;
     cout << exp.getCommGraph() << endl;
@@ -76,7 +76,7 @@ int main(int argc, char** argv)
 
 	if(found)
 	{
-		std::ofstream ofs(basePath + expFile.substr(0, expFile.find_last_of("."))+".log");
+		std::ofstream ofs(basePath + "logs/" + expFile.substr(0, expFile.find_last_of("."))+".log");
 		std::cout << "Computed plan: " << std::endl;
 		auto&& plan = planner.getPlan();
 
