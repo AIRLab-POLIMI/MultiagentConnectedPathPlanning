@@ -51,7 +51,7 @@ double GenericGraph::heuristic(int v, int v_next)
 	{
 		std::vector<size_t> d(num_vertices(physicalGraph));
 
-		auto n = vertex(v, physicalGraph);
+		auto n = vertex(v_next, physicalGraph);
 		auto distanceVisitor = make_bfs_visitor(record_distances(&d[0], boost::on_tree_edge()));
 		breadth_first_search(physicalGraph, n, visitor(distanceVisitor));
 

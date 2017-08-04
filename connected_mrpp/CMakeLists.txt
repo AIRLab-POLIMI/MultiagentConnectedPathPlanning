@@ -16,8 +16,6 @@ find_package(Boost 1.53 REQUIRED COMPONENTS graph)
 
 include_directories(${EIGEN3_INCLUDE_DIR})
 
-
-
 # ----------------------- GCC FLAGS ----------------------------
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")

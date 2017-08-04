@@ -167,6 +167,10 @@ Configuration Planner::findBestConfiguration(Configuration& pi)
 			pi_g[a_n] = g;
 			double cost = g + computeHeuristic(a_n);
 
+			std::cout << "partialConf: " << a_n << std::endl;
+			std::cout << "g: " << g << std::endl;
+			std::cout << "c: " << cost << std::endl;
+
 			pi_open.insert(a_n, cost);
 		}
 	}
@@ -224,15 +228,15 @@ double Planner::computeCost(Configuration& pi, Configuration& pi_n)
 
 double Planner::computeHeuristic(Configuration& pi)
 {
-	double cost = 0;
+	double h = 0;
 	for(unsigned int i = 0; i < pi.agent.size(); i++)
 	{
 		auto v = pi.agent[i];
 		auto v_n = pi_goal.agent[i];
-		cost += graph.heuristic(v, v_n);
+		h += graph.heuristic(v, v_n);
 	}
 
-	return cost;
+	return h;
 }
 
 std::vector<PartialConfiguration> Planner::successors(PartialConfiguration& a)
