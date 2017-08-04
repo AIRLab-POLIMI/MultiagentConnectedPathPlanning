@@ -49,8 +49,8 @@ def create_phys_graph_grid():
         for j in range(0, cols, gflags.FLAGS.cell_size):
             if is_grid_cell(im_array, i,j, rows, cols):
                 G_E.add_vertex()
-                G_E.vs[curr_id]['x_coord'] = i
-                G_E.vs[curr_id]['y_coord'] = j
+                G_E.vs[curr_id]['y_coord'] = i
+                G_E.vs[curr_id]['x_coord'] = j
                 curr_id += 1
 
     neighbors = []
@@ -76,7 +76,7 @@ def create_phys_graph_grid():
         for edge in G_E.es:
             v1 = G_E.vs[edge.source]
             v2 = G_E.vs[edge.target]
-            plt.plot([v1['y_coord'] + bu ,v2['y_coord'] + bu],[v1['x_coord'] + bu, v2['x_coord'] + bu],'b')
+            plt.plot([v1['x_coord'] + bu ,v2['x_coord'] + bu],[v1['y_coord'] + bu, v2['y_coord'] + bu],'b')
 
         plt.show()
 
@@ -109,11 +109,11 @@ def create_comm_graph_range(G_E, im_array=None):
         for edge in G_C.es.select(_source=0):
             v1 = G_C.vs[edge.source]
             v2 = G_C.vs[edge.target]
-            plt.plot([v1['y_coord'] + bu ,v2['y_coord'] + bu],[v1['x_coord'] + bu, v2['x_coord'] + bu],'b')
+            plt.plot([v1['x_coord'] + bu ,v2['x_coord'] + bu],[v1['y_coord'] + bu, v2['y_coord'] + bu],'b')
         for edge in G_C.es.select(_target=0):
             v1 = G_C.vs[edge.source]
             v2 = G_C.vs[edge.target]
-            plt.plot([v1['y_coord'] + bu ,v2['y_coord'] + bu],[v1['x_coord'] + bu, v2['x_coord'] + bu],'b')
+            plt.plot([v1['x_coord'] + bu ,v2['x_coord'] + bu],[v1['y_coord'] + bu, v2['y_coord'] + bu],'b')
 
         plt.show()
     return G_C
