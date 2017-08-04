@@ -51,13 +51,19 @@ struct PartialConfiguration : public Configuration
 
 inline std::ostream& operator<<(std::ostream& os, const Configuration& pi)
 {
-	os << "[ ";
-    for(auto v : pi.agent)
+    for(unsigned int i = 0;  i + 1 < pi.agent.size(); i++)
     {
-    	os << v << " ";
+    	os << pi.agent[i] << " ";
     }
 
-    os << "]";
+    if(pi.agent.size() > 0)
+    {
+    	os << pi.agent.back();
+    }
+    else
+    {
+    	os << "NULL";
+    }
 
     return os;
 }

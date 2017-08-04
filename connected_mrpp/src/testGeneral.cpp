@@ -76,12 +76,14 @@ int main(int argc, char** argv)
 
 	if(found)
 	{
+		std::ofstream ofs(basePath + expFile.substr(0, expFile.find_last_of("."))+".log");
 		std::cout << "Computed plan: " << std::endl;
 		auto&& plan = planner.getPlan();
 
-		for(auto& c : plan)
+		for(int i = 0; i < plan.size(); i++)
 		{
-			std::cout << c << std::endl;
+			std::cout <<  "[" << plan[i] << "]" << std::endl;
+			ofs <<  "s" << i << " " << plan[i] << std::endl;
 		}
 	}
 
