@@ -63,14 +63,6 @@ def create_phys_graph_grid():
         if len(up):
             neighbors.append((vertex_id, up[0].index))
 
-        down = G_E.vs.select(x_coord_eq=curr_x, y_coord_eq=(curr_y - gflags.FLAGS.cell_size))
-        if len(down):
-            neighbors.append((vertex_id, down[0].index))
-
-        left = G_E.vs.select(x_coord_eq=(curr_x - gflags.FLAGS.cell_size), y_coord_eq=curr_y)
-        if len(left):
-            neighbors.append((vertex_id, left[0].index))
-
         right = G_E.vs.select(x_coord_eq=(curr_x + gflags.FLAGS.cell_size), y_coord_eq=curr_y)
         if len(right):
             neighbors.append((vertex_id, right[0].index))
@@ -129,14 +121,6 @@ def create_comm_graph_range(G_E, im_array=None):
 if __name__ == "__main__":
     if gflags.FLAGS.phys_discr_type == 'uniform_grid':
         G_E, im_array = create_phys_graph_grid()
-        #workaround for dimacs format (lemon compatible)
-        G_E['source'] = 0
-        G_E['target'] = 0
-        G_E.es['capacity'] = 1
-        G_E.write_dimacs(gflags.FLAGS.output_phys + '_' + gflags.FLAGS.phys_discr_type + '_' + \
-                  str(gflags.FLAGS.cell_size) + '_' + gflags.FLAGS.comm_discr_type + '_' + \
-                  str(gflags.FLAGS.range) + '.dimacs')
-        #write also graphml file containing attributes
         G_E.write(gflags.FLAGS.output_phys + '_' + gflags.FLAGS.phys_discr_type + '_' + \
                   str(gflags.FLAGS.cell_size) + '_' + gflags.FLAGS.comm_discr_type + '_' + \
                   str(gflags.FLAGS.range) + '.graphml', format='graphml')
@@ -146,12 +130,6 @@ if __name__ == "__main__":
 
     if gflags.FLAGS.comm_discr_type == 'range':
         G_C = create_comm_graph_range(G_E, im_array)
-        G_C['source'] = 0
-        G_C['target'] = 0
-        G_C.es['capacity'] = 1
-        G_C.write_dimacs(gflags.FLAGS.output_comm + '_' + gflags.FLAGS.phys_discr_type + '_' + \
-                  str(gflags.FLAGS.cell_size) + '_' + gflags.FLAGS.comm_discr_type + '_' + \
-                  str(gflags.FLAGS.range) + '.dimacs')
         G_C.write(gflags.FLAGS.output_comm + '_' + gflags.FLAGS.phys_discr_type + '_' + \
                   str(gflags.FLAGS.cell_size) + '_' + gflags.FLAGS.comm_discr_type + '_' + \
                   str(gflags.FLAGS.range) + '.graphml', format='graphml')
