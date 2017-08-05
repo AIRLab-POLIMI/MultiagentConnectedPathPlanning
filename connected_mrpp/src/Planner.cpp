@@ -79,6 +79,9 @@ bool Planner::makePlan(const Configuration& start,
     {
         //Pop the best frontier node
         Configuration pi = open.pop();
+#ifdef DEBUG_CONF
+        std::cout << "-" << pi << "-" << endl;
+#endif
 
         if(pi == pi_goal)
         {
@@ -87,6 +90,10 @@ bool Planner::makePlan(const Configuration& start,
         }
 
         auto pi_n = findBestConfiguration(pi);
+
+#ifdef DEBUG_CONF
+        std::cout << "{" << pi_n << "}" << endl;
+#endif
 
         if(pi_n != PI_NULL)
         {
@@ -188,6 +195,7 @@ void Planner::updateConfiguration(Configuration& pi, Configuration& pi_n)
             open.remove(pi_n);
 
         g[pi_n] = g[pi] + d;
+        parent[pi_n] = pi;
 
         double frontierCost = g[pi_n] + computeHeuristic(pi_n);
 
