@@ -50,7 +50,7 @@ def get_closest_vertex(xd, yd):
 def write_exp_file():
     f = open('../data/' + gflags.FLAGS.exp_name + '.exp', 'w')
     f.write('phys_graph ' + gflags.FLAGS.phys_graph + '\n')
-    f.write('comm_graph ' + gflags.FLAGS.phys_graph + '\n')
+    f.write('comm_graph ' + gflags.FLAGS.comm_graph + '\n')
     start_string = ""
     for v in start_config:
         start_string += str(v) + ' '
