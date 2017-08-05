@@ -65,6 +65,7 @@ if __name__ == "__main__":
         ax.cla()
         plot_plan(G_E, G_C, im_array, plan[step], ax)
         pl.draw()
+        plt.pause(0.0001)
         time.sleep(1)
 
     pl.close("all")
