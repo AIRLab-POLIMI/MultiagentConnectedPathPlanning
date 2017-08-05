@@ -9,6 +9,7 @@ import matplotlib.cm as cm
 import pylab as pl
 import time
 import gflags
+import sys
 
 from utils import get_graphs_and_image_from_exp
 
@@ -49,6 +50,7 @@ def plot_plan(G_E, G_C, im_array, config, ax):
     ax.set_ylim([np.size(im_array,0), 0])
 
 if __name__ == "__main__":
+    argv = gflags.FLAGS(sys.argv)
     exp_file = '../data/' + gflags.FLAGS.exp_name + '.exp'
     G_E, G_C, im_array = get_graphs_and_image_from_exp(exp_file)
 

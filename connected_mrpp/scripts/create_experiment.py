@@ -9,6 +9,7 @@ import pylab as pl
 import matplotlib.cm as cm
 import numpy as np
 import time
+import sys
 
 from utils import get_graphs_and_image_from_files
 
@@ -82,6 +83,7 @@ def onclick(event):
             write_exp_file()
 
 if __name__ == "__main__":
+    argv = gflags.FLAGS(sys.argv)
     G_E, G_C, im_array = get_graphs_and_image_from_files(gflags.FLAGS.phys_graph, gflags.FLAGS.comm_graph)
 
     fig = plt.figure()

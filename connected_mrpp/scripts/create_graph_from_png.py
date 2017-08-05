@@ -8,6 +8,7 @@ import cv2
 import numpy as np
 from igraph import *
 import matplotlib.pyplot as plt
+import sys
 
 import gflags
 
@@ -119,6 +120,7 @@ def create_comm_graph_range(G_E, im_array=None):
     return G_C
 
 if __name__ == "__main__":
+    argv = gflags.FLAGS(sys.argv)
     if gflags.FLAGS.phys_discr_type == 'uniform_grid':
         G_E, im_array = create_phys_graph_grid()
         G_E.write(gflags.FLAGS.output_phys + '_' + gflags.FLAGS.phys_discr_type + '_' + \
