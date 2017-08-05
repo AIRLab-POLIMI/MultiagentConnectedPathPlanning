@@ -82,7 +82,7 @@ bool GenericGraph::isConnected(std::vector<int>& v_list)
 
 	auto subgraph = make_vertex_subset_filter(comunicationGraph, v_set);
 
-	unsigned int components[v_list.size()];
+	unsigned int components[num_vertices(subgraph)];
 	return connected_components(subgraph, components) == 1;
 }
 

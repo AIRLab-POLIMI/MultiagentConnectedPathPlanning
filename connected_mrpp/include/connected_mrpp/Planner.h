@@ -58,7 +58,7 @@ private:
 
 private:
     typedef std::map<Configuration, double> CostMap;
-    typedef std::map<Configuration, double> PartialCostMap;
+    typedef std::map<PartialConfiguration, double> PartialCostMap;
 
     struct ConfComp
     {
@@ -69,8 +69,17 @@ private:
     	std::map<Configuration, Configuration>& parent;
     };
 
+    struct PartialConfComp
+    {
+    	PartialConfComp();
+    	PartialConfComp(PartialCostMap* costMap);
+    	bool operator()(const FrontierNode<PartialConfiguration>* a,
+            			const FrontierNode<PartialConfiguration>* b) const;
+
+    	PartialCostMap* costMap;
+    };
+
     typedef PriorityQueue<Configuration, ConfComp> ConfQueue;
-    typedef DefaultCmp<PartialConfiguration> PartialConfComp;
     typedef PriorityQueue<PartialConfiguration, PartialConfComp> PartialConfQueue;
 
 private:

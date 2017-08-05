@@ -140,8 +140,11 @@ Configuration Planner::findBestConfiguration(Configuration& pi)
 	{
 		PartialConfiguration pi_a(pi);
 
-		g_local[pi][pi_a] = 0;
+		auto& pi_g = g_local[pi];
+		pi_g[pi_a] = 0;
 
+
+		open_local[pi] = PartialConfQueue(PartialConfComp(&pi_g));
 		open_local[pi].insert(pi_a, computeHeuristic(pi));
 	}
 
@@ -303,6 +306,27 @@ bool Planner::ConfComp::operator()(const FrontierNode<Configuration>* a, const F
 	{
 		return false;
 	}
+}
+
+Planner::PartialConfComp::PartialConfComp() :
+	costMap(nullptr)
+{
+
+}
+
+Planner::PartialConfComp::PartialConfComp(PartialCostMap* costMap) :
+    		    		costMap(costMap)
+{
+
+}
+
+bool Planner::PartialConfComp::operator()(const FrontierNode<PartialConfiguration>* a,
+		const FrontierNode<PartialConfiguration>* b) const
+{
+	return (a->getCost() < b->getCost()) ||
+			((a->getCost() == b->getCost()) && (costMap->at(a->getNode()) > costMap->at(b->getNode()))) ||
+			((a->getCost() == b->getCost()) && (costMap->at(a->getNode()) == costMap->at(b->getNode()) &&
+					(a->getNode() < b->getNode())));
 }
 
 
