@@ -14,6 +14,7 @@ import sys
 from utils import get_graphs_and_image_from_exp
 
 gflags.DEFINE_string('exp_name', 'prova', 'name of the experiment (matching both .exp and .log files)')
+gflags.DEFINE_integer('speed', 0.5, 'time between two plan steps (in seconds)')
 
 def get_plan(log_file):
     """
@@ -68,7 +69,7 @@ if __name__ == "__main__":
         plot_plan(G_E, G_C, im_array, plan[step], ax)
         pl.draw()
         plt.pause(0.0001)
-        time.sleep(1)
+        time.sleep(gflags.FLAGS.speed)
 
     pl.close("all")
 
