@@ -32,8 +32,8 @@ template<class T>
 class FrontierNode
 {
 public:
-    inline FrontierNode(const T& node, double cost):
-        node(node), cost(cost) { }
+    inline FrontierNode(const T& node, double g, double h):
+        node(node), c(g+h), g(g) { }
 
     inline const T& getNode() const
     {
@@ -42,12 +42,18 @@ public:
 
     inline double getCost() const
     {
-        return cost;
+        return c;
     }
+
+    inline double getDistance() const
+    {
+    	return g;
+	}
 
 private:
     T node;
-    double cost;
+    double c;
+    double g;
 };
 
 }

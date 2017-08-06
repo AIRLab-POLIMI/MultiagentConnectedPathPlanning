@@ -37,7 +37,7 @@ namespace connected_mrpp
 const Configuration Planner::PI_NULL;
 
 
-Planner::Planner(Graph& graph) : graph(graph), open(ConfComp(parent))
+Planner::Planner(Graph& graph) : graph(graph)
 {
 
 }
@@ -69,7 +69,7 @@ bool Planner::makePlan(const Configuration& start,
     //Init variables
     g[pi_start] = 0.0;
     parent[pi_start] = pi_start;
-    open.insert(pi_start, computeHeuristic(pi_start));
+    open.insert(pi_start, 0, computeHeuristic(pi_start));
     parent[pi_goal] = PI_NULL;
 
     ROS_INFO("Planner started");
@@ -103,8 +103,9 @@ bool Planner::makePlan(const Configuration& start,
         	}
 
         	updateConfiguration(pi, pi_n);
-        	double c_new = bestLeafCost(pi);
-        	open.insert(pi, c_new);
+        	double c_best = bestLeafCost(pi);
+        	double g_pi = g[pi];
+        	open.insert(pi, g_pi , c_best - g_pi);
         }
         else
         {
@@ -147,12 +148,8 @@ Configuration Planner::findBestConfiguration(Configuration& pi)
 	{
 		PartialConfiguration pi_a(pi);
 
-		auto& pi_g = g_local[pi];
-		pi_g[pi_a] = 0;
-
-
-		open_local[pi] = PartialConfQueue(PartialConfComp(&pi_g));
-		open_local[pi].insert(pi_a, computeHeuristic(pi));
+		g_local[pi][pi_a] = 0;
+		open_local[pi].insert(pi_a, 0, computeHeuristic(pi));
 	}
 
 	auto& pi_open = open_local[pi];
@@ -175,9 +172,8 @@ Configuration Planner::findBestConfiguration(Configuration& pi)
 		{
 			double g = pi_g[a] + computeCost(a, a_n);
 			pi_g[a_n] = g;
-			double cost = g + computeHeuristic(a_n);
 
-			pi_open.insert(a_n, cost);
+			pi_open.insert(a_n, g, computeHeuristic(a_n));
 		}
 	}
 
@@ -194,12 +190,11 @@ void Planner::updateConfiguration(Configuration& pi, Configuration& pi_n)
         if(open.contains(pi_n))
             open.remove(pi_n);
 
-        g[pi_n] = g[pi] + d;
+        double g_pi_n = g[pi] + d;
+
+        g[pi_n] = g_pi_n;
         parent[pi_n] = pi;
-
-        double frontierCost = g[pi_n] + computeHeuristic(pi_n);
-
-        open.insert(pi_n, frontierCost);
+        open.insert(pi_n, g_pi_n, computeHeuristic(pi_n));
     }
 }
 
@@ -208,11 +203,12 @@ double Planner::bestLeafCost(Configuration& pi)
 	auto&& sonList = sons[pi];
 
 	double best = numeric_limits<double>::infinity();
+
 	for(auto& son : sonList)
 	{
 		if(closed.count(son) == 0)
 		{
-			double current = g[son];
+			double current = g[son] + computeHeuristic(son);
 			best = min(best, current);
 		}
 	}
@@ -282,60 +278,5 @@ void Planner::clearInstance()
     open_local.clear();
     g_local.clear();
 }
-
-Planner::ConfComp::ConfComp(map<Configuration, Configuration>& parent) :
-    		    		parent(parent)
-{
-
-}
-
-bool Planner::ConfComp::operator()(const FrontierNode<Configuration>* a, const FrontierNode<Configuration>* b) const
-{
-	if(a->getCost() < b->getCost())
-	{
-		return true;
-	}
-	else if(a->getCost() == b->getCost())
-	{
-		if(parent[a->getNode()] == b->getNode())
-		{
-			return true;
-		}
-		else if(parent[b->getNode()] == a->getNode())
-		{
-			return false;
-		}
-		else
-		{
-			return a->getNode() < b->getNode();
-		}
-	}
-	else
-	{
-		return false;
-	}
-}
-
-Planner::PartialConfComp::PartialConfComp() :
-	costMap(nullptr)
-{
-
-}
-
-Planner::PartialConfComp::PartialConfComp(PartialCostMap* costMap) :
-    		    		costMap(costMap)
-{
-
-}
-
-bool Planner::PartialConfComp::operator()(const FrontierNode<PartialConfiguration>* a,
-		const FrontierNode<PartialConfiguration>* b) const
-{
-	return (a->getCost() < b->getCost()) ||
-			((a->getCost() == b->getCost()) && (costMap->at(a->getNode()) > costMap->at(b->getNode()))) ||
-			((a->getCost() == b->getCost()) && (costMap->at(a->getNode()) == costMap->at(b->getNode()) &&
-					(a->getNode() < b->getNode())));
-}
-
 
 };

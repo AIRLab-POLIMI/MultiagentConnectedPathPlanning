@@ -60,27 +60,8 @@ private:
     typedef std::map<Configuration, double> CostMap;
     typedef std::map<PartialConfiguration, double> PartialCostMap;
 
-    struct ConfComp
-    {
-    	ConfComp(std::map<Configuration, Configuration>& parent);
-        bool operator()(const FrontierNode<Configuration>* a,
-        			const FrontierNode<Configuration>* b) const;
-
-    	std::map<Configuration, Configuration>& parent;
-    };
-
-    struct PartialConfComp
-    {
-    	PartialConfComp();
-    	PartialConfComp(PartialCostMap* costMap);
-    	bool operator()(const FrontierNode<PartialConfiguration>* a,
-            			const FrontierNode<PartialConfiguration>* b) const;
-
-    	PartialCostMap* costMap;
-    };
-
-    typedef PriorityQueue<Configuration, ConfComp> ConfQueue;
-    typedef PriorityQueue<PartialConfiguration, PartialConfComp> PartialConfQueue;
+    typedef PriorityQueue<Configuration> ConfQueue;
+    typedef PriorityQueue<PartialConfiguration> PartialConfQueue;
 
 private:
     static const Configuration PI_NULL;

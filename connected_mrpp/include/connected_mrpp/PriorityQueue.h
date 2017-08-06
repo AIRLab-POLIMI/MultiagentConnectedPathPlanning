@@ -35,11 +35,15 @@ struct DefaultCmp
     bool operator()(const FrontierNode<T>* a, const FrontierNode<T>* b) const
     {
         return (a->getCost() < b->getCost()) ||
-               ((a->getCost() == b->getCost()) && (a->getNode() < b->getNode()));
+                ((a->getCost() == b->getCost()) &&
+                		(a->getDistance() > b->getDistance()))||
+				((a->getCost() == b->getCost()) &&
+						(a->getDistance() == b->getDistance()) &&
+						(a->getNode() < b->getNode()));
     }
 };
 
-template<class T, class C>
+template<class T, class C=DefaultCmp<T>>
 class PriorityQueue
 {
 public:
@@ -53,9 +57,9 @@ public:
 
 	}
 
-    void insert(const T& node, double cost)
+    void insert(const T& node, double g, double h)
     {
-        FrontierNode<T>* frontierNode = new FrontierNode<T>(node, cost);
+        FrontierNode<T>* frontierNode = new FrontierNode<T>(node, g, h);
         auto res = open.insert(frontierNode);
         openMap[node] = frontierNode;
 
