@@ -37,6 +37,7 @@ public:
     virtual double heuristic(int v, int v_next) = 0;
     virtual std::vector<int> getNeighbors(int v) = 0;
     virtual bool isNeighbor(int v, int v_next) = 0;
+    virtual unsigned int degree(int v) = 0;
     virtual bool isConnected(std::vector<int>& v_list) = 0;
 
     virtual ~Graph() { }

@@ -42,6 +42,7 @@ protected:
 
 private:
     bool timeOut();
+    unsigned int maxNextConfigurations(Configuration& pi);
     Configuration sampleConfiguration(Configuration& pi);
     double computeUtility(Configuration& pi);
 

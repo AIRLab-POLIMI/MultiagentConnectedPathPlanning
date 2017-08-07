@@ -22,6 +22,7 @@
  */
 
 #include "connected_mrpp/planner/Birk.h"
+#include "connected_mrpp/utils/RandomGenerator.h"
 #include <cmath>
 #include <ros/ros.h>
 
@@ -57,7 +58,7 @@ bool Birk::makePlanImpl()
 		{
 			std::vector<Configuration> candidates;
 
-			for(int i = 0; i < numSamples && i < std::pow(5, m) - 1; i++)
+			for(int i = 0; i < numSamples && i < maxNextConfigurations(pi) - 1; i++)
 			{
 				auto&& sample = sampleConfiguration(pi);
 				candidates.push_back(sample);
@@ -107,16 +108,47 @@ bool Birk::timeOut()
 	return false;
 }
 
+unsigned int Birk::maxNextConfigurations(Configuration& pi)
+{
+	unsigned int counter = 1;
+	for(auto v : pi.agent)
+	{
+		unsigned int n = graph.degree(v);
+		counter *= n;
+	}
+
+	return counter - 1;
+}
+
 Configuration Birk::sampleConfiguration(Configuration& pi)
 {
-	//TODO implement
-	return Configuration();
+	Configuration pi_n;
+
+	do
+	{
+		pi_n = pi;
+		for(int i = 0; i < pi.agent.size(); i++)
+		{
+			auto&& neighbours = graph.getNeighbors(pi_n.agent[i]);
+			neighbours.push_back(pi_n.agent[i]);
+			int index = RandomGenerator::sampleUniform(0, neighbours.size());
+			pi_n.agent[i] = neighbours[index];
+		}
+	} while(pi_n == pi);
+
+	return pi_n;
 }
 
 double Birk::computeUtility(Configuration& pi)
 {
-	//TODO implement
-	return 0;
+	if(isConnected(pi))
+	{
+		return computeHeuristic(pi);
+	}
+	else
+	{
+		return std::numeric_limits<double>::infinity();
+	}
 }
 
 }

@@ -80,6 +80,11 @@ bool GenericGraph::isNeighbor(int v, int v_next)
 	return edge(v, v_next, physicalGraph).second;
 }
 
+unsigned int GenericGraph::degree(int v)
+{
+	return boost::degree(v, physicalGraph);
+}
+
 
 bool GenericGraph::isConnected(std::vector<int>& v_list)
 {

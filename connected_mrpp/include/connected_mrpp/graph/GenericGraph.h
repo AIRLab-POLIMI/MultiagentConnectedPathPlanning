@@ -46,6 +46,7 @@ public:
     virtual double heuristic(int v, int v_next) override;
     virtual std::vector<int> getNeighbors(int v) override;
     virtual bool isNeighbor(int v, int v_next) override;
+    virtual unsigned int degree(int v);
     virtual bool isConnected(std::vector<int>& v_list) override;
 
     virtual ~GenericGraph();
