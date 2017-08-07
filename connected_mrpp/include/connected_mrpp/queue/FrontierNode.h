@@ -21,28 +21,40 @@
  *  along with connected_mrpp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_CONNECTED_MRPP_GRID_GRID_H_
-#define INCLUDE_CONNECTED_MRPP_GRID_GRID_H_
+#ifndef INCLUDE_CONNECTED_MRPP_THETASTAR_FRONTIERNODE_H_
+#define INCLUDE_CONNECTED_MRPP_THETASTAR_FRONTIERNODE_H_
 
-#include <vector>
 
 namespace connected_mrpp
 {
-
-class Graph
+template<class T>
+class FrontierNode
 {
-
 public:
-    virtual double cost(int v, int v_next) = 0;
-    virtual double heuristic(int v, int v_next) = 0;
-    virtual std::vector<int> getNeighbors(int v) = 0;
-    virtual bool isNeighbor(int v, int v_next) = 0;
-    virtual bool isConnected(std::vector<int>& v_list) = 0;
+    inline FrontierNode(const T& node, double g, double h):
+        node(node), c(g+h), g(g) { }
 
-    virtual ~Graph() { }
+    inline const T& getNode() const
+    {
+        return node;
+    }
 
+    inline double getCost() const
+    {
+        return c;
+    }
+
+    inline double getDistance() const
+    {
+    	return g;
+	}
+
+private:
+    T node;
+    double c;
+    double g;
 };
 
 }
 
-#endif /* INCLUDE_CONNECTED_MRPP_GRID_GRID_H_ */
+#endif /* INCLUDE_CONNECTED_MRPP_THETASTAR_FRONTIERNODE_H_ */

@@ -27,7 +27,7 @@
 #include <string>
 
 #include "connected_mrpp/graph/GenericGraph.h"
-#include "connected_mrpp/Planner.h"
+#include "connected_mrpp/planner/Planner.h"
 #include "connected_mrpp/Experiment.h"
 
 #include <boost/graph/graphml.hpp>

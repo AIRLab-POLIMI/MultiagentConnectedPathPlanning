@@ -21,58 +21,29 @@
  *  along with connected_mrpp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "connected_mrpp/planner/Planner.h"
 
 #include <ros/ros.h>
-#include "connected_mrpp/Planner.h"
-
 
 using namespace std;
-using namespace Eigen;
 using namespace std::rel_ops;
 
 //Default Constructor
 namespace connected_mrpp
 {
 
-const Configuration Planner::PI_NULL;
-
-
-Planner::Planner(Graph& graph) : graph(graph)
+Planner::Planner(Graph& graph) : AbstractPlanner(graph)
 {
 
 }
 
-bool Planner::makePlan(const Configuration& start,
-        			   const Configuration& goal)
+bool Planner::makePlanImpl()
 {
-    clearInstance();
-    //visualizer.clean();
-
-    //Init the position of the special states
-    pi_start = start;
-    pi_goal = goal;
-
-    //Test starting position
-    if(!isConnected(pi_start))
-    {
-        ROS_INFO("Invalid starting position");
-        return false;
-    }
-
-    //Test target position
-    if(!isConnected(pi_goal))
-    {
-        ROS_INFO("Invalid target position");
-        return false;
-    }
+    ROS_INFO("Planner started");
 
     //Init variables
     g[pi_start] = 0.0;
-    parent[pi_start] = pi_start;
     open.insert(pi_start, 0, computeHeuristic(pi_start));
-    parent[pi_goal] = PI_NULL;
-
-    ROS_INFO("Planner started");
 
     //Compute plan
     while(!open.empty())
@@ -116,30 +87,6 @@ bool Planner::makePlan(const Configuration& start,
     ROS_INFO("No plan found");
 
     return false;
-}
-
-vector<Configuration> Planner::getPlan()
-{
-	vector<Configuration> plan;
-
-	auto& current = pi_goal;
-
-	while(current != pi_start && current != PI_NULL)
-	{
-		plan.push_back(current);
-		current = parent[current];
-	}
-
-	plan.push_back(pi_start);
-
-	reverse(plan.begin(), plan.end());
-
-	return plan;
-}
-
-bool Planner::isConnected(Configuration& pi)
-{
-	return graph.isConnected(pi.agent);
 }
 
 Configuration Planner::findBestConfiguration(Configuration& pi)
@@ -216,32 +163,6 @@ double Planner::bestLeafCost(Configuration& pi)
 	return best;
 }
 
-double Planner::computeCost(Configuration& pi, Configuration& pi_n)
-{
-	double cost = 0;
-	for(unsigned int i = 0; i < pi.agent.size(); i++)
-	{
-		auto v = pi.agent[i];
-		auto v_n = pi_n.agent[i];
-		cost += graph.cost(v, v_n);
-	}
-
-	return cost;
-}
-
-double Planner::computeHeuristic(Configuration& pi)
-{
-	double h = 0;
-	for(unsigned int i = 0; i < pi.agent.size(); i++)
-	{
-		auto v = pi.agent[i];
-		auto v_n = pi_goal.agent[i];
-		h += graph.heuristic(v, v_n);
-	}
-
-	return h;
-}
-
 std::vector<PartialConfiguration> Planner::successors(PartialConfiguration& a)
 {
 	std::vector<PartialConfiguration> succ;
@@ -265,7 +186,7 @@ std::vector<PartialConfiguration> Planner::successors(PartialConfiguration& a)
 	return succ;
 }
 
-void Planner::clearInstance()
+void Planner::clearInstanceSpecific()
 {
 	//Clear principal routine data structure
     open.clear();

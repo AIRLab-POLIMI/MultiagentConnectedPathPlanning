@@ -24,7 +24,11 @@
 #ifndef INCLUDE_CONNECTED_MRPP_GRID_PRIORITYQUEUE_H_
 #define INCLUDE_CONNECTED_MRPP_GRID_PRIORITYQUEUE_H_
 
-#include "connected_mrpp/FrontierNode.h"
+#include "connected_mrpp/queue/FrontierNode.h"
+
+#include <cassert>
+#include <set>
+#include <map>
 
 namespace connected_mrpp
 {

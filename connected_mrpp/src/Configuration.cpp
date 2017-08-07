@@ -21,7 +21,7 @@
  *  along with connected_mrpp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "connected_mrpp/Configuration.h"
+#include "connected_mrpp/planner/Configuration.h"
 
 using namespace std;
 

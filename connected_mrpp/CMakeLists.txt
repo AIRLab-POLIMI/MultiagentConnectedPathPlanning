@@ -21,7 +21,7 @@ include_directories(${EIGEN3_INCLUDE_DIR})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 # ------------------------ MESSAGES ----------------------------
-
+ 
 
 # ------------------------ BUILD -------------------------------
 

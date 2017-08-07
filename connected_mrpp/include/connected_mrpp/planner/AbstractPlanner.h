@@ -2,7 +2,7 @@
  * connected_mrpp,
  *
  *
- * Copyright (C) 2016 Davide Tateo
+ * Copyright (C) 2017 Davide Tateo
  * Versione 1.0
  *
  * This file is part of connected_mrpp.
@@ -21,49 +21,42 @@
  *  along with connected_mrpp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_CONNECTED_MRPP_THETASTARPLANNER_H_
-#define INCLUDE_CONNECTED_MRPP_THETASTARPLANNER_H_
+#ifndef INCLUDE_CONNECTED_MRPP_PLANNER_ABSTRACTPLANNER_H_
+#define INCLUDE_CONNECTED_MRPP_PLANNER_ABSTRACTPLANNER_H_
 
-#include <Eigen/Dense>
-
-#include "connected_mrpp/Configuration.h"
-#include "connected_mrpp/PriorityQueue.h"
 #include "connected_mrpp/graph/Graph.h"
+#include "connected_mrpp/planner/Configuration.h"
+
+#include <map>
 
 namespace connected_mrpp
 {
 
-class Planner
+class AbstractPlanner
 {
-
 public:
-	Planner(Graph& graph);
+	AbstractPlanner(Graph& graph);
 
     bool makePlan(const Configuration& start,
                   const Configuration& goal);
 
     std::vector<Configuration> getPlan();
 
-private:
-    bool isConnected(Configuration& pi);
-    Configuration findBestConfiguration(Configuration& pi);
+    virtual ~AbstractPlanner();
 
-    void updateConfiguration(Configuration& pi, Configuration& pi_n);
-    double bestLeafCost(Configuration& pi);
+protected:
     double computeCost(Configuration& pi, Configuration& pi_n);
     double computeHeuristic(Configuration& pi);
-    std::vector<PartialConfiguration> successors(PartialConfiguration& a);
+    bool isOneStepReachable(Configuration& pi, Configuration& pi_n);
+    bool isConnected(Configuration& pi);
 
     void clearInstance();
 
-private:
-    typedef std::map<Configuration, double> CostMap;
-    typedef std::map<PartialConfiguration, double> PartialCostMap;
+protected:
+    virtual void clearInstanceSpecific() = 0;
+    virtual bool makePlanImpl() = 0;
 
-    typedef PriorityQueue<Configuration> ConfQueue;
-    typedef PriorityQueue<PartialConfiguration> PartialConfQueue;
-
-private:
+protected:
     static const Configuration PI_NULL;
 
     Graph& graph;
@@ -71,19 +64,10 @@ private:
     Configuration pi_start;
     Configuration pi_goal;
 
-    //Principal Routine data structure
-    CostMap g;
-    ConfQueue open;
     std::map<Configuration, Configuration> parent;
-    std::set<Configuration> closed;
-    std::map<Configuration, std::vector<Configuration>> sons;
-
-    //Local search data structure
-    std::map<Configuration, PartialCostMap> g_local;
-    std::map<Configuration, PartialConfQueue> open_local;
-
 };
 
 }
 
-#endif /* INCLUDE_CONNECTED_MRPP_THETASTARPLANNER_H_ */
+
+#endif /* INCLUDE_CONNECTED_MRPP_PLANNER_ABSTRACTPLANNER_H_ */

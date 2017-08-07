@@ -2,7 +2,7 @@
  * connected_mrpp,
  *
  *
- * Copyright (C) 2016 Davide Tateo
+ * Copyright (C) 2017 Davide Tateo
  * Versione 1.0
  *
  * This file is part of connected_mrpp.
@@ -21,41 +21,39 @@
  *  along with connected_mrpp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_CONNECTED_MRPP_THETASTAR_FRONTIERNODE_H_
-#define INCLUDE_CONNECTED_MRPP_THETASTAR_FRONTIERNODE_H_
+#ifndef INCLUDE_CONNECTED_MRPP_BIRK_BIRK_H_
+#define INCLUDE_CONNECTED_MRPP_BIRK_BIRK_H_
 
-#include "connected_mrpp/Configuration.h"
+#include "connected_mrpp/planner/AbstractPlanner.h"
+
+#include <set>
 
 namespace connected_mrpp
 {
-template<class T>
-class FrontierNode
+
+class Birk : public AbstractPlanner
 {
 public:
-    inline FrontierNode(const T& node, double g, double h):
-        node(node), c(g+h), g(g) { }
+	Birk(Graph& graph, unsigned int numSamples = 100);
 
-    inline const T& getNode() const
-    {
-        return node;
-    }
-
-    inline double getCost() const
-    {
-        return c;
-    }
-
-    inline double getDistance() const
-    {
-    	return g;
-	}
+protected:
+    virtual bool makePlanImpl() override;
+    virtual void clearInstanceSpecific() override;
 
 private:
-    T node;
-    double c;
-    double g;
+    bool timeOut();
+    Configuration sampleConfiguration(Configuration& pi);
+    double computeUtility(Configuration& pi);
+
+private:
+    Configuration pi_start;
+    Configuration pi_goal;
+    std::set<Configuration> visited_configs;
+
+    const unsigned int numSamples;
+
 };
 
 }
 
-#endif /* INCLUDE_CONNECTED_MRPP_THETASTAR_FRONTIERNODE_H_ */
+#endif /* INCLUDE_CONNECTED_MRPP_BIRK_BIRK_H_ */
