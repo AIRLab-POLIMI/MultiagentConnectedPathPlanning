@@ -24,8 +24,10 @@
 #include "connected_mrpp/planner/AbstractPlanner.h"
 
 #include <ros/ros.h>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 using namespace std::rel_ops;
 
 namespace connected_mrpp
@@ -34,8 +36,8 @@ namespace connected_mrpp
 const Configuration AbstractPlanner::PI_NULL;
 
 
-AbstractPlanner::AbstractPlanner(Graph& graph)
-	: graph(graph)
+AbstractPlanner::AbstractPlanner(Graph& graph, duration<double> Tmax)
+	: graph(graph), Tmax(Tmax)
 {
 
 }
@@ -44,6 +46,8 @@ bool AbstractPlanner::makePlan(const Configuration& start,
         			   const Configuration& goal)
 {
     clearInstance();
+
+    t0 = steady_clock::now();
 
     //Init the position of the special states
     pi_start = start;
@@ -87,6 +91,21 @@ vector<Configuration> AbstractPlanner::getPlan()
 	reverse(plan.begin(), plan.end());
 
 	return plan;
+}
+
+bool AbstractPlanner::timeOut()
+{
+	auto deltaT = steady_clock::now() - t0;
+
+	if(deltaT > Tmax)
+	{
+		ROS_INFO("Computational time excedeed");
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 double AbstractPlanner::computeCost(Configuration& pi, Configuration& pi_n)

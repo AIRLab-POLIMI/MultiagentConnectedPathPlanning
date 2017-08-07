@@ -26,11 +26,13 @@
 #include <cmath>
 #include <ros/ros.h>
 
+using namespace std::chrono;
+
 namespace connected_mrpp
 {
 
-Birk::Birk(Graph& graph, unsigned int numSamples)
-	: AbstractPlanner(graph), numSamples(numSamples)
+Birk::Birk(Graph& graph, duration<double> Tmax, unsigned int numSamples)
+	: AbstractPlanner(graph, Tmax), numSamples(numSamples)
 {
 
 }
@@ -46,7 +48,7 @@ bool Birk::makePlanImpl()
 
 	bool progress = true;
 
-	do
+	while(progress && !timeOut())
 	{
 		if(isOneStepReachable(pi, pi_goal))
 		{
@@ -90,7 +92,7 @@ bool Birk::makePlanImpl()
 			}
 		}
 
-	}while(progress && !timeOut());
+	}
 
     ROS_INFO("No plan found");
 
@@ -101,11 +103,6 @@ bool Birk::makePlanImpl()
 void Birk::clearInstanceSpecific()
 {
 	visited_configs.clear();
-}
-
-bool Birk::timeOut()
-{
-	return false;
 }
 
 unsigned int Birk::maxNextConfigurations(Configuration& pi)

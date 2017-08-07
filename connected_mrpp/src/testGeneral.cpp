@@ -28,6 +28,7 @@
 
 #include "connected_mrpp/graph/GenericGraph.h"
 #include "connected_mrpp/planner/Planner.h"
+#include "connected_mrpp/planner/Birk.h"
 #include "connected_mrpp/Experiment.h"
 
 #include <boost/graph/graphml.hpp>
@@ -38,21 +39,28 @@ using namespace connected_mrpp;
 
 int main(int argc, char** argv)
 {
-	if(argc < 3)
+	if(argc < 4)
 	{
-		cout << "Missing basepath and experiment file" << endl;
+		cout << "Missing experimentFile algorithm and deadline" << endl;
 		return -1;
 	}
 
-	std::string basePath(argv[1]);
-    std::string expFile(argv[2]);
+	std::string expFile(argv[1]);
+	std::string alg(argv[2]);
+	std::chrono::duration<double> Tmax(stod(argv[3]));
 
-    cout << "Loading experiment: " << basePath + "data/" + expFile << endl;
+	std::string expName = expFile.substr(expFile.find_last_of("/"), expFile.length());
+	std::string dataPath = expFile.substr(0, expFile.find_last_of("/") + 1);
+	std::string basePath = dataPath.substr(0, expFile.find_last_of("/") + 1);
 
-    Experiment exp(basePath + "data/", expFile);
 
-    cout << exp.getPhysGraph() << endl;
-    cout << exp.getCommGraph() << endl;
+    cout << "Loading experiment: " << expFile << endl;
+
+    Experiment exp(dataPath, expName);
+
+    cout << "physical graph:     " << exp.getPhysGraph() << endl;
+    cout << "comunication graph: " << exp.getCommGraph() << endl;
+    cout << "Time deadline:      " << Tmax.count() << " s" << std::endl;
 
 	std::ifstream fsP(exp.getPhysGraph());
 	std::ifstream fsC(exp.getCommGraph());
@@ -67,18 +75,33 @@ int main(int argc, char** argv)
 
 	GenericGraph graph(physical, comunication);
 
-	Planner planner(graph);
+
+	AbstractPlanner* planner;
+
+	if(alg == "planner")
+	{
+		planner = new Planner(graph, Tmax);
+	}
+	else if (alg == "birk")
+	{
+		planner = new Birk(graph, Tmax);
+	}
+	else
+	{
+		cout << alg << " not implemented" << endl;
+		return -1;
+	}
 
 	Configuration start(exp.getStartConfig());
 	Configuration goal(exp.getGoalConfig());
 
-	bool found = planner.makePlan(start, goal);
+	bool found = planner->makePlan(start, goal);
 
 	if(found)
 	{
-		std::ofstream ofs(basePath + "logs/" + expFile.substr(0, expFile.find_last_of("."))+".log");
+		std::ofstream ofs(basePath + "logs/" + expName.substr(0, expFile.find_last_of("."))+".log");
 		std::cout << "Computed plan: " << std::endl;
-		auto&& plan = planner.getPlan();
+		auto&& plan = planner->getPlan();
 
 		for(int i = 0; i < plan.size(); i++)
 		{

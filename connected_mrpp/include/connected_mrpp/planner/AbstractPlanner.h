@@ -28,6 +28,7 @@
 #include "connected_mrpp/planner/Configuration.h"
 
 #include <map>
+#include <chrono>
 
 namespace connected_mrpp
 {
@@ -35,7 +36,7 @@ namespace connected_mrpp
 class AbstractPlanner
 {
 public:
-	AbstractPlanner(Graph& graph);
+	AbstractPlanner(Graph& graph, std::chrono::duration<double> Tmax);
 
     bool makePlan(const Configuration& start,
                   const Configuration& goal);
@@ -43,6 +44,9 @@ public:
     std::vector<Configuration> getPlan();
 
     virtual ~AbstractPlanner();
+
+protected:
+    bool timeOut();
 
 protected:
     double computeCost(Configuration& pi, Configuration& pi_n);
@@ -65,6 +69,11 @@ protected:
     Configuration pi_goal;
 
     std::map<Configuration, Configuration> parent;
+
+private:
+    std::chrono::steady_clock::time_point t0;
+    std::chrono::duration<double> Tmax;
+
 };
 
 }

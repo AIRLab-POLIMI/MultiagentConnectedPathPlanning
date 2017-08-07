@@ -36,7 +36,7 @@ class Planner : public AbstractPlanner
 {
 
 public:
-	Planner(Graph& graph);
+	Planner(Graph& graph, std::chrono::duration<double> Tmax);
 
 
 protected:

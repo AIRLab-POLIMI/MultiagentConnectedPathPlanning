@@ -27,12 +27,13 @@
 
 using namespace std;
 using namespace std::rel_ops;
+using namespace std::chrono;
 
 //Default Constructor
 namespace connected_mrpp
 {
 
-Planner::Planner(Graph& graph) : AbstractPlanner(graph)
+Planner::Planner(Graph& graph, duration<double> Tmax) : AbstractPlanner(graph, Tmax)
 {
 
 }
@@ -46,7 +47,7 @@ bool Planner::makePlanImpl()
     open.insert(pi_start, 0, computeHeuristic(pi_start));
 
     //Compute plan
-    while(!open.empty())
+    while(!open.empty() && !timeOut())
     {
         //Pop the best frontier node
         Configuration pi = open.pop();

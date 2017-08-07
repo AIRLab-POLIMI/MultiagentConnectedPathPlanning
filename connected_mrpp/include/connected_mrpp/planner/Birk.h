@@ -34,14 +34,13 @@ namespace connected_mrpp
 class Birk : public AbstractPlanner
 {
 public:
-	Birk(Graph& graph, unsigned int numSamples = 100);
+	Birk(Graph& graph, std::chrono::duration<double> Tmax, unsigned int numSamples = 100);
 
 protected:
     virtual bool makePlanImpl() override;
     virtual void clearInstanceSpecific() override;
 
 private:
-    bool timeOut();
     unsigned int maxNextConfigurations(Configuration& pi);
     Configuration sampleConfiguration(Configuration& pi);
     double computeUtility(Configuration& pi);
