@@ -50,11 +50,15 @@ int main(int argc, char** argv)
 	std::chrono::duration<double> Tmax(stod(argv[3]));
 
 	std::string expName = expFile.substr(expFile.find_last_of("/"), expFile.length());
-	std::string dataPath = expFile.substr(0, expFile.find_last_of("/") + 1);
-	std::string basePath = dataPath.substr(0, expFile.find_last_of("/") + 1);
+	std::string dataPath = expFile.substr(0, expFile.find_last_of("/"));
+	std::string basePath = dataPath.substr(0, dataPath.find_last_of("/"));
+	std::string logPath = basePath + "/logs";
 
 
     cout << "Loading experiment: " << expFile << endl;
+    cout << "Base path:          " << basePath << endl;
+    cout << "Data path:          " << dataPath << endl;
+    cout << "Log path:           " << logPath << endl;
 
     Experiment exp(dataPath, expName);
 
@@ -99,7 +103,7 @@ int main(int argc, char** argv)
 
 	if(found)
 	{
-		std::ofstream ofs(basePath + "logs/" + expName.substr(0, expFile.find_last_of("."))+".log");
+		std::ofstream ofs(logPath +  "/" + expName.substr(0, expName.find_last_of("."))+".log");
 		std::cout << "Computed plan: " << std::endl;
 		auto&& plan = planner->getPlan();
 

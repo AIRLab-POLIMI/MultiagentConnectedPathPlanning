@@ -39,8 +39,6 @@ Birk::Birk(Graph& graph, duration<double> Tmax, unsigned int numSamples)
 
 bool Birk::makePlanImpl()
 {
-	unsigned int m = pi_start.agent.size();
-
 	visited_configs.insert(pi_start);
 
 	Configuration pi = pi_start;
@@ -80,7 +78,7 @@ bool Birk::makePlanImpl()
 				}
 			}
 
-			if (pi_best == PI_NULL || visited_configs.count(pi_best) == 0)
+			if (pi_best == PI_NULL || visited_configs.count(pi_best) != 0)
 			{
 				progress = false;
 			}

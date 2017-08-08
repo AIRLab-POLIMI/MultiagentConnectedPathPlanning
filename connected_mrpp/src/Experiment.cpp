@@ -29,7 +29,7 @@ namespace connected_mrpp
 
 Experiment::Experiment(std::string basePath, std::string filename)
 {
-    std::ifstream experiment(basePath + filename);
+    std::ifstream experiment(basePath + "/" + filename);
     std::string line;
     Experiment::Field field;
     
@@ -60,10 +60,10 @@ Experiment::Experiment(std::string basePath, std::string filename)
             else{
                 switch(field){
                     case Experiment::PHYS_GRAPH:
-                        physGraph = basePath + s;
+                        physGraph = basePath + "/" + s;
                         break;
                     case Experiment::COMM_GRAPH:
-                        commGraph = basePath + s;
+                        commGraph = basePath + "/" + s;
                         break;
                     case Experiment::START:
                         startConfig.push_back(atoi(s.c_str()));

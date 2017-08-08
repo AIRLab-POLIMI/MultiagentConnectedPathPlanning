@@ -71,7 +71,13 @@ bool AbstractPlanner::makePlan(const Configuration& start,
     parent[pi_start] = pi_start;
     parent[pi_goal] = PI_NULL;
 
-	return makePlanImpl();
+	bool result = makePlanImpl();
+
+	duration<double> deltaT = steady_clock::now() - t0;
+
+	ROS_INFO_STREAM("Elapsed time: " << deltaT.count() << " s");
+
+	return result;
 }
 
 vector<Configuration> AbstractPlanner::getPlan()

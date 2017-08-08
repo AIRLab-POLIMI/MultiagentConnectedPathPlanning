@@ -46,8 +46,6 @@ private:
     double computeUtility(Configuration& pi);
 
 private:
-    Configuration pi_start;
-    Configuration pi_goal;
     std::set<Configuration> visited_configs;
 
     const unsigned int numSamples;
