@@ -126,7 +126,7 @@ Configuration Birk::sampleConfiguration(Configuration& pi)
 		{
 			auto&& neighbours = graph.getNeighbors(pi_n.agent[i]);
 			neighbours.push_back(pi_n.agent[i]);
-			int index = RandomGenerator::sampleUniform(0, neighbours.size());
+			int index = RandomGenerator::sampleUniform(0, neighbours.size() - 1);
 			pi_n.agent[i] = neighbours[index];
 		}
 	} while(pi_n == pi);
