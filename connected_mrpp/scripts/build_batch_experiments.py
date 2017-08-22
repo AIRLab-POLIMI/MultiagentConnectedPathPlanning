@@ -10,6 +10,7 @@ import pylab as pl
 import os
 import random
 import time
+import sys
 
 import gflags
 
@@ -28,7 +29,7 @@ gflags.DEFINE_integer('step_range', 50, 'communication range step (in pixels)')
 gflags.DEFINE_string('output_phys', '../data/offices_phys', 'physical graph output')
 gflags.DEFINE_string('output_comm', '../data/offices_comm', 'communication graph output')
 
-gflags.DEFINE_integer('max_robots', 10, 'maximum number of robots')
+gflags.DEFINE_integer('max_robots', 8, 'maximum number of robots')
 
 gflags.DEFINE_integer('n_exp', 2, 'number of experiments')
 

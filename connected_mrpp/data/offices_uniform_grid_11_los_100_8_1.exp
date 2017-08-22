@@ -1,0 +1,4 @@
+phys_graph offices_phys_uniform_grid_11_los_100.graphml
+comm_graph offices_comm_uniform_grid_11_los_100.graphml
+start 29 289 178 176 58 86 194 119 
+goal 764 640 837 708 677 641 860 706 
