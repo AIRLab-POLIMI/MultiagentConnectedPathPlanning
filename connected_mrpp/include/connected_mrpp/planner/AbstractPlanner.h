@@ -49,7 +49,7 @@ protected:
     bool timeOut();
 
 protected:
-    double computeCost(Configuration& pi, Configuration& pi_n);
+    virtual double computeCost(Configuration& pi, Configuration& pi_n);
     double computeHeuristic(Configuration& pi);
     bool isOneStepReachable(Configuration& pi, Configuration& pi_n);
     bool isConnected(Configuration& pi);

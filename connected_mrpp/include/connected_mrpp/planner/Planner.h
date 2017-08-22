@@ -43,7 +43,7 @@ protected:
     virtual bool makePlanImpl() override;
     virtual void clearInstanceSpecific() override;
 
-private:
+protected:
     Configuration findBestConfiguration(Configuration& pi);
 
     void updateConfiguration(Configuration& pi, Configuration& pi_n);
@@ -57,7 +57,7 @@ private:
     typedef PriorityQueue<Configuration> ConfQueue;
     typedef PriorityQueue<PartialConfiguration> PartialConfQueue;
 
-private:
+protected:
     //Principal Routine data structure
     CostMap g;
     ConfQueue open;
