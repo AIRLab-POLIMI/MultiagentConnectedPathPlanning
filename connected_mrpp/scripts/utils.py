@@ -5,7 +5,26 @@ Created on Aug 4, 2017
 '''
 
 from igraph import *
+import matplotlib.cm as cm
+import numpy as np
 import cv2
+
+def plot_plan(G_E, G_C, im_array, config, ax, color='bo'):
+    ax.imshow(im_array, cmap=cm.Greys_r)
+
+    for robot in range(len(config)):
+        ax.plot([G_E.vs[config[robot]]['x_coord']],[G_E.vs[config[robot]]['y_coord']], color, markersize = 16)
+        ax.annotate(str(robot), xy=(G_E.vs[config[robot]]['x_coord'], G_E.vs[config[robot]]['y_coord']), 
+                    xytext=(G_E.vs[config[robot]]['x_coord'] - 6, G_E.vs[config[robot]]['y_coord'] + 8), color='w')
+
+    for robot1 in range(len(config)):
+        for robot2 in range(robot1 + 1, len(config)):
+            if G_C.are_connected(G_E.vs[config[robot1]].index, G_E.vs[config[robot2]].index):
+                ax.plot([G_E.vs[config[robot1]]['x_coord'], G_E.vs[config[robot2]]['x_coord']], 
+                        [G_E.vs[config[robot1]]['y_coord'], G_E.vs[config[robot2]]['y_coord']], 'g')
+
+    ax.set_xlim([0, np.size(im_array,1)])
+    ax.set_ylim([np.size(im_array,0), 0])
 
 def get_graphs_and_image_from_files(phys_graph_file, comm_graph_file):
     G_E = None
