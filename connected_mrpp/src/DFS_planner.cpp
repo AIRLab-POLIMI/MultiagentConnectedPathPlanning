@@ -90,7 +90,7 @@ void DFS_Planner::clearInstanceSpecific()
 
 double DFS_Planner::computeCost(Configuration& pi, Configuration& pi_n)
 {
-	return 1;
+	return 0;
 }
 
 }
