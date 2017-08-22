@@ -11,7 +11,7 @@ import time
 import gflags
 import sys
 
-from utils import get_graphs_and_image_from_exp
+from utils import get_graphs_and_image_from_exp, plot_plan
 
 gflags.DEFINE_string('exp_name', 'prova', 'name of the experiment (matching both .exp and .log files)')
 gflags.DEFINE_integer('speed', 0.5, 'time between two plan steps (in seconds)')
@@ -32,23 +32,6 @@ def get_plan(log_file):
     f.close()
 
     return plan
-
-def plot_plan(G_E, G_C, im_array, config, ax):
-    ax.imshow(im_array, cmap=cm.Greys_r)
-
-    for robot in range(len(config)):
-        ax.plot([G_E.vs[config[robot]]['x_coord']],[G_E.vs[config[robot]]['y_coord']], 'bo', markersize = 16)
-        ax.annotate(str(robot), xy=(G_E.vs[config[robot]]['x_coord'], G_E.vs[config[robot]]['y_coord']), 
-                    xytext=(G_E.vs[config[robot]]['x_coord'] - 6, G_E.vs[config[robot]]['y_coord'] + 8), color='w')
-
-    for robot1 in range(len(config)):
-        for robot2 in range(robot1 + 1, len(config)):
-            if G_C.are_connected(G_E.vs[config[robot1]].index, G_E.vs[config[robot2]].index):
-                ax.plot([G_E.vs[config[robot1]]['x_coord'], G_E.vs[config[robot2]]['x_coord']], 
-                        [G_E.vs[config[robot1]]['y_coord'], G_E.vs[config[robot2]]['y_coord']], 'g')
-
-    ax.set_xlim([0, np.size(im_array,1)])
-    ax.set_ylim([np.size(im_array,0), 0])
 
 if __name__ == "__main__":
     argv = gflags.FLAGS(sys.argv)
