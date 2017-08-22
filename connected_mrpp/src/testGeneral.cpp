@@ -103,7 +103,7 @@ int main(int argc, char** argv)
 
 	if(found)
 	{
-		std::ofstream ofs(logPath +  "/" + expName.substr(0, expName.find_last_of("."))+".log");
+		std::ofstream ofs(logPath +  "/" + expName.substr(0, expName.find_last_of(".")) + "_" + alg +".log");
 		std::cout << "Computed plan: " << std::endl;
 		auto&& plan = planner->getPlan();
 

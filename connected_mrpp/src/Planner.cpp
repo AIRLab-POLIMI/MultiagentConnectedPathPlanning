@@ -29,6 +29,8 @@ using namespace std;
 using namespace std::rel_ops;
 using namespace std::chrono;
 
+//#define DEBUG_CONF
+
 //Default Constructor
 namespace connected_mrpp
 {
