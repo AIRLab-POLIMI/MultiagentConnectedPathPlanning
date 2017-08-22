@@ -1,4 +1,0 @@
-phys_graph offices_phys_uniform_grid_11_los_50.graphml
-comm_graph offices_comm_uniform_grid_11_los_50.graphml
-start 300 343 302 314 372 301 313 
-goal 350 382 514 474 478 385 472 
