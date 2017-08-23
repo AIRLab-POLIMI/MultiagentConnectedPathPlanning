@@ -37,15 +37,18 @@ gflags.DEFINE_integer('min_dist', 200, 'minimum distance to travel between start
 
 gflags.DEFINE_bool('debug', True, 'debug mode active')
 
-comm_discr_types = ['los','range']
+comm_discr_types = ['range']
 
-def get_random_connected_config(G_C, size):
+def get_random_connected_config(G_C, size, max_dist):
     connected = False
     config = random.sample(range(len(G_C.vs)), 1)
     while(len(config) < size):
         neighbor_found = False
         while(not(neighbor_found)):
-            candidates = G_C.neighbors(random.choice(config))
+            vertex = random.choice(config)
+            candidates = G_C.neighbors(vertex)
+            candidates = filter(lambda x: (G_C.vs[vertex]['x_coord'] - G_C.vs[x]['x_coord'])**2 + 
+                                          (G_C.vs[vertex]['y_coord'] - G_C.vs[x]['y_coord'])**2 >= (0.75*max_dist)**2, candidates)
             candidates_final = []
             for cand in candidates:
                 if cand not in config:
@@ -118,8 +121,8 @@ if __name__ == "__main__":
                     #choose random start-goal for n_robots
                     ok = False
                     while(not(ok)):
-                        start_config = get_random_connected_config(G_C, n_robots)
-                        goal_config = get_random_connected_config(G_C, n_robots)
+                        start_config = get_random_connected_config(G_C, n_robots, max_dist)
+                        goal_config = get_random_connected_config(G_C, n_robots, max_dist)
 
                         min_distance = min(map(lambda x: shortest_paths[start_config[x]][goal_config[x]], range(n_robots)))
 
