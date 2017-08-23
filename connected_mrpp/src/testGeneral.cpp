@@ -28,6 +28,7 @@
 
 #include "connected_mrpp/graph/GenericGraph.h"
 #include "connected_mrpp/planner/Planner.h"
+#include "connected_mrpp/planner/DFS_Planner.h"
 #include "connected_mrpp/planner/Birk.h"
 #include "connected_mrpp/Experiment.h"
 
@@ -89,6 +90,10 @@ int main(int argc, char** argv)
 	else if (alg == "birk")
 	{
 		planner = new Birk(graph, Tmax);
+	}
+	else if (alg == "dfs")
+	{
+		planner = new DFS_Planner(graph, Tmax);
 	}
 	else
 	{

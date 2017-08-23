@@ -26,21 +26,15 @@
 							<tool id="cdt.managedbuild.tool.gnu.archiver.base.1044245126" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.464895451" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
 								<option id="gnu.cpp.compiler.option.include.paths.1782346522" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="/home/dave/CognitiveSlam/devel/include"/>
-									<listOptionValue builtIn="false" value="/home/dave/ROAMFREE/devel/include"/>
-									<listOptionValue builtIn="false" value="/home/dave/ros/install_isolated/include"/>
 									<listOptionValue builtIn="false" value="/usr/include/eigen3"/>
-									<listOptionValue builtIn="false" value="/usr/include/lemon"/>
+									<listOptionValue builtIn="false" value="/opt/ros/lunar/include"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1364999643" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.base.1495073926" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base">
 								<option id="gnu.c.compiler.option.include.paths.2136594819" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="/home/dave/CognitiveSlam/devel/include"/>
-									<listOptionValue builtIn="false" value="/home/dave/ROAMFREE/devel/include"/>
-									<listOptionValue builtIn="false" value="/home/dave/ros/install_isolated/include"/>
 									<listOptionValue builtIn="false" value="/usr/include/eigen3"/>
-									<listOptionValue builtIn="false" value="/usr/include/lemon"/>
+									<listOptionValue builtIn="false" value="/opt/ros/lunar/include"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1028489157" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -53,11 +47,7 @@
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.assembler.base.2141550968" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base">
 								<option id="gnu.both.asm.option.include.paths.250981140" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="/home/dave/CognitiveSlam/devel/include"/>
-									<listOptionValue builtIn="false" value="/home/dave/ROAMFREE/devel/include"/>
-									<listOptionValue builtIn="false" value="/home/dave/ros/install_isolated/include"/>
-									<listOptionValue builtIn="false" value="/usr/include/eigen3"/>
-									<listOptionValue builtIn="false" value="/usr/include/lemon"/>
+									<listOptionValue builtIn="false" value="/opt/ros/lunar/include"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.376719053" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
