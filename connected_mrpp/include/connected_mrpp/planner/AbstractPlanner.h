@@ -42,6 +42,7 @@ public:
                   const Configuration& goal);
 
     std::vector<Configuration> getPlan();
+    double getElapsedTime();
 
     virtual ~AbstractPlanner();
 
@@ -73,6 +74,7 @@ protected:
 private:
     std::chrono::steady_clock::time_point t0;
     std::chrono::duration<double> Tmax;
+    std::chrono::duration<double> Tcurrent;
 
 };
 

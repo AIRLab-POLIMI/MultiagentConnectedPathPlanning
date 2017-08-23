@@ -37,7 +37,7 @@ const Configuration AbstractPlanner::PI_NULL;
 
 
 AbstractPlanner::AbstractPlanner(Graph& graph, duration<double> Tmax)
-	: graph(graph), Tmax(Tmax)
+	: graph(graph), Tmax(Tmax), Tcurrent(0)
 {
 
 }
@@ -72,10 +72,10 @@ bool AbstractPlanner::makePlan(const Configuration& start,
     parent[pi_goal] = PI_NULL;
 
 	bool result = makePlanImpl();
+	steady_clock::now() - t0;
+	Tcurrent = steady_clock::now() - t0;
 
-	duration<double> deltaT = steady_clock::now() - t0;
-
-	ROS_INFO_STREAM("Elapsed time: " << deltaT.count() << " s");
+	ROS_INFO_STREAM("Elapsed time: " << Tcurrent.count() << " s");
 
 	return result;
 }
@@ -97,6 +97,11 @@ vector<Configuration> AbstractPlanner::getPlan()
 	reverse(plan.begin(), plan.end());
 
 	return plan;
+}
+
+double AbstractPlanner::getElapsedTime()
+{
+	return Tcurrent.count();
 }
 
 bool AbstractPlanner::timeOut()

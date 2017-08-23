@@ -106,10 +106,11 @@ int main(int argc, char** argv)
 
 	bool found = planner->makePlan(start, goal);
 
+	std::ofstream ofs(logPath +  "/" + expName.substr(0, expName.find_last_of(".")) + "_" + alg +".log");
+	std::cout << "Computed plan: " << std::endl;
+
 	if(found)
 	{
-		std::ofstream ofs(logPath +  "/" + expName.substr(0, expName.find_last_of(".")) + "_" + alg +".log");
-		std::cout << "Computed plan: " << std::endl;
 		auto&& plan = planner->getPlan();
 
 		for(int i = 0; i < plan.size(); i++)
@@ -118,5 +119,12 @@ int main(int argc, char** argv)
 			ofs <<  "s" << i << " " << plan[i] << std::endl;
 		}
 	}
+	else
+	{
+		std::cout <<  "NO_PLAN_FOUND_WITHIN_DEADLINE" << std::endl;
+		ofs <<  "NO_PLAN_FOUND_WITHIN_DEADLINE" << std::endl;
+	}
+
+	ofs << "t " << planner->getElapsedTime() << " s" << std::endl;
 
 }
