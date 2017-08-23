@@ -49,6 +49,8 @@ bool DFS_Planner::makePlanImpl()
     {
         //Pop the last frontier node
         Configuration pi = stack.back();
+        closed.insert(pi);
+
 #ifdef DEBUG_CONF
         std::cout << "-" << pi << "-" << endl;
 #endif
@@ -73,7 +75,6 @@ bool DFS_Planner::makePlanImpl()
         else
         {
         	stack.pop_back();
-        	closed.insert(pi);
         }
     }
 
