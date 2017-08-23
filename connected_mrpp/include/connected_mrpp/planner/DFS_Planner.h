@@ -24,14 +24,14 @@
 #ifndef INCLUDE_CONNECTED_MRPP_PLANNER_DFS_PLANNER_H_
 #define INCLUDE_CONNECTED_MRPP_PLANNER_DFS_PLANNER_H_
 
-#include "connected_mrpp/planner/Planner.h"
+#include "connected_mrpp/planner/LazyPlanner.h"
 
 #include <list>
 
 namespace connected_mrpp
 {
 
-class DFS_Planner : public Planner
+class DFS_Planner : public LazyPlanner
 {
 public:
 	DFS_Planner(Graph& graph, std::chrono::duration<double> Tmax);

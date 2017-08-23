@@ -35,7 +35,7 @@ using namespace std::chrono;
 namespace connected_mrpp
 {
 
-Planner::Planner(Graph& graph, duration<double> Tmax) : AbstractPlanner(graph, Tmax)
+Planner::Planner(Graph& graph, duration<double> Tmax) : LazyPlanner(graph, Tmax)
 {
 
 }
@@ -64,6 +64,7 @@ bool Planner::makePlanImpl()
         }
 
         auto pi_n = findBestConfiguration(pi);
+        sons[pi].push_back(pi_n);
 
 #ifdef DEBUG_CONF
         std::cout << "{" << pi_n << "}" << endl;
@@ -91,45 +92,6 @@ bool Planner::makePlanImpl()
 
     return false;
 }
-
-Configuration Planner::findBestConfiguration(Configuration& pi)
-{
-	if(g_local.count(pi) == 0)
-	{
-		PartialConfiguration pi_a(pi);
-
-		g_local[pi][pi_a] = 0;
-		open_local[pi].insert(pi_a, 0, computeHeuristic(pi));
-	}
-
-	auto& pi_open = open_local[pi];
-	auto& pi_g = g_local[pi];
-
-	while(!pi_open.empty())
-	{
-		PartialConfiguration a = pi_open.pop();
-
-		if(a.count == a.agent.size()
-				&& isConnected(a)
-				&& closed.count(a) == 0
-				&& static_cast<Configuration>(a) != pi)
-		{
-			sons[pi].push_back(a);
-			return a;
-		}
-
-		for(auto a_n : successors(a))
-		{
-			double g = pi_g[a] + computeCost(a, a_n);
-			pi_g[a_n] = g;
-
-			pi_open.insert(a_n, g, computeHeuristic(a_n));
-		}
-	}
-
-	return PI_NULL;
-}
-
 
 void Planner::updateConfiguration(Configuration& pi, Configuration& pi_n)
 {
@@ -166,41 +128,16 @@ double Planner::bestLeafCost(Configuration& pi)
 	return best;
 }
 
-std::vector<PartialConfiguration> Planner::successors(PartialConfiguration& a)
-{
-	std::vector<PartialConfiguration> succ;
-
-	if(a.count != a.agent.size())
-	{
-		auto v = a.agent[a.count];
-
-		auto neighbours = graph.getNeighbors(v);
-		neighbours.push_back(v);
-
-		for(auto& v_n : neighbours)
-		{
-			PartialConfiguration a_n = a;
-			a_n.count += 1;
-			a_n.agent[a.count] = v_n;
-			succ.push_back(a_n);
-		}
-	}
-
-	return succ;
-}
-
 void Planner::clearInstanceSpecific()
 {
+	//Clear superclass stuff
+	LazyPlanner::clearInstanceSpecific();
+
 	//Clear principal routine data structure
     open.clear();
-    closed.clear();
-    parent.clear();
     g.clear();
     sons.clear();
 
-    //clear local search data structure
-    open_local.clear();
-    g_local.clear();
 }
 
 };

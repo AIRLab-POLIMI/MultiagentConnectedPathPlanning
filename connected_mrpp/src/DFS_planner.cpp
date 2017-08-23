@@ -31,7 +31,7 @@ using namespace std::chrono;
 namespace connected_mrpp
 {
 
-DFS_Planner::DFS_Planner(Graph& graph, duration<double> Tmax) : Planner(graph, Tmax)
+DFS_Planner::DFS_Planner(Graph& graph, duration<double> Tmax) : LazyPlanner(graph, Tmax)
 {
 
 }
@@ -84,7 +84,7 @@ bool DFS_Planner::makePlanImpl()
 
 void DFS_Planner::clearInstanceSpecific()
 {
-	Planner::clearInstanceSpecific();
+	LazyPlanner::clearInstanceSpecific();
 	stack.clear();
 }
 
