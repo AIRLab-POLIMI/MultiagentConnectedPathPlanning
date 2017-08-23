@@ -35,6 +35,7 @@ if __name__ == "__main__":
     print 'Running experiments on environment ', gflags.FLAGS.env_name
 
     for comm_discr_type in comm_discr_types:
+        print 'Comm discr type: ', comm_discr_type
 
         for max_dist in range(gflags.FLAGS.min_range, gflags.FLAGS.max_range, gflags.FLAGS.step_range):
             print 'Range: ', max_dist
