@@ -19,7 +19,7 @@ gflags.DEFINE_integer('step_range', 50, 'communication range step (in pixels)')
 
 gflags.DEFINE_integer('max_robots', 10, 'maximum number of robots')
 
-gflags.DEFINE_integer('n_exp', 2, 'number of experiments')
+gflags.DEFINE_integer('n_exp', 50, 'number of experiments')
 
 gflags.DEFINE_string('deadline', '60', 'deadline (in seconds)')
 
