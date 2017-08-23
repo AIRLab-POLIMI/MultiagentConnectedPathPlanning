@@ -23,8 +23,8 @@ gflags.DEFINE_integer('n_exp', 2, 'number of experiments')
 
 gflags.DEFINE_string('deadline', '60', 'deadline (in seconds)')
 
-comm_discr_types = ['los','range']
-algorithms = ['birk', 'dfs_greedy']
+comm_discr_types = ['range']
+algorithms = ['birk', 'dfs']
 
 if __name__ == "__main__":
     """
