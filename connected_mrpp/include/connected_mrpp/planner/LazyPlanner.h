@@ -2,7 +2,7 @@
  * connected_mrpp,
  *
  *
- * Copyright (C) 2016 Davide Tateo
+ * Copyright (C) 2017 Davide Tateo
  * Versione 1.0
  *
  * This file is part of connected_mrpp.
@@ -21,43 +21,43 @@
  *  along with connected_mrpp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_CONNECTED_MRPP_THETASTARPLANNER_H_
-#define INCLUDE_CONNECTED_MRPP_THETASTARPLANNER_H_
+#ifndef INCLUDE_CONNECTED_MRPP_PLANNER_LAZYPLANNER_H_
+#define INCLUDE_CONNECTED_MRPP_PLANNER_LAZYPLANNER_H_
 
-#include "connected_mrpp/planner/LazyPlanner.h"
-
-#include <set>
+#include "connected_mrpp/planner/AbstractPlanner.h"
+#include "connected_mrpp/queue/PriorityQueue.h"
 
 namespace connected_mrpp
 {
 
-class Planner : public LazyPlanner
+class LazyPlanner: public AbstractPlanner
 {
-
 public:
-	Planner(Graph& graph, std::chrono::duration<double> Tmax);
-
+	LazyPlanner(Graph& graph, std::chrono::duration<double> Tmax);
 
 protected:
-    virtual bool makePlanImpl() override;
+    Configuration findBestConfiguration(Configuration& pi);
+
     virtual void clearInstanceSpecific() override;
 
-protected:
-    void updateConfiguration(Configuration& pi, Configuration& pi_n);
-    double bestLeafCost(Configuration& pi);
 private:
-    typedef std::map<Configuration, double> CostMap;
-    typedef PriorityQueue<Configuration> ConfQueue;
+    std::vector<PartialConfiguration> successors(PartialConfiguration& a);
 
+private:
+    typedef std::map<PartialConfiguration, double> PartialCostMap;
+    typedef PriorityQueue<PartialConfiguration> PartialConfQueue;
 
 protected:
-    //Principal Routine data structure
-    CostMap g;
-    ConfQueue open;
-    std::map<Configuration, std::vector<Configuration>> sons;
+    std::set<Configuration> closed;
+
+private:
+    std::map<Configuration, PartialCostMap> g_local;
+    std::map<Configuration, PartialConfQueue> open_local;
 
 };
 
 }
 
-#endif /* INCLUDE_CONNECTED_MRPP_THETASTARPLANNER_H_ */
+
+
+#endif /* INCLUDE_CONNECTED_MRPP_PLANNER_LAZYPLANNER_H_ */
