@@ -27,6 +27,7 @@ def get_plan(log_file):
     plan = [] 
 
     for line in lines:
+        if line[0] != 's': continue
         s = line.split()
         plan.append(map(lambda x: int(x), s[1:]))
 
