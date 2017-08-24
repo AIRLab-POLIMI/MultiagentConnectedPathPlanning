@@ -50,7 +50,7 @@ int main(int argc, char** argv)
 	std::string alg(argv[2]);
 	std::chrono::duration<double> Tmax(stod(argv[3]));
 
-	std::string expName = expFile.substr(expFile.find_last_of("/"), expFile.length());
+	std::string expName = expFile.substr(expFile.find_last_of("/")+1, expFile.length());
 	std::string dataPath = expFile.substr(0, expFile.find_last_of("/"));
 	std::string basePath = dataPath.substr(0, dataPath.find_last_of("/"));
 	std::string logPath = basePath + "/logs";

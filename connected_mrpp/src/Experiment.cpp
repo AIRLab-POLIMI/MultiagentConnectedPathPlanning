@@ -30,6 +30,12 @@ namespace connected_mrpp
 Experiment::Experiment(std::string basePath, std::string filename)
 {
     std::ifstream experiment(basePath + "/" + filename);
+
+    if(!experiment.good())
+    {
+    	throw std::runtime_error("File " + filename + " does not exist");
+    }
+
     std::string line;
     Experiment::Field field;
     
