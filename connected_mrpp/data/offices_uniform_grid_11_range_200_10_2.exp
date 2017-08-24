@@ -1,0 +1,4 @@
+phys_graph offices_phys_uniform_grid_11_range_200.graphml
+comm_graph offices_comm_uniform_grid_11_range_200.graphml
+start 6 318 184 480 819 648 436 897 1002 349 
+goal 402 672 1117 801 337 138 747 244 172 109 
