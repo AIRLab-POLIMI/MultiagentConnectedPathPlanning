@@ -41,8 +41,11 @@ def parse_log(log_filepath):
             s = line.split()
             if s[0] == 't':
                 results[1] = float(s[1])
-            elif s[0][0] == 's'
+            elif s[0][0] == 's':
                 steps += 1
+
+    if results[0] != -1:
+        results[0] = steps
 
     return results
 
@@ -63,11 +66,11 @@ if __name__ == "__main__":
         for max_dist in range(gflags.FLAGS.min_range, gflags.FLAGS.max_range, gflags.FLAGS.step_range):
             data[comm_discr_type][max_dist] = {}
             
-            print 'Range: ', max_dist
+            print '\tRange: ', max_dist
 
             for n_robots in range(2, gflags.FLAGS.max_robots + 1):
                 data[comm_discr_type][max_dist][n_robots] = {}
-                print 'N robots: ', n_robots
+                print '\t\tN robots: ', n_robots
 
                 for alg in algorithms:
                     data[comm_discr_type][max_dist][n_robots][alg] = []
@@ -75,17 +78,17 @@ if __name__ == "__main__":
 
                     for exp in range(gflags.FLAGS.n_exp):
                         #print 'Experiment: ' + str(exp)
-                        log_filepath = os.getcwd() + '/log/' + gflags.FLAGS.env_name + \
+                        log_filepath = os.getcwd() + '/logs/' + gflags.FLAGS.env_name + \
                                    '_' + gflags.FLAGS.phys_discr_type + \
                                    '_' + str(gflags.FLAGS.cell_size) + \
                                    '_' + comm_discr_type + \
                                    '_' + str(max_dist) + \
                                    '_' + str(n_robots) + \
                                    '_' + str(exp) + \
-                                   '_' + alg + '.exp'
+                                   '_' + alg + '.log'
 
-                    results = parse_log(log_filepath)
-                    data[comm_discr_type][max_dist][n_robots][alg].append(results)
+                        results = parse_log(log_filepath)
+                        data[comm_discr_type][max_dist][n_robots][alg].append(results)
 
                 #custom for birk and dfs
                 solved_birk = 0
@@ -94,8 +97,8 @@ if __name__ == "__main__":
                 winner_feas_dfs = 0
                 winner_birk = 0
                 winner_dfs = 0
-                times_birk = 0
-                times_dfs = 0
+                times_birk = []
+                times_dfs = []
 
                 for exp in range(gflags.FLAGS.n_exp):
                     #solved instances
@@ -118,28 +121,37 @@ if __name__ == "__main__":
                         data[comm_discr_type][max_dist][n_robots]['birk'][exp][0] >= 0):
 
                         if(data[comm_discr_type][max_dist][n_robots]['dfs'][exp][0] < 
-                           data[comm_discr_type][max_dist][n_robots]['birk'][exp][0):
+                           data[comm_discr_type][max_dist][n_robots]['birk'][exp][0]):
                             winner_dfs += 1
 
                         elif(data[comm_discr_type][max_dist][n_robots]['birk'][exp][0] < 
-                           data[comm_discr_type][max_dist][n_robots]['dfs'][exp][0):
+                             data[comm_discr_type][max_dist][n_robots]['dfs'][exp][0]):
                             winner_birk += 1
 
                     #times
                     if(data[comm_discr_type][max_dist][n_robots]['dfs'][exp][0] > -2):
-                        times_dfs.append(data[comm_discr_type][max_dist][n_robots]['dfs'][exp][1]
+                        times_dfs.append(data[comm_discr_type][max_dist][n_robots]['dfs'][exp][1])
 
-                    elif(data[comm_discr_type][max_dist][n_robots]['birk'][exp][0] > -2):
-                        times_birk.append(data[comm_discr_type][max_dist][n_robots]['birk'][exp][1]
+                    if(data[comm_discr_type][max_dist][n_robots]['birk'][exp][0] > -2):
+                        times_birk.append(data[comm_discr_type][max_dist][n_robots]['birk'][exp][1])
 
-                print 'Solved instances birk: ', solved_birk
-                print 'Solved instances dfs: ', solved_dfs
+                #print data
+
+                print '\t\tSolved instances birk: ', solved_birk
+                print '\t\tSolved instances dfs: ', solved_dfs
                 
-                print 'Winner feas/unfeas birk: ', winner_feas_birk
-                print 'Winner feas/unfeas dfs: ', winner_feas_dfs
+                print '\t\tWinner feas/unfeas birk: ', winner_feas_birk
+                print '\t\tWinner feas/unfeas dfs: ', winner_feas_dfs
                 
-                print 'Winner time-optimal birk: ', winner_birk
-                print 'Winner time-optimal dfs: ', winner_dfs
+                print '\t\tWinner time-optimal birk: ', winner_birk
+                print '\t\tWinner time-optimal dfs: ', winner_dfs
 
-                print 'Avg time birk', sum(times_birk)/len(times_birk)
-                print 'Avg time dfs', sum(times_dfs)/len(times_dfs)
+                if(len(times_birk)):
+                    print '\t\tAvg time birk', sum(times_birk)/len(times_birk)
+                else:
+                    print '\t\tBirk did not find any feasible plan.'
+
+                if(len(times_dfs)):
+                    print '\t\tAvg time dfs', sum(times_dfs)/len(times_dfs)
+                else:
+                    print '\t\tDFS did not find any feasible plan.'
