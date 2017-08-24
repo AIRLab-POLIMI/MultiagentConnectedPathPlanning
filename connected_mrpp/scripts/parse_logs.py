@@ -36,6 +36,7 @@ def parse_log(log_filepath):
             results = [-2, int(gflags.FLAGS.deadline)]
             return results
         elif 'NO_PLAN_EXISTS' in line:
+            print "NO PLAN CONFIRMED FOUND IN ", log_filepath
             results[0] = -1
         else:
             s = line.split()
