@@ -7,6 +7,8 @@ import os
 import sys
 import gflags
 
+from joblib import Parallel, delayed
+
 
 gflags.DEFINE_string('env_name', 'offices', 'environment name')
 
@@ -23,6 +25,8 @@ gflags.DEFINE_integer('n_exp', 50, 'number of experiments')
 
 gflags.DEFINE_string('deadline', '60', 'deadline (in seconds)')
 
+gflags.DEFINE_integer('n_jobs', 2, 'number of parallel experiments')
+
 comm_discr_types = ['range']
 algorithms = ['birk', 'dfs']
 
@@ -34,25 +38,19 @@ if __name__ == "__main__":
 
     print 'Running experiments on environment ', gflags.FLAGS.env_name
 
-    for comm_discr_type in comm_discr_types:
-        print 'Comm discr type: ', comm_discr_type
-
-        for max_dist in range(gflags.FLAGS.min_range, gflags.FLAGS.max_range, gflags.FLAGS.step_range):
-            print 'Range: ', max_dist
-
-            for n_robots in range(2, gflags.FLAGS.max_robots + 1):
-                print 'N robots: ', n_robots
-
-                for exp in range(gflags.FLAGS.n_exp):
-                    print 'Experiment: ' + str(exp)
-                    exp_name = os.getcwd() + '/data/' + gflags.FLAGS.env_name + \
-                               '_' + gflags.FLAGS.phys_discr_type + \
-                               '_' + str(gflags.FLAGS.cell_size) + \
-                               '_' + comm_discr_type + \
-                               '_' + str(max_dist) + \
-                               '_' + str(n_robots) + \
-                               '_' + str(exp) + '.exp'
-
-                    for alg in algorithms:
-                        print 'Algorithm: ', alg
-                        os.system('rosrun connected_mrpp cmrpp_test ' + exp_name + ' ' + alg + ' ' + gflags.FLAGS.deadline)
+    Parallel(n_jobs=gflags.FLAGS.n_jobs)(delayed(os.system)
+                                        ('rosrun connected_mrpp cmrpp_test ' + os.getcwd() + 
+                                         '/data/' + gflags.FLAGS.env_name +
+                                         '_' + gflags.FLAGS.phys_discr_type + 
+                                         '_' + str(gflags.FLAGS.cell_size) + 
+                                         '_' + comm_discr_type + 
+                                         '_' + str(max_dist) + 
+                                         '_' + str(n_robots) + 
+                                         '_' + str(exp) + '.exp' + 
+                                         ' ' + alg + ' ' + gflags.FLAGS.deadline) 
+                                         for alg in algorithms
+                                         for exp in range(gflags.FLAGS.n_exp)
+                                         for n_robots in range(2, gflags.FLAGS.max_robots + 1)
+                                         for max_dist in range(gflags.FLAGS.min_range, gflags.FLAGS.max_range, gflags.FLAGS.step_range)
+                                         for comm_discr_type in comm_discr_types)
+    
