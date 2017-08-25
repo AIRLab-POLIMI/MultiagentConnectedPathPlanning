@@ -40,7 +40,7 @@ if __name__ == "__main__":
     print 'Running experiments on environment ', gflags.FLAGS.env_name
 
     subdir = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-    mydir = os.path.join(os.getcwd(), 'log', subdir)
+    mydir = os.path.join(os.getcwd(), 'logs', subdir)
     os.mkdir(mydir)
     Parallel(n_jobs=gflags.FLAGS.n_jobs)(delayed(os.system)
                                         ('rosrun connected_mrpp cmrpp_test ' + os.getcwd() + 
