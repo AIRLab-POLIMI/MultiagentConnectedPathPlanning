@@ -2,3 +2,4 @@
 RemoteSystemsTempFiles/
 *.pyc
 *.log
+.idea/

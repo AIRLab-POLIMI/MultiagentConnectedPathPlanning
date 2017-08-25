@@ -6,7 +6,9 @@ Created on Aug 22, 2017
 import os
 import sys
 import gflags
+from posixfile import _posixfile_
 
+from PIL.ImageOps import solarize
 
 gflags.DEFINE_string('env_name', 'offices', 'environment name')
 
@@ -91,68 +93,57 @@ if __name__ == "__main__":
                         results = parse_log(log_filepath)
                         data[comm_discr_type][max_dist][n_robots][alg].append(results)
 
-                #custom for birk and dfs
-                solved_birk = 0
-                solved_dfs = 0
-                winner_feas_birk = 0
-                winner_feas_dfs = 0
-                winner_birk = 0
-                winner_dfs = 0
-                times_birk = []
-                times_dfs = []
+                #prepare data
+                p_dict = dict()
+                for alg in algorithms:
+                    p = dict(solved=0, winner=0, time_opt=0, times=[])
+                    p_dict[alg] = p
 
                 for exp in range(gflags.FLAGS.n_exp):
                     #solved instances
-                    if(data[comm_discr_type][max_dist][n_robots]['dfs'][exp][0] > -2):
-                        solved_dfs += 1
-
-                    if(data[comm_discr_type][max_dist][n_robots]['birk'][exp][0] > -2):
-                        solved_birk += 1
+                    for alg in algorithms:
+                        if data[comm_discr_type][max_dist][n_robots][alg][exp][0] > -2:
+                            p_dict[alg]['solved'] += 1
 
                     #comparison
-                    if(data[comm_discr_type][max_dist][n_robots]['dfs'][exp][0] > -2 and 
-                       data[comm_discr_type][max_dist][n_robots]['birk'][exp][0] == -2):
-                        winner_feas_dfs += 1
+                    fail = False
+                    for alg in algorithms:
+                        if data[comm_discr_type][max_dist][n_robots][alg][exp][0] == -2:
+                            fail = True
+                            break
+                    if fail:
+                        for alg in algorithms:
+                            if data[comm_discr_type][max_dist][n_robots][alg][exp][0] > -2:
+                                p_dict[alg]['winner'] += 1
 
-                    elif(data[comm_discr_type][max_dist][n_robots]['birk'][exp][0] > -2 and 
-                       data[comm_discr_type][max_dist][n_robots]['dfs'][exp][0] == -2):
-                        winner_feas_birk +=1
 
-                    elif(data[comm_discr_type][max_dist][n_robots]['dfs'][exp][0] >= 0 and
-                        data[comm_discr_type][max_dist][n_robots]['birk'][exp][0] >= 0):
-
-                        if(data[comm_discr_type][max_dist][n_robots]['dfs'][exp][0] < 
-                           data[comm_discr_type][max_dist][n_robots]['birk'][exp][0]):
-                            winner_dfs += 1
-
-                        elif(data[comm_discr_type][max_dist][n_robots]['birk'][exp][0] < 
-                             data[comm_discr_type][max_dist][n_robots]['dfs'][exp][0]):
-                            winner_birk += 1
+                    #Time
+                    best = None
+                    for alg in algorithms:
+                        if data[comm_discr_type][max_dist][n_robots][alg][exp][0] > -2:
+                            if best is None or \
+                                data[comm_discr_type][max_dist][n_robots][alg][exp][1] > \
+                                data[comm_discr_type][max_dist][n_robots][best][exp][1]:
+                                p_dict[alg]['time_opt']+=1
 
                     #times
-                    if(data[comm_discr_type][max_dist][n_robots]['dfs'][exp][0] > -2):
-                        times_dfs.append(data[comm_discr_type][max_dist][n_robots]['dfs'][exp][1])
-
-                    if(data[comm_discr_type][max_dist][n_robots]['birk'][exp][0] > -2):
-                        times_birk.append(data[comm_discr_type][max_dist][n_robots]['birk'][exp][1])
+                    for alg in algorithms:
+                        if data[comm_discr_type][max_dist][n_robots][alg][exp][0] > -2:
+                            p_dict[alg]['times'].append(data[comm_discr_type][max_dist][n_robots]['dfs'][exp][1])
 
                 #print data
+                for alg in algorithms:
+                    print '\t\tSolved instances ', alg, ': ', p_dict[alg]['solved']
 
-                print '\t\tSolved instances birk: ', solved_birk
-                print '\t\tSolved instances dfs: ', solved_dfs
+                for alg in algorithms:
+                    print '\t\tWinner feas/unfeas ', alg, ': ', p_dict[alg]['winner']
                 
-                print '\t\tWinner feas/unfeas birk: ', winner_feas_birk
-                print '\t\tWinner feas/unfeas dfs: ', winner_feas_dfs
-                
-                print '\t\tWinner time-optimal birk: ', winner_birk
-                print '\t\tWinner time-optimal dfs: ', winner_dfs
+                for alg in algorithms:
+                    print '\t\tWinner time-optimal ', alg, ': ', p_dict[alg]['time_opt']
 
-                if(len(times_birk)):
-                    print '\t\tAvg time birk', sum(times_birk)/len(times_birk)
-                else:
-                    print '\t\tBirk did not find any feasible plan.'
-
-                if(len(times_dfs)):
-                    print '\t\tAvg time dfs', sum(times_dfs)/len(times_dfs)
-                else:
-                    print '\t\tDFS did not find any feasible plan.'
+                for alg in algorithms:
+                    times = p_dict[alg]['times']
+                    if(len(times)):
+                        print '\t\tAvg time ', alg, ': ', sum(times)/len(times)
+                    else:
+                        print '\t\t', alg, 'did not find any feasible plan.'
