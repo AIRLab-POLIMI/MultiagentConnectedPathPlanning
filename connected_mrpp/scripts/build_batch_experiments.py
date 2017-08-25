@@ -84,6 +84,7 @@ if __name__ == "__main__":
             #create graphs file
             os.system('python create_graph_from_png.py --file_path=' + gflags.FLAGS.file_path + \
                       ' --phys_discr_type=' + gflags.FLAGS.phys_discr_type + \
+                      ' --comm_discr_type=' + comm_discr_type + \
                       ' --cell_size=' + str(gflags.FLAGS.cell_size) + \
                       ' --range=' + str(max_dist) + \
                       ' --output_phys=' + gflags.FLAGS.output_phys + \
