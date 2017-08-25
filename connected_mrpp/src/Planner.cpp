@@ -53,6 +53,8 @@ bool Planner::makePlanImpl()
     {
         //Pop the best frontier node
         Configuration pi = open.pop();
+    	closed.insert(pi);
+
 #ifdef DEBUG_CONF
         std::cout << "-" << pi << "-" << endl;
 #endif
@@ -81,10 +83,6 @@ bool Planner::makePlanImpl()
         	double c_best = bestLeafCost(pi);
         	double g_pi = g[pi];
         	open.insert(pi, g_pi , c_best - g_pi);
-        }
-        else
-        {
-        	closed.insert(pi);
         }
     }
 
