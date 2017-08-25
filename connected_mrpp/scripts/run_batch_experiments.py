@@ -28,7 +28,7 @@ gflags.DEFINE_string('deadline', '60', 'deadline (in seconds)')
 gflags.DEFINE_integer('n_jobs', 2, 'number of parallel experiments')
 
 comm_discr_types = ['range']
-algorithms = ['birk', 'dfs']
+algorithms = ['birk', 'dfs', 'astar']
 
 if __name__ == "__main__":
     """

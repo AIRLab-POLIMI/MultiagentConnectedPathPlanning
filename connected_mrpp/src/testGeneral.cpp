@@ -83,7 +83,7 @@ int main(int argc, char** argv)
 
 	AbstractPlanner* planner;
 
-	if(alg == "planner")
+	if(alg == "astar")
 	{
 		planner = new Planner(graph, Tmax);
 	}
