@@ -6,6 +6,7 @@ Created on Aug 22, 2017
 import os
 import sys
 import gflags
+import datetime
 
 from joblib import Parallel, delayed
 
@@ -25,7 +26,7 @@ gflags.DEFINE_integer('n_exp', 50, 'number of experiments')
 
 gflags.DEFINE_string('deadline', '60', 'deadline (in seconds)')
 
-gflags.DEFINE_integer('n_jobs', 2, 'number of parallel experiments')
+gflags.DEFINE_integer('n_jobs', -1, 'number of parallel experiments')
 
 comm_discr_types = ['range']
 algorithms = ['birk', 'dfs', 'astar']
@@ -38,6 +39,9 @@ if __name__ == "__main__":
 
     print 'Running experiments on environment ', gflags.FLAGS.env_name
 
+    subdir = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+    mydir = os.path.join(os.getcwd(), 'log', subdir)
+    os.mkdir(mydir)
     Parallel(n_jobs=gflags.FLAGS.n_jobs)(delayed(os.system)
                                         ('rosrun connected_mrpp cmrpp_test ' + os.getcwd() + 
                                          '/data/' + gflags.FLAGS.env_name +
@@ -47,7 +51,9 @@ if __name__ == "__main__":
                                          '_' + str(max_dist) + 
                                          '_' + str(n_robots) + 
                                          '_' + str(exp) + '.exp' + 
-                                         ' ' + alg + ' ' + gflags.FLAGS.deadline) 
+                                         ' ' + alg +
+                                         ' ' + gflags.FLAGS.deadline +
+                                         ' ' + subdir)
                                          for alg in algorithms
                                          for exp in range(gflags.FLAGS.n_exp)
                                          for n_robots in range(2, gflags.FLAGS.max_robots + 1)

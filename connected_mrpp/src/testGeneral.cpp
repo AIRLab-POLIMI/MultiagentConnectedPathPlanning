@@ -55,6 +55,12 @@ int main(int argc, char** argv)
 	std::string basePath = dataPath.substr(0, dataPath.find_last_of("/"));
 	std::string logPath = basePath + "/logs";
 
+	if(argc >= 5)
+	{
+		std::string logSubfolder(argv[4]);
+		logPath += "/" + logSubfolder;
+	}
+
 
     cout << "Loading experiment: " << expFile << endl;
     cout << "Base path:          " << basePath << endl;
