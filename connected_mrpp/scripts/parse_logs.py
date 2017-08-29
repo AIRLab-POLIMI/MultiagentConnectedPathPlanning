@@ -24,9 +24,10 @@ gflags.DEFINE_integer('max_robots', 10, 'maximum number of robots')
 gflags.DEFINE_integer('n_exp', 50, 'number of experiments')
 
 gflags.DEFINE_string('deadline', '60', 'deadline (in seconds)')
+gflags.DEFINE_string('log_subfolder', '2017-08-25_13-22-26', 'the log subfolder to parse')
 
 comm_discr_types = ['range']
-algorithms = ['birk', 'dfs']
+algorithms = ['birk', 'dfs', 'astar']
 
 def parse_log(log_filepath):
     results = [None, None]
@@ -81,7 +82,8 @@ if __name__ == "__main__":
 
                     for exp in range(gflags.FLAGS.n_exp):
                         #print 'Experiment: ' + str(exp)
-                        log_filepath = os.getcwd() + '/logs/' + gflags.FLAGS.env_name + \
+                        log_filepath = os.getcwd() + '/logs/' + gflags.FLAGS.log_subfolder + \
+                                   '/' + gflags.FLAGS.env_name + \
                                    '_' + gflags.FLAGS.phys_discr_type + \
                                    '_' + str(gflags.FLAGS.cell_size) + \
                                    '_' + comm_discr_type + \
@@ -106,30 +108,40 @@ if __name__ == "__main__":
                             p_dict[alg]['solved'] += 1
 
                     #comparison
-                    fail = False
+                    n_failed = 0
                     for alg in algorithms:
                         if data[comm_discr_type][max_dist][n_robots][alg][exp][0] == -2:
-                            fail = True
-                            break
-                    if fail:
+                            n_failed += 1
+
+                    if n_failed == len(algorithms) - 1:
                         for alg in algorithms:
                             if data[comm_discr_type][max_dist][n_robots][alg][exp][0] > -2:
                                 p_dict[alg]['winner'] += 1
+                                break
 
 
-                    #Time
-                    best = None
+                    #Solution time
+                    best = []
                     for alg in algorithms:
                         if data[comm_discr_type][max_dist][n_robots][alg][exp][0] > -2:
-                            if best is None or \
-                                data[comm_discr_type][max_dist][n_robots][alg][exp][1] > \
-                                data[comm_discr_type][max_dist][n_robots][best][exp][1]:
-                                p_dict[alg]['time_opt']+=1
+                            if len(best) == 0:
+                                best = [alg]
+                            elif (data[comm_discr_type][max_dist][n_robots][alg][exp][0] > \
+                                data[comm_discr_type][max_dist][n_robots][best[0]][exp][0]):
+                                best = [alg]
+                            elif (data[comm_discr_type][max_dist][n_robots][alg][exp][0] == \
+                                data[comm_discr_type][max_dist][n_robots][best[0]][exp][0]):
+                                best.append(alg)
+                                
+
+                    if len(best) > 0:
+                        for alg in best:
+                            p_dict[alg]['time_opt'] += 1
 
                     #times
                     for alg in algorithms:
                         if data[comm_discr_type][max_dist][n_robots][alg][exp][0] > -2:
-                            p_dict[alg]['times'].append(data[comm_discr_type][max_dist][n_robots]['dfs'][exp][1])
+                            p_dict[alg]['times'].append(data[comm_discr_type][max_dist][n_robots][alg][exp][1])
 
                 #print data
                 for alg in algorithms:
