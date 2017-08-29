@@ -2,6 +2,7 @@ Parsing experiments on environment  offices
 Comm discr type:  range
 	Range:  50
 		N robots:  2
+		Instances solved (feas.) by at least one algorithm:  42
 		Solved instances  birk :  15
 		Solved instances  dfs :  42
 		Solved instances  astar :  42
@@ -15,6 +16,7 @@ Comm discr type:  range
 		Avg time  dfs :  0.0738457428571
 		Avg time  astar :  0.0923286857143
 		N robots:  3
+		Instances solved (feas.) by at least one algorithm:  41
 		Solved instances  birk :  28
 		Solved instances  dfs :  41
 		Solved instances  astar :  39
@@ -28,6 +30,7 @@ Comm discr type:  range
 		Avg time  dfs :  4.35881734634
 		Avg time  astar :  12.2962579103
 		N robots:  4
+		Instances solved (feas.) by at least one algorithm:  45
 		Solved instances  birk :  37
 		Solved instances  dfs :  45
 		Solved instances  astar :  32
@@ -41,6 +44,7 @@ Comm discr type:  range
 		Avg time  dfs :  8.96817593333
 		Avg time  astar :  8.7964500375
 		N robots:  5
+		Instances solved (feas.) by at least one algorithm:  34
 		Solved instances  birk :  24
 		Solved instances  dfs :  33
 		Solved instances  astar :  24
@@ -54,6 +58,7 @@ Comm discr type:  range
 		Avg time  dfs :  7.84576387576
 		Avg time  astar :  0.540878441667
 		N robots:  6
+		Instances solved (feas.) by at least one algorithm:  35
 		Solved instances  birk :  27
 		Solved instances  dfs :  32
 		Solved instances  astar :  22
@@ -67,6 +72,7 @@ Comm discr type:  range
 		Avg time  dfs :  20.64126185
 		Avg time  astar :  0.183979990909
 		N robots:  7
+		Instances solved (feas.) by at least one algorithm:  30
 		Solved instances  birk :  25
 		Solved instances  dfs :  27
 		Solved instances  astar :  19
@@ -80,6 +86,7 @@ Comm discr type:  range
 		Avg time  dfs :  19.6818045556
 		Avg time  astar :  0.931178578947
 		N robots:  8
+		Instances solved (feas.) by at least one algorithm:  26
 		Solved instances  birk :  23
 		Solved instances  dfs :  21
 		Solved instances  astar :  16
@@ -93,6 +100,7 @@ Comm discr type:  range
 		Avg time  dfs :  8.33500767143
 		Avg time  astar :  0.25640946875
 		N robots:  9
+		Instances solved (feas.) by at least one algorithm:  27
 		Solved instances  birk :  20
 		Solved instances  dfs :  24
 		Solved instances  astar :  17
@@ -106,6 +114,7 @@ Comm discr type:  range
 		Avg time  dfs :  12.1932713333
 		Avg time  astar :  0.227122588235
 		N robots:  10
+		Instances solved (feas.) by at least one algorithm:  25
 		Solved instances  birk :  20
 		Solved instances  dfs :  16
 		Solved instances  astar :  13
@@ -120,6 +129,7 @@ Comm discr type:  range
 		Avg time  astar :  2.70587292308
 	Range:  100
 		N robots:  2
+		Instances solved (feas.) by at least one algorithm:  43
 		Solved instances  birk :  12
 		Solved instances  dfs :  43
 		Solved instances  astar :  43
@@ -133,6 +143,7 @@ Comm discr type:  range
 		Avg time  dfs :  0.177903006977
 		Avg time  astar :  9.57856100698
 		N robots:  3
+		Instances solved (feas.) by at least one algorithm:  44
 		Solved instances  birk :  24
 		Solved instances  dfs :  44
 		Solved instances  astar :  36
@@ -146,6 +157,7 @@ Comm discr type:  range
 		Avg time  dfs :  1.24808806591
 		Avg time  astar :  11.48822755
 		N robots:  4
+		Instances solved (feas.) by at least one algorithm:  41
 		Solved instances  birk :  27
 		Solved instances  dfs :  40
 		Solved instances  astar :  26
@@ -159,6 +171,7 @@ Comm discr type:  range
 		Avg time  dfs :  10.747259925
 		Avg time  astar :  18.0815730769
 		N robots:  5
+		Instances solved (feas.) by at least one algorithm:  34
 		Solved instances  birk :  21
 		Solved instances  dfs :  31
 		Solved instances  astar :  22
@@ -172,6 +185,7 @@ Comm discr type:  range
 		Avg time  dfs :  15.3269959516
 		Avg time  astar :  7.12629553182
 		N robots:  6
+		Instances solved (feas.) by at least one algorithm:  28
 		Solved instances  birk :  23
 		Solved instances  dfs :  25
 		Solved instances  astar :  16
@@ -185,6 +199,7 @@ Comm discr type:  range
 		Avg time  dfs :  12.95541458
 		Avg time  astar :  2.21458486875
 		N robots:  7
+		Instances solved (feas.) by at least one algorithm:  30
 		Solved instances  birk :  26
 		Solved instances  dfs :  28
 		Solved instances  astar :  26
@@ -198,6 +213,7 @@ Comm discr type:  range
 		Avg time  dfs :  20.2308770607
 		Avg time  astar :  5.15690275769
 		N robots:  8
+		Instances solved (feas.) by at least one algorithm:  25
 		Solved instances  birk :  23
 		Solved instances  dfs :  18
 		Solved instances  astar :  16
@@ -211,6 +227,7 @@ Comm discr type:  range
 		Avg time  dfs :  8.74788417222
 		Avg time  astar :  3.9077427125
 		N robots:  9
+		Instances solved (feas.) by at least one algorithm:  29
 		Solved instances  birk :  26
 		Solved instances  dfs :  19
 		Solved instances  astar :  19
@@ -224,6 +241,7 @@ Comm discr type:  range
 		Avg time  dfs :  5.29735463158
 		Avg time  astar :  3.70780510526
 		N robots:  10
+		Instances solved (feas.) by at least one algorithm:  21
 		Solved instances  birk :  19
 		Solved instances  dfs :  14
 		Solved instances  astar :  12
@@ -238,6 +256,7 @@ Comm discr type:  range
 		Avg time  astar :  0.632221416667
 	Range:  150
 		N robots:  2
+		Instances solved (feas.) by at least one algorithm:  48
 		Solved instances  birk :  10
 		Solved instances  dfs :  48
 		Solved instances  astar :  44
@@ -251,6 +270,7 @@ Comm discr type:  range
 		Avg time  dfs :  10.9138572438
 		Avg time  astar :  25.4171741227
 		N robots:  3
+		Instances solved (feas.) by at least one algorithm:  40
 		Solved instances  birk :  19
 		Solved instances  dfs :  38
 		Solved instances  astar :  27
@@ -264,6 +284,7 @@ Comm discr type:  range
 		Avg time  dfs :  12.4613753158
 		Avg time  astar :  15.0036767481
 		N robots:  4
+		Instances solved (feas.) by at least one algorithm:  35
 		Solved instances  birk :  27
 		Solved instances  dfs :  32
 		Solved instances  astar :  21
@@ -277,6 +298,7 @@ Comm discr type:  range
 		Avg time  dfs :  10.3357914562
 		Avg time  astar :  7.30648777143
 		N robots:  5
+		Instances solved (feas.) by at least one algorithm:  26
 		Solved instances  birk :  17
 		Solved instances  dfs :  26
 		Solved instances  astar :  13
@@ -290,6 +312,7 @@ Comm discr type:  range
 		Avg time  dfs :  22.35474495
 		Avg time  astar :  20.8401181462
 		N robots:  6
+		Instances solved (feas.) by at least one algorithm:  28
 		Solved instances  birk :  22
 		Solved instances  dfs :  26
 		Solved instances  astar :  18
@@ -303,6 +326,7 @@ Comm discr type:  range
 		Avg time  dfs :  9.58801030769
 		Avg time  astar :  0.6022675
 		N robots:  7
+		Instances solved (feas.) by at least one algorithm:  22
 		Solved instances  birk :  17
 		Solved instances  dfs :  18
 		Solved instances  astar :  13
@@ -316,6 +340,7 @@ Comm discr type:  range
 		Avg time  dfs :  20.9494299444
 		Avg time  astar :  1.81343061538
 		N robots:  8
+		Instances solved (feas.) by at least one algorithm:  16
 		Solved instances  birk :  14
 		Solved instances  dfs :  14
 		Solved instances  astar :  10
@@ -329,6 +354,7 @@ Comm discr type:  range
 		Avg time  dfs :  25.2567027143
 		Avg time  astar :  0.5108364
 		N robots:  9
+		Instances solved (feas.) by at least one algorithm:  25
 		Solved instances  birk :  22
 		Solved instances  dfs :  18
 		Solved instances  astar :  18
@@ -342,6 +368,7 @@ Comm discr type:  range
 		Avg time  dfs :  23.7345525
 		Avg time  astar :  15.6329501667
 		N robots:  10
+		Instances solved (feas.) by at least one algorithm:  22
 		Solved instances  birk :  18
 		Solved instances  dfs :  10
 		Solved instances  astar :  8
@@ -356,6 +383,7 @@ Comm discr type:  range
 		Avg time  astar :  25.1647095
 	Range:  200
 		N robots:  2
+		Instances solved (feas.) by at least one algorithm:  50
 		Solved instances  birk :  13
 		Solved instances  dfs :  50
 		Solved instances  astar :  43
@@ -369,6 +397,7 @@ Comm discr type:  range
 		Avg time  dfs :  1.406496074
 		Avg time  astar :  5.91270487907
 		N robots:  3
+		Instances solved (feas.) by at least one algorithm:  44
 		Solved instances  birk :  24
 		Solved instances  dfs :  44
 		Solved instances  astar :  35
@@ -382,6 +411,7 @@ Comm discr type:  range
 		Avg time  dfs :  9.56329692273
 		Avg time  astar :  13.8137389914
 		N robots:  4
+		Instances solved (feas.) by at least one algorithm:  38
 		Solved instances  birk :  24
 		Solved instances  dfs :  37
 		Solved instances  astar :  21
@@ -395,6 +425,7 @@ Comm discr type:  range
 		Avg time  dfs :  20.0483436459
 		Avg time  astar :  5.95610117619
 		N robots:  5
+		Instances solved (feas.) by at least one algorithm:  31
 		Solved instances  birk :  23
 		Solved instances  dfs :  30
 		Solved instances  astar :  23
@@ -408,6 +439,7 @@ Comm discr type:  range
 		Avg time  dfs :  6.50476183
 		Avg time  astar :  6.30628733913
 		N robots:  6
+		Instances solved (feas.) by at least one algorithm:  39
 		Solved instances  birk :  28
 		Solved instances  dfs :  39
 		Solved instances  astar :  22
@@ -421,6 +453,7 @@ Comm discr type:  range
 		Avg time  dfs :  17.5834492308
 		Avg time  astar :  7.22190209091
 		N robots:  7
+		Instances solved (feas.) by at least one algorithm:  38
 		Solved instances  birk :  35
 		Solved instances  dfs :  29
 		Solved instances  astar :  24
@@ -434,6 +467,7 @@ Comm discr type:  range
 		Avg time  dfs :  12.2661661379
 		Avg time  astar :  2.66588508333
 		N robots:  8
+		Instances solved (feas.) by at least one algorithm:  31
 		Solved instances  birk :  27
 		Solved instances  dfs :  23
 		Solved instances  astar :  15
@@ -447,6 +481,7 @@ Comm discr type:  range
 		Avg time  dfs :  31.9010605652
 		Avg time  astar :  2.87117073333
 		N robots:  9
+		Instances solved (feas.) by at least one algorithm:  34
 		Solved instances  birk :  27
 		Solved instances  dfs :  26
 		Solved instances  astar :  18
@@ -460,6 +495,7 @@ Comm discr type:  range
 		Avg time  dfs :  36.6275529615
 		Avg time  astar :  8.7350875
 		N robots:  10
+		Instances solved (feas.) by at least one algorithm:  37
 		Solved instances  birk :  36
 		Solved instances  dfs :  21
 		Solved instances  astar :  24

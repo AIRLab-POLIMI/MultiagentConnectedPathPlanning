@@ -97,14 +97,20 @@ if __name__ == "__main__":
 
                 #prepare data
                 p_dict = dict()
+                at_least_one_count = 0
                 for alg in algorithms:
                     p = dict(solved=0, winner=0, time_opt=0, times=[])
                     p_dict[alg] = p
 
                 for exp in range(gflags.FLAGS.n_exp):
                     #solved instances
+                    feasibility_found = False
                     for alg in algorithms:
                         if data[comm_discr_type][max_dist][n_robots][alg][exp][0] > -2:
+                            if not(feasibility_found):
+                                feasibility_found = True
+                                at_least_one_count += 1
+
                             p_dict[alg]['solved'] += 1
 
                     #comparison
@@ -144,6 +150,7 @@ if __name__ == "__main__":
                             p_dict[alg]['times'].append(data[comm_discr_type][max_dist][n_robots][alg][exp][1])
 
                 #print data
+                print '\t\tInstances solved (feas.) by at least one algorithm: ', at_least_one_count
                 for alg in algorithms:
                     print '\t\tSolved instances ', alg, ': ', p_dict[alg]['solved']
 
