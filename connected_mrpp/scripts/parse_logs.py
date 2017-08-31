@@ -67,7 +67,7 @@ if __name__ == "__main__":
         print 'Comm discr type: ', comm_discr_type
         data[comm_discr_type] = {}
 
-        for max_dist in range(gflags.FLAGS.min_range, gflags.FLAGS.max_range, gflags.FLAGS.step_range):
+        for max_dist in [25] + range(gflags.FLAGS.min_range, gflags.FLAGS.max_range, gflags.FLAGS.step_range):
             data[comm_discr_type][max_dist] = {}
             
             print '\tRange: ', max_dist

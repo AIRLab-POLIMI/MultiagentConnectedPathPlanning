@@ -1,5 +1,132 @@
 Parsing experiments on environment  offices
 Comm discr type:  range
+	Range:  25
+		N robots:  2
+		Instances solved (feas.) by at least one algorithm:  46
+		Solved instances  birk :  17
+		Solved instances  dfs :  46
+		Solved instances  astar :  46
+		Winner feas/unfeas  birk :  0
+		Winner feas/unfeas  dfs :  0
+		Winner feas/unfeas  astar :  0
+		Winner time-optimal  birk :  17
+		Winner time-optimal  dfs :  29
+		Winner time-optimal  astar :  29
+		Avg time  birk :  0.617076117647
+		Avg time  dfs :  0.0731708304348
+		Avg time  astar :  0.0722514695652
+		N robots:  3
+		Instances solved (feas.) by at least one algorithm:  39
+		Solved instances  birk :  38
+		Solved instances  dfs :  39
+		Solved instances  astar :  39
+		Winner feas/unfeas  birk :  0
+		Winner feas/unfeas  dfs :  0
+		Winner feas/unfeas  astar :  0
+		Winner time-optimal  birk :  38
+		Winner time-optimal  dfs :  1
+		Winner time-optimal  astar :  1
+		Avg time  birk :  2.66361289474
+		Avg time  dfs :  0.0959932076923
+		Avg time  astar :  0.178603587179
+		N robots:  4
+		Instances solved (feas.) by at least one algorithm:  46
+		Solved instances  birk :  39
+		Solved instances  dfs :  45
+		Solved instances  astar :  42
+		Winner feas/unfeas  birk :  1
+		Winner feas/unfeas  dfs :  3
+		Winner feas/unfeas  astar :  0
+		Winner time-optimal  birk :  39
+		Winner time-optimal  dfs :  7
+		Winner time-optimal  astar :  4
+		Avg time  birk :  6.8606725641
+		Avg time  dfs :  0.327102433333
+		Avg time  astar :  0.156753114286
+		N robots:  5
+		Instances solved (feas.) by at least one algorithm:  38
+		Solved instances  birk :  33
+		Solved instances  dfs :  36
+		Solved instances  astar :  29
+		Winner feas/unfeas  birk :  2
+		Winner feas/unfeas  dfs :  5
+		Winner feas/unfeas  astar :  0
+		Winner time-optimal  birk :  32
+		Winner time-optimal  dfs :  6
+		Winner time-optimal  astar :  0
+		Avg time  birk :  8.59755090909
+		Avg time  dfs :  2.70933210278
+		Avg time  astar :  2.02143792414
+		N robots:  6
+		Instances solved (feas.) by at least one algorithm:  40
+		Solved instances  birk :  36
+		Solved instances  dfs :  38
+		Solved instances  astar :  32
+		Winner feas/unfeas  birk :  2
+		Winner feas/unfeas  dfs :  2
+		Winner feas/unfeas  astar :  0
+		Winner time-optimal  birk :  35
+		Winner time-optimal  dfs :  4
+		Winner time-optimal  astar :  2
+		Avg time  birk :  11.2277758333
+		Avg time  dfs :  4.69527402368
+		Avg time  astar :  0.20388660625
+		N robots:  7
+		Instances solved (feas.) by at least one algorithm:  33
+		Solved instances  birk :  27
+		Solved instances  dfs :  33
+		Solved instances  astar :  26
+		Winner feas/unfeas  birk :  0
+		Winner feas/unfeas  dfs :  3
+		Winner feas/unfeas  astar :  0
+		Winner time-optimal  birk :  27
+		Winner time-optimal  dfs :  6
+		Winner time-optimal  astar :  2
+		Avg time  birk :  14.3177262963
+		Avg time  dfs :  15.4783028848
+		Avg time  astar :  0.261284657692
+		N robots:  8
+		Instances solved (feas.) by at least one algorithm:  28
+		Solved instances  birk :  24
+		Solved instances  dfs :  25
+		Solved instances  astar :  20
+		Winner feas/unfeas  birk :  3
+		Winner feas/unfeas  dfs :  1
+		Winner feas/unfeas  astar :  0
+		Winner time-optimal  birk :  24
+		Winner time-optimal  dfs :  4
+		Winner time-optimal  astar :  3
+		Avg time  birk :  15.7031595833
+		Avg time  dfs :  29.4520908
+		Avg time  astar :  0.289188685
+		N robots:  9
+		Instances solved (feas.) by at least one algorithm:  29
+		Solved instances  birk :  25
+		Solved instances  dfs :  19
+		Solved instances  astar :  17
+		Winner feas/unfeas  birk :  9
+		Winner feas/unfeas  dfs :  0
+		Winner feas/unfeas  astar :  1
+		Winner time-optimal  birk :  25
+		Winner time-optimal  dfs :  3
+		Winner time-optimal  astar :  4
+		Avg time  birk :  16.8648924
+		Avg time  dfs :  13.1628974526
+		Avg time  astar :  0.322237411765
+		N robots:  10
+		Instances solved (feas.) by at least one algorithm:  22
+		Solved instances  birk :  15
+		Solved instances  dfs :  18
+		Solved instances  astar :  13
+		Winner feas/unfeas  birk :  4
+		Winner feas/unfeas  dfs :  2
+		Winner feas/unfeas  astar :  0
+		Winner time-optimal  birk :  15
+		Winner time-optimal  dfs :  7
+		Winner time-optimal  astar :  4
+		Avg time  birk :  17.24832
+		Avg time  dfs :  16.8922097722
+		Avg time  astar :  1.05834915385
 	Range:  50
 		N robots:  2
 		Instances solved (feas.) by at least one algorithm:  42
