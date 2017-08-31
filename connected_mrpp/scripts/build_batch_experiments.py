@@ -16,7 +16,7 @@ import gflags
 
 from utils import get_graphs_and_image_from_files, plot_plan
 
-gflags.DEFINE_string('file_path', '../envs/offices.png', 'png file path')
+gflags.DEFINE_string('file_path', 'offices.png', 'png file path')
 
 gflags.DEFINE_string('phys_discr_type', 'uniform_grid', 'environment discretization - physical')
 gflags.DEFINE_integer('cell_size', 11, 'pixels making 1 grid cell (only for uniform grid discretization)')
@@ -24,10 +24,6 @@ gflags.DEFINE_integer('cell_size', 11, 'pixels making 1 grid cell (only for unif
 gflags.DEFINE_integer('min_range', 50, 'min communication range (in pixels)')
 gflags.DEFINE_integer('max_range', 201, 'max communication range (in pixels)')
 gflags.DEFINE_integer('step_range', 50, 'communication range step (in pixels)')
-
-
-gflags.DEFINE_string('output_phys', '../data/offices_phys', 'physical graph output')
-gflags.DEFINE_string('output_comm', '../data/offices_comm', 'communication graph output')
 
 gflags.DEFINE_integer('max_robots', 10, 'maximum number of robots')
 
@@ -77,27 +73,33 @@ if __name__ == "__main__":
     argv = gflags.FLAGS(sys.argv)
     random.seed(1)
 
+    output = gflags.FLAGS.file_path.split('.')[0]
+
     for comm_discr_type in comm_discr_types:
 
         for max_dist in range(gflags.FLAGS.min_range, gflags.FLAGS.max_range, gflags.FLAGS.step_range):
             print 'Range: ', max_dist
-            #create graphs file
-            os.system('python create_graph_from_png.py --file_path=' + gflags.FLAGS.file_path + \
+
+            command = 'python create_graph_from_png.py --file_path=../envs/' + gflags.FLAGS.file_path + \
                       ' --phys_discr_type=' + gflags.FLAGS.phys_discr_type + \
                       ' --comm_discr_type=' + comm_discr_type + \
                       ' --cell_size=' + str(gflags.FLAGS.cell_size) + \
                       ' --range=' + str(max_dist) + \
-                      ' --output_phys=' + gflags.FLAGS.output_phys + \
-                      ' --output_comm=' + gflags.FLAGS.output_comm + \
-                      ' --debug=False')
+                      ' --output_phys=../data/' + output + '_phys' + \
+                      ' --output_comm=../data/' + output + '_comm' + \
+                      ' --debug=False'
+            
+            #print command
+            #create graphs file
+            os.system(command)
 
             #read graphs files
-            phys_graph_file = gflags.FLAGS.output_phys.split('/')[2] + \
+            phys_graph_file = output + '_phys' + \
                               '_' + gflags.FLAGS.phys_discr_type + \
                               '_' + str(gflags.FLAGS.cell_size) + \
                               '_' + comm_discr_type + \
                               '_' + str(max_dist) + '.graphml'
-            comm_graph_file = gflags.FLAGS.output_comm.split('/')[2] + \
+            comm_graph_file = output + '_comm' + \
                               '_' + gflags.FLAGS.phys_discr_type + \
                               '_' + str(gflags.FLAGS.cell_size) + \
                               '_' + comm_discr_type + \
@@ -130,7 +132,7 @@ if __name__ == "__main__":
                         if(min_distance > gflags.FLAGS.min_dist/gflags.FLAGS.cell_size): ok = True
 
                     #write new exp file
-                    exp_name = gflags.FLAGS.file_path.split('/')[2].split('.')[0] + \
+                    exp_name = gflags.FLAGS.file_path.split('.')[0] + \
                                '_' + gflags.FLAGS.phys_discr_type + \
                                '_' + str(gflags.FLAGS.cell_size) + \
                                '_' + comm_discr_type + \
