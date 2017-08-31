@@ -1,0 +1,4 @@
+phys_graph b-w-open_phys_uniform_grid_13_range_100.graphml
+comm_graph b-w-open_comm_uniform_grid_13_range_100.graphml
+start 565 523 481 616 765 822 1017 482 390 558 
+goal 1373 1482 1224 1487 1323 1000 1646 1494 1252 1687 
