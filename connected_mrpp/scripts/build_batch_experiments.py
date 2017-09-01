@@ -33,6 +33,8 @@ gflags.DEFINE_integer('min_dist', 200, 'minimum distance to travel between start
 
 gflags.DEFINE_bool('debug', False, 'debug mode active')
 
+gflags.DEFINE_float('vicinity_threshold', 0.75, 'vicinity threshold for start/goal configs')
+
 comm_discr_types = ['range']
 
 def get_random_connected_config(G_C, size, max_dist):
@@ -42,16 +44,23 @@ def get_random_connected_config(G_C, size, max_dist):
         neighbor_found = False
         while(not(neighbor_found)):
             vertex = random.choice(config)
+            #print vertex
             candidates = G_C.neighbors(vertex)
             candidates = filter(lambda x: (G_C.vs[vertex]['x_coord'] - G_C.vs[x]['x_coord'])**2 + 
-                                          (G_C.vs[vertex]['y_coord'] - G_C.vs[x]['y_coord'])**2 >= (0.75*max_dist)**2, candidates)
+                                          (G_C.vs[vertex]['y_coord'] - G_C.vs[x]['y_coord'])**2 >= (gflags.FLAGS.vicinity_threshold*max_dist)**2, candidates)
             candidates_final = []
             for cand in candidates:
                 if cand not in config:
                     candidates_final.append(cand)
-            if (len(candidates_final) > 0):
+
+            if len(candidates_final) > 0:
                 neighbor_found = True
                 config.append(random.choice(candidates_final))
+
+            #elif len(candidates_final) == 0:
+            #    if(len(config) == 1):
+            #        config = random.sample(range(len(G_C.vs)), 1)
+            #        #print config
 
     return config
 
@@ -120,7 +129,7 @@ if __name__ == "__main__":
                 print 'N robots: ', n_robots
 
                 for exp in range(gflags.FLAGS.n_exp):
-                    print exp
+                    #print exp
                     #choose random start-goal for n_robots
                     ok = False
                     while(not(ok)):
