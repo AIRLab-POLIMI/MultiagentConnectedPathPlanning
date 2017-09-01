@@ -1,0 +1,4 @@
+phys_graph b-w-open_phys_uniform_grid_13_range_25.graphml
+comm_graph b-w-open_comm_uniform_grid_13_range_25.graphml
+start 1925 1987 1986 1985 1924 2047 2048 2046 1984 2109 
+goal 1171 1203 1204 1135 1172 1205 1136 1137 1098 1233 
