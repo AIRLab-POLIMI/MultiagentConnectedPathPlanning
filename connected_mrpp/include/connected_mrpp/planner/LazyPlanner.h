@@ -33,7 +33,7 @@ namespace connected_mrpp
 class LazyPlanner: public AbstractPlanner
 {
 public:
-	LazyPlanner(Graph& graph, std::chrono::duration<double> Tmax);
+	LazyPlanner(Graph& graph, Objective* cost, Objective* heuristic, std::chrono::duration<double> Tmax);
 
 protected:
     Configuration findBestConfiguration(Configuration& pi);

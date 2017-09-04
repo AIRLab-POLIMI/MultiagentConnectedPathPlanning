@@ -31,7 +31,8 @@ using namespace std::chrono;
 namespace connected_mrpp
 {
 
-DFS_Planner::DFS_Planner(Graph& graph, duration<double> Tmax) : LazyPlanner(graph, Tmax)
+DFS_Planner::DFS_Planner(Graph& graph, Objective* cost, Objective* heuristic, duration<double> Tmax)
+		: LazyPlanner(graph, cost, heuristic, Tmax)
 {
 
 }

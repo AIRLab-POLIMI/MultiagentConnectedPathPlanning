@@ -21,7 +21,7 @@
  *  along with connected_mrpp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "connected_mrpp/planner/Planner.h"
+#include "../include/connected_mrpp/planner/Astar.h"
 
 #include <ros/ros.h>
 
@@ -35,12 +35,13 @@ using namespace std::chrono;
 namespace connected_mrpp
 {
 
-Planner::Planner(Graph& graph, duration<double> Tmax) : LazyPlanner(graph, Tmax)
+Astar::Astar(Graph& graph, Objective* cost, Objective* heuristic, duration<double> Tmax)
+		: LazyPlanner(graph, cost, heuristic, Tmax)
 {
 
 }
 
-bool Planner::makePlanImpl()
+bool Astar::makePlanImpl()
 {
     ROS_INFO("Planner started");
 
@@ -91,7 +92,7 @@ bool Planner::makePlanImpl()
     return false;
 }
 
-void Planner::updateConfiguration(Configuration& pi, Configuration& pi_n)
+void Astar::updateConfiguration(Configuration& pi, Configuration& pi_n)
 {
 	double d = computeCost(pi, pi_n);
 
@@ -108,7 +109,7 @@ void Planner::updateConfiguration(Configuration& pi, Configuration& pi_n)
     }
 }
 
-double Planner::bestLeafCost(Configuration& pi)
+double Astar::bestLeafCost(Configuration& pi)
 {
 	auto&& sonList = sons[pi];
 
@@ -126,7 +127,7 @@ double Planner::bestLeafCost(Configuration& pi)
 	return best;
 }
 
-void Planner::clearInstanceSpecific()
+void Astar::clearInstanceSpecific()
 {
 	//Clear superclass stuff
 	LazyPlanner::clearInstanceSpecific();

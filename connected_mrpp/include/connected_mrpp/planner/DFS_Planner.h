@@ -34,8 +34,7 @@ namespace connected_mrpp
 class DFS_Planner : public LazyPlanner
 {
 public:
-	DFS_Planner(Graph& graph, std::chrono::duration<double> Tmax);
-
+	DFS_Planner(Graph& graph, Objective* cost, Objective* heuristic, std::chrono::duration<double> Tmax);
 
 protected:
     virtual bool makePlanImpl() override;

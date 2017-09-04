@@ -31,8 +31,8 @@ using namespace std::chrono;
 namespace connected_mrpp
 {
 
-Birk::Birk(Graph& graph, duration<double> Tmax, unsigned int numSamples)
-	: AbstractPlanner(graph, Tmax), numSamples(numSamples)
+Birk::Birk(Graph& graph, Objective* utility, duration<double> Tmax, unsigned int numSamples)
+	: AbstractPlanner(graph, nullptr, utility, Tmax), numSamples(numSamples)
 {
 
 }

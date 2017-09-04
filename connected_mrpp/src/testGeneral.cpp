@@ -27,12 +27,12 @@
 #include <string>
 
 #include "connected_mrpp/graph/GenericGraph.h"
-#include "connected_mrpp/planner/Planner.h"
 #include "connected_mrpp/planner/DFS_Planner.h"
 #include "connected_mrpp/planner/Birk.h"
 #include "connected_mrpp/Experiment.h"
 
 #include <boost/graph/graphml.hpp>
+#include "connected_mrpp/planner/Astar.h"
 
 using namespace std;
 using namespace boost;
@@ -40,24 +40,28 @@ using namespace connected_mrpp;
 
 int main(int argc, char** argv)
 {
-	if(argc < 4)
+	if(argc < 6)
 	{
-		cout << "Missing experimentFile algorithm and deadline" << endl;
+		cout << "Missing command line arguments" << endl;
 		return -1;
 	}
 
 	std::string expFile(argv[1]);
 	std::string alg(argv[2]);
-	std::chrono::duration<double> Tmax(stod(argv[3]));
+	std::string cost_type(argv[3]);
+	std::string heuristic_type(argv[4]);
+	std::chrono::duration<double> Tmax(stod(argv[5]));
+
 
 	std::string expName = expFile.substr(expFile.find_last_of("/")+1, expFile.length());
 	std::string dataPath = expFile.substr(0, expFile.find_last_of("/"));
 	std::string basePath = dataPath.substr(0, dataPath.find_last_of("/"));
 	std::string logPath = basePath + "/logs";
 
-	if(argc >= 5)
+
+	if(argc >= 7)
 	{
-		std::string logSubfolder(argv[4]);
+		std::string logSubfolder(argv[6]);
 		logPath += "/" + logSubfolder;
 	}
 
@@ -87,19 +91,60 @@ int main(int argc, char** argv)
 	GenericGraph graph(physical, comunication);
 
 
+	string objectives_types[] = {cost_type, heuristic_type};
+	Objective* objectives[] = {nullptr, nullptr};
+
+	for (int i = 0; i < 2; i++)
+	{
+		auto o = objectives_types[i];
+		if(o == "zero")
+		{
+			objectives[i] = new ZeroObjective();
+		}
+		else if(o == "step")
+		{
+			objectives[i] = new StepObjective();
+		}
+		else if(o == "distance")
+		{
+			objectives[i] = new DistanceObjective(graph);
+		}
+		else if(o == "shortest_path")
+		{
+			objectives[i] = new ShortestPathObjective(graph);
+		}
+		else if(o == "sum_shortest_path")
+		{
+			objectives[i] = new SumShortestPathObjective(graph);
+		}
+		else if(o == "null")
+		{
+			objectives[i] = nullptr;
+		}
+		else
+		{
+			std::cout << "Error! objective not recognized" << std::endl;
+			return -1;
+		}
+	}
+
+
+
 	AbstractPlanner* planner;
+
+
 
 	if(alg == "astar")
 	{
-		planner = new Planner(graph, Tmax);
+		planner = new Astar(graph, objectives[0], objectives[1], Tmax);
 	}
 	else if (alg == "birk")
 	{
-		planner = new Birk(graph, Tmax);
+		planner = new Birk(graph, objectives[1],  Tmax);
 	}
 	else if (alg == "dfs")
 	{
-		planner = new DFS_Planner(graph, Tmax);
+		planner = new DFS_Planner(graph, objectives[0], objectives[1],  Tmax);
 	}
 	else
 	{
@@ -132,5 +177,11 @@ int main(int argc, char** argv)
 	}
 
 	ofs << "t " << planner->getElapsedTime() << " s" << std::endl;
+
+	for (int i = 0; i < 2; i++)
+	{
+		if(objectives[i])
+			delete objectives[i];
+	}
 
 }

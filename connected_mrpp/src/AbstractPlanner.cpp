@@ -36,8 +36,8 @@ namespace connected_mrpp
 const Configuration AbstractPlanner::PI_NULL;
 
 
-AbstractPlanner::AbstractPlanner(Graph& graph, duration<double> Tmax)
-	: graph(graph), Tmax(Tmax), Tcurrent(0)
+AbstractPlanner::AbstractPlanner(Graph& graph, Objective* cost, Objective* heuristic, duration<double> Tmax)
+	: graph(graph), cost(cost), heuristic(heuristic), Tmax(Tmax), Tcurrent(0)
 {
 
 }
@@ -121,28 +121,12 @@ bool AbstractPlanner::timeOut()
 
 double AbstractPlanner::computeCost(Configuration& pi, Configuration& pi_n)
 {
-	double cost = 0;
-	for(unsigned int i = 0; i < pi.agent.size(); i++)
-	{
-		auto v = pi.agent[i];
-		auto v_n = pi_n.agent[i];
-		cost += graph.cost(v, v_n);
-	}
-
-	return cost;
+	return cost->computeValue(pi, pi_n);
 }
 
 double AbstractPlanner::computeHeuristic(Configuration& pi)
 {
-	double h = 0;
-	for(unsigned int i = 0; i < pi.agent.size(); i++)
-	{
-		auto v = pi.agent[i];
-		auto v_n = pi_goal.agent[i];
-		h += graph.heuristic(v, v_n);
-	}
-
-	return h;
+	return heuristic->computeValue(pi, pi_goal);
 }
 
 bool AbstractPlanner::isOneStepReachable(Configuration& pi, Configuration& pi_n)

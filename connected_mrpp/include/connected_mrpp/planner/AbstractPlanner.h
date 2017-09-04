@@ -26,6 +26,7 @@
 
 #include "connected_mrpp/graph/Graph.h"
 #include "connected_mrpp/planner/Configuration.h"
+#include "connected_mrpp/planner/Objective.h"
 
 #include <map>
 #include <chrono>
@@ -36,7 +37,7 @@ namespace connected_mrpp
 class AbstractPlanner
 {
 public:
-	AbstractPlanner(Graph& graph, std::chrono::duration<double> Tmax);
+	AbstractPlanner(Graph& graph, Objective* cost, Objective* heuristic, std::chrono::duration<double> Tmax);
 
     bool makePlan(const Configuration& start,
                   const Configuration& goal);
@@ -75,6 +76,9 @@ private:
     std::chrono::steady_clock::time_point t0;
     std::chrono::duration<double> Tmax;
     std::chrono::duration<double> Tcurrent;
+
+    Objective* cost;
+    Objective* heuristic;
 
 };
 

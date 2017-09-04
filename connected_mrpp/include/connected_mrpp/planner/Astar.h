@@ -31,11 +31,11 @@
 namespace connected_mrpp
 {
 
-class Planner : public LazyPlanner
+class Astar : public LazyPlanner
 {
 
 public:
-	Planner(Graph& graph, std::chrono::duration<double> Tmax);
+	Astar(Graph& graph, Objective* cost, Objective* heuristic, std::chrono::duration<double> Tmax);
 
 
 protected:

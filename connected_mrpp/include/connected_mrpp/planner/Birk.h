@@ -34,7 +34,7 @@ namespace connected_mrpp
 class Birk : public AbstractPlanner
 {
 public:
-	Birk(Graph& graph, std::chrono::duration<double> Tmax, unsigned int numSamples = 100);
+	Birk(Graph& graph, Objective* utility, std::chrono::duration<double> Tmax, unsigned int numSamples = 100);
 
 protected:
     virtual bool makePlanImpl() override;

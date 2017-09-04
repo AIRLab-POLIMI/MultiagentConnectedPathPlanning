@@ -31,7 +31,8 @@ using namespace std::chrono;
 namespace connected_mrpp
 {
 
-LazyPlanner::LazyPlanner(Graph& graph, duration<double> Tmax) : AbstractPlanner(graph, Tmax)
+LazyPlanner::LazyPlanner(Graph& graph, Objective* cost, Objective* heuristic, duration<double> Tmax)
+	: AbstractPlanner(graph,cost, heuristic, Tmax)
 {
 
 }
