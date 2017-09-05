@@ -128,11 +128,7 @@ int main(int argc, char** argv)
 		}
 	}
 
-
-
 	AbstractPlanner* planner;
-
-
 
 	if(alg == "astar")
 	{

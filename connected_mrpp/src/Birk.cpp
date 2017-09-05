@@ -39,57 +39,60 @@ Birk::Birk(Graph& graph, Objective* utility, duration<double> Tmax, unsigned int
 
 bool Birk::makePlanImpl()
 {
-	visited_configs.insert(pi_start);
-
-	Configuration pi = pi_start;
-
-
-	bool progress = true;
-
-	while(progress && !timeOut())
+	while(!timeOut())
 	{
-		if(isOneStepReachable(pi, pi_goal))
+		visited_configs.clear();
+		visited_configs.insert(pi_start);
+
+		Configuration pi = pi_start;
+
+		bool progress = true;
+
+		while(progress && !timeOut())
 		{
-			parent[pi_goal] = pi;
-        	ROS_INFO("Plan found");
-			return true;
-		}
-		else
-		{
-			std::vector<Configuration> candidates;
-
-			for(int i = 0; i < numSamples && i < maxNextConfigurations(pi) - 1; i++)
+			if(isOneStepReachable(pi, pi_goal))
 			{
-				auto&& sample = sampleConfiguration(pi);
-				candidates.push_back(sample);
-			}
-
-			Configuration pi_best = PI_NULL;
-			double best_utility = std::numeric_limits<double>::infinity();
-
-			for(auto& pi_n : candidates)
-			{
-				double pi_n_utility = computeUtility(pi_n);
-
-				if(pi_n_utility < best_utility)
-				{
-					pi_best = pi_n;
-					best_utility = pi_n_utility;
-				}
-			}
-
-			if (pi_best == PI_NULL || visited_configs.count(pi_best) != 0)
-			{
-				progress = false;
+				parent[pi_goal] = pi;
+				ROS_INFO("Plan found");
+				return true;
 			}
 			else
 			{
-				parent[pi_best] = pi;
-				pi = pi_best;
-				visited_configs.insert(pi);
-			}
-		}
+				std::vector<Configuration> candidates;
 
+				for(int i = 0; i < numSamples && i < maxNextConfigurations(pi) - 1; i++)
+				{
+					auto&& sample = sampleConfiguration(pi);
+					candidates.push_back(sample);
+				}
+
+				Configuration pi_best = PI_NULL;
+				double best_utility = std::numeric_limits<double>::infinity();
+
+				for(auto& pi_n : candidates)
+				{
+					double pi_n_utility = computeUtility(pi_n);
+
+					if(pi_n_utility < best_utility)
+					{
+						pi_best = pi_n;
+						best_utility = pi_n_utility;
+					}
+				}
+
+				if (pi_best == PI_NULL || visited_configs.count(pi_best) != 0)
+				{
+					progress = false;
+				}
+				else
+				{
+					parent[pi_best] = pi;
+					pi = pi_best;
+					visited_configs.insert(pi);
+				}
+			}
+
+		}
 	}
 
     ROS_INFO("No plan found");
