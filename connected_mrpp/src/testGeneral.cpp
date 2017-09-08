@@ -132,7 +132,7 @@ int main(int argc, char** argv)
 
 	if(alg == "astar")
 	{
-		planner = new Astar(graph, objectives[0], objectives[1], Tmax, 100);
+		planner = new Astar(graph, objectives[0], objectives[1], Tmax, 1000);
 	}
 	else if (alg == "birk")
 	{
