@@ -30,8 +30,9 @@ gflags.DEFINE_integer('n_jobs', -1, 'number of parallel experiments')
 
 comm_discr_types = ['range']
 #algorithms = ['birk', 'dfs', 'astar']
-algorithms = ['birk']
-algoritms_params = {'birk': 'null sum_shortest_path', 'dfs': 'zero sum_shortest_path', 'astar': 'distance sum_shortest_path'}
+#algorithms = ['birk']
+algorithms = ['astar']
+algoritms_params = {'birk': 'null sum_shortest_path', 'dfs': 'zero sum_shortest_path', 'astar': 'epsilon_distance sum_shortest_path'}
 
 if __name__ == "__main__":
     """

@@ -109,6 +109,10 @@ int main(int argc, char** argv)
 		{
 			objectives[i] = new DistanceObjective(graph);
 		}
+		else if(o == "epsilon_distance")
+		{
+			objectives[i] = new DistanceObjective(graph, 0.1);
+		}
 		else if(o == "shortest_path")
 		{
 			objectives[i] = new ShortestPathObjective(graph);

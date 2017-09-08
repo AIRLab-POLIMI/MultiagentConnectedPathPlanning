@@ -61,8 +61,11 @@ protected:
 class DistanceObjective : public GraphObjective
 {
 public:
-	DistanceObjective(Graph& graph);
+	DistanceObjective(Graph& graph, double epsilon = 1);
 	virtual double computeValue(Configuration& pi, Configuration& pi_n);
+
+private:
+	double epsilon;
 
 };
 
