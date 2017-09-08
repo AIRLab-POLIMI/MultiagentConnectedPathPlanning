@@ -61,12 +61,8 @@ protected:
 class DistanceObjective : public GraphObjective
 {
 public:
-	DistanceObjective(Graph& graph, double epsilon = 1);
+	DistanceObjective(Graph& graph);
 	virtual double computeValue(Configuration& pi, Configuration& pi_n);
-
-private:
-	double epsilon;
-
 };
 
 class ShortestPathObjective : public GraphObjective
@@ -74,6 +70,7 @@ class ShortestPathObjective : public GraphObjective
 public:
 	ShortestPathObjective(Graph& graph);
 	virtual double computeValue(Configuration& pi, Configuration& pi_n);
+
 };
 
 class SumShortestPathObjective : public GraphObjective

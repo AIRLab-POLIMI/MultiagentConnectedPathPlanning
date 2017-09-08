@@ -109,10 +109,6 @@ int main(int argc, char** argv)
 		{
 			objectives[i] = new DistanceObjective(graph);
 		}
-		else if(o == "epsilon_distance")
-		{
-			objectives[i] = new DistanceObjective(graph, 0.1);
-		}
 		else if(o == "shortest_path")
 		{
 			objectives[i] = new ShortestPathObjective(graph);
@@ -136,7 +132,7 @@ int main(int argc, char** argv)
 
 	if(alg == "astar")
 	{
-		planner = new Astar(graph, objectives[0], objectives[1], Tmax);
+		planner = new Astar(graph, objectives[0], objectives[1], Tmax, 100);
 	}
 	else if (alg == "birk")
 	{

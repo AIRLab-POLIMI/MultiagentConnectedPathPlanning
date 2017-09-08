@@ -48,7 +48,7 @@ GraphObjective::GraphObjective(Graph& graph) : graph(graph)
 }
 
 
-DistanceObjective::DistanceObjective(Graph& graph, double epsilon) : GraphObjective(graph), epsilon(epsilon)
+DistanceObjective::DistanceObjective(Graph& graph) : GraphObjective(graph)
 {
 
 }
@@ -63,7 +63,7 @@ double DistanceObjective::computeValue(Configuration& pi, Configuration& pi_n)
 		J += graph.cost(v, v_n);
 	}
 
-	return J*epsilon;
+	return J;
 }
 
 

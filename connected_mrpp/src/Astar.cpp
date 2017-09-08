@@ -21,7 +21,7 @@
  *  along with connected_mrpp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/connected_mrpp/planner/Astar.h"
+#include "connected_mrpp/planner/Astar.h"
 
 #include <ros/ros.h>
 
@@ -35,8 +35,8 @@ using namespace std::chrono;
 namespace connected_mrpp
 {
 
-Astar::Astar(Graph& graph, Objective* cost, Objective* heuristic, duration<double> Tmax)
-		: LazyPlanner(graph, cost, heuristic, Tmax)
+Astar::Astar(Graph& graph, Objective* cost, Objective* heuristic, duration<double> Tmax, double epsilon)
+		: LazyPlanner(graph, cost, heuristic, Tmax), epsilon(epsilon)
 {
 
 }
@@ -47,7 +47,7 @@ bool Astar::makePlanImpl()
 
     //Init variables
     g[pi_start] = 0.0;
-    open.insert(pi_start, 0, computeHeuristic(pi_start));
+    open.insert(pi_start, 0, epsilon*computeHeuristic(pi_start));
 
     //Compute plan
     while(!open.empty() && !timeOut())
@@ -105,7 +105,7 @@ void Astar::updateConfiguration(Configuration& pi, Configuration& pi_n)
 
         g[pi_n] = g_pi_n;
         parent[pi_n] = pi;
-        open.insert(pi_n, g_pi_n, computeHeuristic(pi_n));
+        open.insert(pi_n, g_pi_n, epsilon*computeHeuristic(pi_n));
     }
 }
 
@@ -119,7 +119,7 @@ double Astar::bestLeafCost(Configuration& pi)
 	{
 		if(closed.count(son) == 0)
 		{
-			double current = g[son] + computeHeuristic(son);
+			double current = g[son] + epsilon*computeHeuristic(son);
 			best = min(best, current);
 		}
 	}
