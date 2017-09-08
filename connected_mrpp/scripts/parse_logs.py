@@ -43,7 +43,7 @@ gflags.DEFINE_string('latex_tab', 'latex_tab.tex', 'file containing latex-format
 
 
 comm_discr_types = ['range']
-algorithms = ['birk', 'dfs', 'astar']
+algorithms = ['birk', 'dfs']
 
 
 def joyplot(data, ax=None, 
@@ -170,6 +170,7 @@ if __name__ == "__main__":
                 for alg in algorithms:
                     p = dict(solved=0, winner=0, time_opt=0, times=[])
                     p_dict[alg] = p
+                    avg_time[n_robots][max_dist][alg] = []
 
                 for exp in range(gflags.FLAGS.n_exp):
                     #solved instances
@@ -197,16 +198,24 @@ if __name__ == "__main__":
 
                     #Solution time
                     best = []
+                    fflag = True
                     for alg in algorithms:
                         if data[comm_discr_type][max_dist][n_robots][alg][exp][0] > -2:
                             if len(best) == 0:
                                 best = [alg]
-                            elif (data[comm_discr_type][max_dist][n_robots][alg][exp][0] > \
+                            elif (data[comm_discr_type][max_dist][n_robots][alg][exp][0] < \
                                 data[comm_discr_type][max_dist][n_robots][best[0]][exp][0]):
                                 best = [alg]
                             elif (data[comm_discr_type][max_dist][n_robots][alg][exp][0] == \
                                 data[comm_discr_type][max_dist][n_robots][best[0]][exp][0]):
                                 best.append(alg)
+                        else :
+                            fflag = False
+
+
+                    if fflag :
+                        for alg in algorithms:
+                            avg_time[n_robots][max_dist][alg].append(data[comm_discr_type][max_dist][n_robots][alg][exp][0])
                                 
 
                     if len(best) > 0:
@@ -217,8 +226,8 @@ if __name__ == "__main__":
                     for alg in algorithms:
                         if data[comm_discr_type][max_dist][n_robots][alg][exp][0] > -2 :
                             p_dict[alg]['times'].append(data[comm_discr_type][max_dist][n_robots][alg][exp][1])
-                        elif gflags.FLAGS.show_delta == 'true'  :
-                            p_dict[alg]['times'].append(float(gflags.FLAGS.deadline))
+                        #elif gflags.FLAGS.show_delta != 'true'  :
+                        #    p_dict[alg]['times'].append(float(gflags.FLAGS.deadline))
                         else :
                             p_dict[alg]['times'].append(float(gflags.FLAGS.deadline))
 
@@ -254,11 +263,11 @@ if __name__ == "__main__":
                         elif min_times[j] > p_dict[alg]['times'][j] :
                             min_times[j] = p_dict[alg]['times'][j]
 
-                for alg in algorithms:
+                '''for alg in algorithms:
                     if gflags.FLAGS.show_delta == 'true' :
                         avg_time[n_robots][max_dist][alg] = [p_dict[alg]['times'][j] - min_times[j] for j in xrange(len(p_dict[alg]['times']))]
                     else :
-                        avg_time[n_robots][max_dist][alg] = p_dict[alg]['times']
+                        avg_time[n_robots][max_dist][alg] = p_dict[alg]['times']'''
 
     ###### Create Boxplots ######
 
@@ -296,7 +305,10 @@ if __name__ == "__main__":
             for alg in algorithms :
                 t_dataset = t_dataset + avg_time[r][c][alg]
                 n_dataset = n_dataset + [r for j in avg_time[r][c][alg]]
-                a_dataset = a_dataset + [alg for j in avg_time[r][c][alg]]
+                if alg == "birk" :
+                    a_dataset = a_dataset + ["RB" for j in avg_time[r][c][alg]]
+                else :
+                    a_dataset = a_dataset + ["DFS" for j in avg_time[r][c][alg]]
                 c_dataset = c_dataset + [c for j in avg_time[r][c][alg]]
 
     #dset = {'times' : pd.Series(t_dataset), 'agents' : pd.Series(n_dataset), 'alg': pd.Series(a_dataset)}
@@ -310,7 +322,7 @@ if __name__ == "__main__":
 
     csv_file = open(gflags.FLAGS.env_name + "_data.csv", 'w+')
 
-    csv_file.write("times,agents,alg,range\n")
+    csv_file.write("Times,Agents,Algorithm,Range\n")
 
     for i in xrange(len(t_dataset)) :
         csv_file.write(str(t_dataset[i]) + ",")
@@ -318,7 +330,7 @@ if __name__ == "__main__":
         csv_file.write(str(a_dataset[i]) + ",")
         csv_file.write(str(c_dataset[i]) + "\n")
 
-    #plt.show()
+    print max(t_dataset)
 
 
     ###### Create a Latex File ######
