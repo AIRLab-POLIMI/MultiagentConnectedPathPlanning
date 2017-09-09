@@ -21,32 +21,44 @@
  *  along with connected_mrpp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_CONNECTED_MRPP_PLANNER_DFS_PLANNER_H_
-#define INCLUDE_CONNECTED_MRPP_PLANNER_DFS_PLANNER_H_
+#ifndef INCLUDE_CONNECTED_MRPP_PLANNER_SAMPLEBASEDPLANNER_H_
+#define INCLUDE_CONNECTED_MRPP_PLANNER_SAMPLEBASEDPLANNER_H_
+#include "connected_mrpp/planner/AbstractPlanner.h"
 
-#include "connected_mrpp/planner/LazyPlanner.h"
-
-#include <list>
+#include <set>
 
 namespace connected_mrpp
 {
 
-class DFS_Planner : public LazyPlanner
+class SampleBasedPlanner : public AbstractPlanner
 {
 public:
-	DFS_Planner(Graph& graph, Objective* cost, Objective* heuristic, std::chrono::duration<double> Tmax);
+	SampleBasedPlanner(Graph& graph, Objective* utility, std::chrono::duration<double> Tmax, unsigned int numSamples);
 
 protected:
     virtual bool makePlanImpl() override;
     virtual void clearInstanceSpecific() override;
 
+    virtual Configuration selectConfiguration(const std::vector<Configuration>& candidates) = 0;
+
+protected:
+    double computeUtility(const Configuration& pi);
+
 private:
-    std::list<Configuration> stack;
+    unsigned int maxNextConfigurations(Configuration& pi);
+    void sampleConfigurations(Configuration& pi, std::vector<Configuration>& candidates);
+    Configuration sampleConfiguration(Configuration& pi);
+
+private:
+    std::set<Configuration> visited_configs;
+
+    const unsigned int numSamples;
 
 };
 
-
-
 }
 
-#endif /* INCLUDE_CONNECTED_MRPP_PLANNER_DFS_PLANNER_H_ */
+
+
+
+#endif /* INCLUDE_CONNECTED_MRPP_PLANNER_SAMPLEBASEDPLANNER_H_ */

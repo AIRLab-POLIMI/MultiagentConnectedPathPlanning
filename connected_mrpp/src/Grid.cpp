@@ -110,7 +110,7 @@ double Grid::heuristic(int v, int v_next)
     return sqrt( (X2-X1)*(X2-X1) + (Y2-Y1)*(Y2-Y1) );
 }
 
-bool Grid::isConnected(std::vector<int>& v_list)
+bool Grid::isConnected(const std::vector<int>& v_list)
 {
 	//TODO implement
 	return true;

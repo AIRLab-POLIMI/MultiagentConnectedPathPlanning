@@ -86,7 +86,7 @@ unsigned int GenericGraph::degree(int v)
 }
 
 
-bool GenericGraph::isConnected(std::vector<int>& v_list)
+bool GenericGraph::isConnected(const std::vector<int>& v_list)
 {
 	std::set<unsigned int> v_set(v_list.begin(), v_list.end());
 

@@ -2,7 +2,7 @@
  * connected_mrpp,
  *
  *
- * Copyright (C) 2016 Davide Tateo
+ * Copyright (C) 2017 Davide Tateo
  * Versione 1.0
  *
  * This file is part of connected_mrpp.
@@ -21,29 +21,30 @@
  *  along with connected_mrpp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_CONNECTED_MRPP_GRID_GRID_H_
-#define INCLUDE_CONNECTED_MRPP_GRID_GRID_H_
+#ifndef INCLUDE_CONNECTED_MRPP_PLANNER_GREEDYRANDOMIZED_H_
+#define INCLUDE_CONNECTED_MRPP_PLANNER_GREEDYRANDOMIZED_H_
 
-#include <vector>
+#include "connected_mrpp/planner/SampleBasedPlanner.h"
+#include "connected_mrpp/planner/SamplingStrategy.h"
 
 namespace connected_mrpp
 {
 
-class Graph
+class GreedyRandomized : public SampleBasedPlanner
 {
-
 public:
-    virtual double cost(int v, int v_next) = 0;
-    virtual double heuristic(int v, int v_next) = 0;
-    virtual std::vector<int> getNeighbors(int v) = 0;
-    virtual bool isNeighbor(int v, int v_next) = 0;
-    virtual unsigned int degree(int v) = 0;
-    virtual bool isConnected(const std::vector<int>& v_list) = 0;
+	GreedyRandomized(Graph& graph, Objective* utility, std::chrono::duration<double> Tmax,
+			SamplingStrategy& sampler, unsigned int numSamples = 100);
 
-    virtual ~Graph() { }
+protected:
+	virtual Configuration selectConfiguration(const std::vector<Configuration>& candidates) override;
+
+private:
+	SamplingStrategy& sampler;
 
 };
 
 }
 
-#endif /* INCLUDE_CONNECTED_MRPP_GRID_GRID_H_ */
+
+#endif /* INCLUDE_CONNECTED_MRPP_PLANNER_GREEDYRANDOMIZED_H_ */

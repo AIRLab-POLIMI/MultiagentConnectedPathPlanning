@@ -31,13 +31,13 @@ Objective::~Objective()
 
 }
 
-double ZeroObjective::computeValue(Configuration& pi, Configuration& pi_n)
+double ZeroObjective::computeValue(const Configuration& pi, const Configuration& pi_n)
 {
 	return 0;
 }
 
 
-double StepObjective::computeValue(Configuration& pi, Configuration& pi_n)
+double StepObjective::computeValue(const Configuration& pi, const Configuration& pi_n)
 {
 	return 1;
 }
@@ -53,7 +53,7 @@ DistanceObjective::DistanceObjective(Graph& graph) : GraphObjective(graph)
 
 }
 
-double DistanceObjective::computeValue(Configuration& pi, Configuration& pi_n)
+double DistanceObjective::computeValue(const Configuration& pi, const Configuration& pi_n)
 {
 	double J = 0;
 	for(unsigned int i = 0; i < pi.agent.size(); i++)
@@ -72,7 +72,7 @@ ShortestPathObjective::ShortestPathObjective(Graph& graph) : GraphObjective(grap
 
 }
 
-double ShortestPathObjective::computeValue(Configuration& pi, Configuration& pi_n)
+double ShortestPathObjective::computeValue(const Configuration& pi, const Configuration& pi_n)
 {
 	double J = 0;
 	for(unsigned int i = 0; i < pi.agent.size(); i++)
@@ -93,7 +93,7 @@ SumShortestPathObjective::SumShortestPathObjective(Graph& graph) : GraphObjectiv
 
 }
 
-double SumShortestPathObjective::computeValue(Configuration& pi, Configuration& pi_n)
+double SumShortestPathObjective::computeValue(const Configuration& pi, const Configuration& pi_n)
 {
 	double J = 0;
 	for(unsigned int i = 0; i < pi.agent.size(); i++)

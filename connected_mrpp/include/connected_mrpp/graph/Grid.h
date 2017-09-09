@@ -40,7 +40,7 @@ public:
     virtual double cost(int v, int v_next) override;
     virtual double heuristic(int v, int v_next) override;
     virtual std::vector<int> getNeighbors(int v) override;
-    virtual bool isConnected(std::vector<int>& v_list) override;
+    virtual bool isConnected(const std::vector<int>& v_list) override;
 
     virtual ~Grid();
 

@@ -2,7 +2,7 @@
  * connected_mrpp,
  *
  *
- * Copyright (C) 2016 Davide Tateo
+ * Copyright (C) 2017 Davide Tateo
  * Versione 1.0
  *
  * This file is part of connected_mrpp.
@@ -21,29 +21,31 @@
  *  along with connected_mrpp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_CONNECTED_MRPP_GRID_GRID_H_
-#define INCLUDE_CONNECTED_MRPP_GRID_GRID_H_
+#include "connected_mrpp/planner/GreedyRandomized.h"
 
-#include <vector>
+using namespace std::chrono;
 
 namespace connected_mrpp
 {
 
-class Graph
+GreedyRandomized::GreedyRandomized(Graph& graph, Objective* utility, duration<double> Tmax,
+		SamplingStrategy& sampler, unsigned int numSamples)
+	: SampleBasedPlanner(graph, utility, Tmax, numSamples), sampler(sampler)
 {
-
-public:
-    virtual double cost(int v, int v_next) = 0;
-    virtual double heuristic(int v, int v_next) = 0;
-    virtual std::vector<int> getNeighbors(int v) = 0;
-    virtual bool isNeighbor(int v, int v_next) = 0;
-    virtual unsigned int degree(int v) = 0;
-    virtual bool isConnected(const std::vector<int>& v_list) = 0;
-
-    virtual ~Graph() { }
-
-};
 
 }
 
-#endif /* INCLUDE_CONNECTED_MRPP_GRID_GRID_H_ */
+Configuration GreedyRandomized::selectConfiguration(const std::vector<Configuration>& candidates)
+{
+	std::vector<double> costs;
+
+	for(auto& pi : candidates)
+	{
+		double c = computeUtility(pi);
+		costs.push_back(c);
+	}
+
+	return sampler.sample(candidates, costs);
+}
+
+}

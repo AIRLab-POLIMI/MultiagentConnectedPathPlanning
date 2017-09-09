@@ -2,7 +2,7 @@
  * connected_mrpp,
  *
  *
- * Copyright (C) 2016 Davide Tateo
+ * Copyright (C) 2017 Davide Tateo
  * Versione 1.0
  *
  * This file is part of connected_mrpp.
@@ -21,29 +21,35 @@
  *  along with connected_mrpp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_CONNECTED_MRPP_GRID_GRID_H_
-#define INCLUDE_CONNECTED_MRPP_GRID_GRID_H_
-
-#include <vector>
+#include "connected_mrpp/planner/SamplingStrategy.h"
 
 namespace connected_mrpp
 {
 
-class Graph
+Configuration SamplingStrategy::sample(const std::vector<Configuration>& candidates, const std::vector<double>& costs)
 {
-
-public:
-    virtual double cost(int v, int v_next) = 0;
-    virtual double heuristic(int v, int v_next) = 0;
-    virtual std::vector<int> getNeighbors(int v) = 0;
-    virtual bool isNeighbor(int v, int v_next) = 0;
-    virtual unsigned int degree(int v) = 0;
-    virtual bool isConnected(const std::vector<int>& v_list) = 0;
-
-    virtual ~Graph() { }
-
-};
 
 }
 
-#endif /* INCLUDE_CONNECTED_MRPP_GRID_GRID_H_ */
+SamplingStrategy::~SamplingStrategy()
+{
+
+}
+
+PolynomialSamplingStrategy::PolynomialSamplingStrategy(double exponent) : exponent(exponent)
+{
+
+}
+
+std::vector<double> PolynomialSamplingStrategy::sampleWeights(const std::vector<Configuration>& candidates)
+{
+
+}
+
+std::vector<double> LogarithmicSamplingStrategy::sampleWeights(const std::vector<Configuration>& candidates)
+{
+
+}
+
+
+}

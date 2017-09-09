@@ -51,10 +51,10 @@ protected:
     bool timeOut();
 
 protected:
-    virtual double computeCost(Configuration& pi, Configuration& pi_n);
-    double computeHeuristic(Configuration& pi);
-    bool isOneStepReachable(Configuration& pi, Configuration& pi_n);
-    bool isConnected(Configuration& pi);
+    virtual double computeCost(const Configuration& pi, const Configuration& pi_n);
+    double computeHeuristic(const Configuration& pi);
+    bool isOneStepReachable(const Configuration& pi, const Configuration& pi_n);
+    bool isConnected(const Configuration& pi);
 
     void clearInstance();
 

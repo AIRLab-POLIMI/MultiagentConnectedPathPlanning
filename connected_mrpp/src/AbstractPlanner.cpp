@@ -119,17 +119,17 @@ bool AbstractPlanner::timeOut()
 	}
 }
 
-double AbstractPlanner::computeCost(Configuration& pi, Configuration& pi_n)
+double AbstractPlanner::computeCost(const Configuration& pi, const Configuration& pi_n)
 {
 	return cost->computeValue(pi, pi_n);
 }
 
-double AbstractPlanner::computeHeuristic(Configuration& pi)
+double AbstractPlanner::computeHeuristic(const Configuration& pi)
 {
 	return heuristic->computeValue(pi, pi_goal);
 }
 
-bool AbstractPlanner::isOneStepReachable(Configuration& pi, Configuration& pi_n)
+bool AbstractPlanner::isOneStepReachable(const Configuration& pi, const Configuration& pi_n)
 {
 	for(int i = 0; i < pi.agent.size(); i++)
 	{
@@ -143,7 +143,7 @@ bool AbstractPlanner::isOneStepReachable(Configuration& pi, Configuration& pi_n)
 	return true;
 }
 
-bool AbstractPlanner::isConnected(Configuration& pi)
+bool AbstractPlanner::isConnected(const Configuration& pi)
 {
 	return graph.isConnected(pi.agent);
 }

@@ -24,31 +24,20 @@
 #ifndef INCLUDE_CONNECTED_MRPP_BIRK_BIRK_H_
 #define INCLUDE_CONNECTED_MRPP_BIRK_BIRK_H_
 
-#include "connected_mrpp/planner/AbstractPlanner.h"
+#include "connected_mrpp/planner/SampleBasedPlanner.h"
 
 #include <set>
 
 namespace connected_mrpp
 {
 
-class Birk : public AbstractPlanner
+class Birk : public SampleBasedPlanner
 {
 public:
 	Birk(Graph& graph, Objective* utility, std::chrono::duration<double> Tmax, unsigned int numSamples = 100);
 
 protected:
-    virtual bool makePlanImpl() override;
-    virtual void clearInstanceSpecific() override;
-
-private:
-    unsigned int maxNextConfigurations(Configuration& pi);
-    Configuration sampleConfiguration(Configuration& pi);
-    double computeUtility(Configuration& pi);
-
-private:
-    std::set<Configuration> visited_configs;
-
-    const unsigned int numSamples;
+	virtual Configuration selectConfiguration(const std::vector<Configuration>& candidates) override;
 
 };
 
