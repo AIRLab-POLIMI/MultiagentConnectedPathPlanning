@@ -95,7 +95,7 @@ unsigned int SampleBasedPlanner::maxNextConfigurations(Configuration& pi)
 	unsigned int counter = 1;
 	for(auto v : pi.agent)
 	{
-		unsigned int n = graph.degree(v);
+		unsigned int n = graph.degree(v) + 1;
 		counter *= n;
 	}
 
