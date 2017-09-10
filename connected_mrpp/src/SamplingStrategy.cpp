@@ -78,7 +78,7 @@ std::vector<double> LogarithmicSamplingStrategy::sampleWeights(const std::vector
 
 	for(int i = 0; i < candidates.size(); i++)
 	{
-		double v = 1.0/std::log(1.0f+i);
+		double v = 1.0/(1.0+std::log(1.0f+i));
 		w.push_back(v);
 	}
 
