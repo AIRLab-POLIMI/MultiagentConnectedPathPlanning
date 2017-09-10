@@ -192,4 +192,10 @@ int main(int argc, char** argv)
 			delete objectives[i];
 	}
 
+	if(strategy)
+		delete strategy;
+
+	if(planner)
+		delete planner;
+
 }
