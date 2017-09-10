@@ -32,7 +32,7 @@ comm_discr_types = ['range']
 #algorithms = ['birk', 'dfs', 'astar']
 #algorithms = ['birk']
 #algorithms = ['astar']
-algorithms['grlog']
+algorithms = ['grlog']
 algoritms_params = {'birk': 'null sum_shortest_path', 'dfs': 'zero sum_shortest_path', 'astar': 'distance sum_shortest_path', 'grlin': 'null sum_shortest_path', 'grlog': 'null sum_shortest_path'}
 
 if __name__ == "__main__":
