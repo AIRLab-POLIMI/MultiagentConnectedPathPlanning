@@ -23,12 +23,30 @@
 
 #include "connected_mrpp/planner/SamplingStrategy.h"
 
+#include "connected_mrpp/utils/RandomGenerator.h"
+
+#include <algorithm>
+
+
 namespace connected_mrpp
 {
 
 Configuration SamplingStrategy::sample(const std::vector<Configuration>& candidates, const std::vector<double>& costs)
 {
+	std::vector<ConfigurationValue> pairs;
 
+	for(int i = 0; i < candidates.size(); i++)
+	{
+		pairs.push_back(std::make_pair(costs[i], candidates[i]));
+	}
+
+	std::sort(pairs.begin(), pairs.end());
+
+	auto&& w = sampleWeights(pairs);
+
+	auto index = RandomGenerator::sampleDiscrete(w);
+
+	return pairs[index].second;
 }
 
 SamplingStrategy::~SamplingStrategy()
@@ -41,14 +59,30 @@ PolynomialSamplingStrategy::PolynomialSamplingStrategy(double exponent) : expone
 
 }
 
-std::vector<double> PolynomialSamplingStrategy::sampleWeights(const std::vector<Configuration>& candidates)
+std::vector<double> PolynomialSamplingStrategy::sampleWeights(const std::vector<ConfigurationValue>& candidates)
 {
+	std::vector<double> w;
 
+	for(int i = 0; i < candidates.size(); i++)
+	{
+		double v = 1.0/std::pow(1.0+i, exponent);
+		w.push_back(v);
+	}
+
+	return w;
 }
 
-std::vector<double> LogarithmicSamplingStrategy::sampleWeights(const std::vector<Configuration>& candidates)
+std::vector<double> LogarithmicSamplingStrategy::sampleWeights(const std::vector<ConfigurationValue>& candidates)
 {
+	std::vector<double> w;
 
+	for(int i = 0; i < candidates.size(); i++)
+	{
+		double v = 1.0/std::log(1.0f+i);
+		w.push_back(v);
+	}
+
+	return w;
 }
 
 

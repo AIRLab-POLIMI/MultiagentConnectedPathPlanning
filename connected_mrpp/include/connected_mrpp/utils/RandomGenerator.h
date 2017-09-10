@@ -33,6 +33,7 @@ class RandomGenerator
 {
 public:
     static int sampleUniform(int a, int b);
+    static int sampleDiscrete(std::vector<double>& p);
 
 private:
     static std::random_device rd;

@@ -27,12 +27,13 @@
 #include <string>
 
 #include "connected_mrpp/graph/GenericGraph.h"
+#include "connected_mrpp/planner/Astar.h"
 #include "connected_mrpp/planner/DFS_Planner.h"
 #include "connected_mrpp/planner/Birk.h"
+#include "connected_mrpp/planner/GreedyRandomized.h"
 #include "connected_mrpp/Experiment.h"
 
 #include <boost/graph/graphml.hpp>
-#include "connected_mrpp/planner/Astar.h"
 
 using namespace std;
 using namespace boost;
@@ -129,18 +130,29 @@ int main(int argc, char** argv)
 	}
 
 	AbstractPlanner* planner;
+	SamplingStrategy* strategy;
 
 	if(alg == "astar")
 	{
 		planner = new Astar(graph, objectives[0], objectives[1], Tmax, 1000);
 	}
-	else if (alg == "birk")
+	else if(alg == "birk")
 	{
 		planner = new Birk(graph, objectives[1],  Tmax);
 	}
-	else if (alg == "dfs")
+	else if(alg == "dfs")
 	{
 		planner = new DFS_Planner(graph, objectives[0], objectives[1],  Tmax);
+	}
+	else if(alg == "grlog")
+	{
+		strategy = new LogarithmicSamplingStrategy();
+		planner = new GreedyRandomized(graph, objectives[1], Tmax, *strategy);
+	}
+	else if(alg == "grlin")
+	{
+		strategy = new PolynomialSamplingStrategy(1.0);
+		planner = new GreedyRandomized(graph, objectives[1], Tmax, *strategy);
 	}
 	else
 	{
