@@ -159,6 +159,11 @@ int main(int argc, char** argv)
 		strategy = new PolynomialSamplingStrategy(2.0);
 		planner = new GreedyRandomized(graph, objectives[1], Tmax, *strategy);
 	}
+	else if(alg == "gr3")
+	{
+		strategy = new PolynomialSamplingStrategy(3.0);
+		planner = new GreedyRandomized(graph, objectives[1], Tmax, *strategy);
+	}
 	else
 	{
 		cout << alg << " not implemented" << endl;
