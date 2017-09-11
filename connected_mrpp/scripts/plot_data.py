@@ -12,13 +12,15 @@ import pandas as pd
 import seaborn as sns
 import joypy
 
-df = pd.read_csv("offices_data.csv")
+env_name = 'b-w-open'
+
+df = pd.read_csv(env_name + "_data.csv")
 
 p_range = 100
 
-p_alg = ['RB', 'DFS']
+p_alg = ['RB', 'RSB', 'DFS']
 
-params = {'axes.labelsize': 18,'axes.titlesize':18, 'text.fontsize': 18, 'legend.fontsize': 18, 'xtick.labelsize': 18, 'ytick.labelsize': 18}
+params = {'axes.labelsize': 18,'axes.titlesize': 18, 'text.fontsize': 18, 'legend.fontsize': 18, 'xtick.labelsize': 18, 'ytick.labelsize': 18}
 matplotlib.rcParams.update(params)
 
 for alg in p_alg :
@@ -53,10 +55,10 @@ for alg in p_alg :
 
 sns.boxplot(x = "Agents", y = "Times", hue = "Algorithm", data = df, showfliers = False)
 plt.xlabel('Agents')
-plt.ylabel('Path Length')
+plt.ylabel('Solution Length')
 
 #plt.xlabel('Times')
 plt.tight_layout()
 
-plt.savefig('lengths.pdf')
+plt.savefig(env_name + '_lengths.pdf')
 plt.show()
