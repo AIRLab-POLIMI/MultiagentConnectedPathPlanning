@@ -32,80 +32,80 @@ namespace connected_mrpp
 {
 
 LazyPlanner::LazyPlanner(Graph& graph, Objective* cost, Objective* heuristic, duration<double> Tmax)
-	: AbstractPlanner(graph,cost, heuristic, Tmax)
+    : AbstractPlanner(graph,cost, heuristic, Tmax)
 {
 
 }
 
 Configuration LazyPlanner::findBestConfiguration(Configuration& pi)
 {
-	if(g_local.count(pi) == 0)
-	{
-		PartialConfiguration pi_a(pi);
+    if(g_local.count(pi) == 0)
+    {
+        PartialConfiguration pi_a(pi);
 
-		g_local[pi][pi_a] = 0;
-		open_local[pi].insert(pi_a, 0, computeHeuristic(pi));
-	}
+        g_local[pi][pi_a] = 0;
+        open_local[pi].insert(pi_a, 0, computeHeuristic(pi));
+    }
 
-	auto& pi_open = open_local[pi];
-	auto& pi_g = g_local[pi];
+    auto& pi_open = open_local[pi];
+    auto& pi_g = g_local[pi];
 
-	while(!pi_open.empty())
-	{
-		PartialConfiguration a = pi_open.pop();
+    while(!pi_open.empty())
+    {
+        PartialConfiguration a = pi_open.pop();
 
-		if(a.count == a.agent.size()
-				&& isConnected(a)
-				&& closed.count(a) == 0
-				&& static_cast<Configuration>(a) != pi)
-		{
-			return a;
-		}
+        if(a.count == a.agent.size()
+                && isConnected(a)
+                && closed.count(a) == 0
+                && static_cast<Configuration>(a) != pi)
+        {
+            return a;
+        }
 
-		for(auto a_n : successors(a))
-		{
-			double g = pi_g[a] + computeCost(a, a_n);
-			pi_g[a_n] = g;
+        for(auto a_n : successors(a))
+        {
+            double g = pi_g[a] + computeCost(a, a_n);
+            pi_g[a_n] = g;
 
-			pi_open.insert(a_n, g, computeHeuristic(a_n));
-		}
-	}
+            pi_open.insert(a_n, g, computeHeuristic(a_n));
+        }
+    }
 
-	return PI_NULL;
+    return PI_NULL;
 }
 
 
 std::vector<PartialConfiguration> LazyPlanner::successors(PartialConfiguration& a)
 {
-	std::vector<PartialConfiguration> succ;
+    std::vector<PartialConfiguration> succ;
 
-	if(a.count != a.agent.size())
-	{
-		auto v = a.agent[a.count];
+    if(a.count != a.agent.size())
+    {
+        auto v = a.agent[a.count];
 
-		auto neighbours = graph.getNeighbors(v);
-		neighbours.push_back(v);
+        auto neighbours = graph.getNeighbors(v);
+        neighbours.push_back(v);
 
-		for(auto& v_n : neighbours)
-		{
-			PartialConfiguration a_n = a;
-			a_n.count += 1;
-			a_n.agent[a.count] = v_n;
-			succ.push_back(a_n);
-		}
-	}
+        for(auto& v_n : neighbours)
+        {
+            PartialConfiguration a_n = a;
+            a_n.count += 1;
+            a_n.agent[a.count] = v_n;
+            succ.push_back(a_n);
+        }
+    }
 
-	return succ;
+    return succ;
 }
 
 void LazyPlanner::clearInstanceSpecific()
 {
-	//Clear principal routine data structure
-	closed.clear();
+    //Clear principal routine data structure
+    closed.clear();
 
-	//clear local search data structure
-	open_local.clear();
-	g_local.clear();
+    //clear local search data structure
+    open_local.clear();
+    g_local.clear();
 }
 
 

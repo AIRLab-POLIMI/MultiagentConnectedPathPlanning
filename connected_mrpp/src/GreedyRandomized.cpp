@@ -29,23 +29,23 @@ namespace connected_mrpp
 {
 
 GreedyRandomized::GreedyRandomized(Graph& graph, Objective* utility, duration<double> Tmax,
-		SamplingStrategy& sampler, unsigned int numSamples)
-	: SampleBasedPlanner(graph, utility, Tmax, numSamples), sampler(sampler)
+                                   SamplingStrategy& sampler, unsigned int numSamples)
+    : SampleBasedPlanner(graph, utility, Tmax, numSamples), sampler(sampler)
 {
 
 }
 
 Configuration GreedyRandomized::selectConfiguration(const std::vector<Configuration>& candidates)
 {
-	std::vector<double> costs;
+    std::vector<double> costs;
 
-	for(auto& pi : candidates)
-	{
-		double c = computeUtility(pi);
-		costs.push_back(c);
-	}
+    for(auto& pi : candidates)
+    {
+        double c = computeUtility(pi);
+        costs.push_back(c);
+    }
 
-	return sampler.sample(candidates, costs);
+    return sampler.sample(candidates, costs);
 }
 
 }

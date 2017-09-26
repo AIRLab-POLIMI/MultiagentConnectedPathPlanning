@@ -33,19 +33,19 @@ namespace connected_mrpp
 
 struct Configuration
 {
-	Configuration();
-	Configuration(std::vector<int>& agent);
-	bool operator==(const Configuration& rhs) const;
-	bool operator< (const Configuration& rhs) const;
-	std::vector<int> agent;
+    Configuration();
+    Configuration(std::vector<int>& agent);
+    bool operator==(const Configuration& rhs) const;
+    bool operator< (const Configuration& rhs) const;
+    std::vector<int> agent;
 };
 
 struct PartialConfiguration : public Configuration
 {
-	PartialConfiguration(Configuration& configuration);
-	bool operator==(const PartialConfiguration& rhs) const;
-	bool operator< (const PartialConfiguration& rhs) const;
-	unsigned int count;
+    PartialConfiguration(Configuration& configuration);
+    bool operator==(const PartialConfiguration& rhs) const;
+    bool operator< (const PartialConfiguration& rhs) const;
+    unsigned int count;
 };
 
 
@@ -53,16 +53,16 @@ inline std::ostream& operator<<(std::ostream& os, const Configuration& pi)
 {
     for(unsigned int i = 0;  i + 1 < pi.agent.size(); i++)
     {
-    	os << pi.agent[i] << " ";
+        os << pi.agent[i] << " ";
     }
 
     if(pi.agent.size() > 0)
     {
-    	os << pi.agent.back();
+        os << pi.agent.back();
     }
     else
     {
-    	os << "NULL";
+        os << "NULL";
     }
 
     return os;
@@ -71,7 +71,7 @@ inline std::ostream& operator<<(std::ostream& os, const Configuration& pi)
 
 inline std::ostream& operator<<(std::ostream& os, const PartialConfiguration& pi)
 {
-	os << static_cast<Configuration>(pi) << " - " << pi.count;
+    os << static_cast<Configuration>(pi) << " - " << pi.count;
 
     return os;
 }

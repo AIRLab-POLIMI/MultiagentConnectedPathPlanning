@@ -29,28 +29,28 @@ namespace connected_mrpp
 {
 
 Birk::Birk(Graph& graph, Objective* utility, duration<double> Tmax, unsigned int numSamples)
-	: SampleBasedPlanner(graph, utility, Tmax, numSamples)
+    : SampleBasedPlanner(graph, utility, Tmax, numSamples)
 {
 
 }
 
 Configuration Birk::selectConfiguration(const std::vector<Configuration>& candidates)
 {
-	Configuration pi_best = PI_NULL;
-	double best_utility = std::numeric_limits<double>::infinity();
+    Configuration pi_best = PI_NULL;
+    double best_utility = std::numeric_limits<double>::infinity();
 
-	for(auto& pi_n : candidates)
-	{
-		double pi_n_utility = computeUtility(pi_n);
+    for(auto& pi_n : candidates)
+    {
+        double pi_n_utility = computeUtility(pi_n);
 
-		if(pi_n_utility < best_utility)
-		{
-			pi_best = pi_n;
-			best_utility = pi_n_utility;
-		}
-	}
+        if(pi_n_utility < best_utility)
+        {
+            pi_best = pi_n;
+            best_utility = pi_n_utility;
+        }
+    }
 
-	return pi_best;
+    return pi_best;
 }
 
 }

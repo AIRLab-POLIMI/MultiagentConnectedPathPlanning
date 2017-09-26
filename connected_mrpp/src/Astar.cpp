@@ -36,7 +36,7 @@ namespace connected_mrpp
 {
 
 Astar::Astar(Graph& graph, Objective* cost, Objective* heuristic, duration<double> Tmax, double epsilon)
-		: LazyPlanner(graph, cost, heuristic, Tmax), epsilon(epsilon)
+    : LazyPlanner(graph, cost, heuristic, Tmax), epsilon(epsilon)
 {
 
 }
@@ -54,7 +54,7 @@ bool Astar::makePlanImpl()
     {
         //Pop the best frontier node
         Configuration pi = open.pop();
-    	closed.insert(pi);
+        closed.insert(pi);
 
 #ifdef DEBUG_CONF
         std::cout << "-" << pi << "-" << endl;
@@ -62,8 +62,8 @@ bool Astar::makePlanImpl()
 
         if(pi == pi_goal)
         {
-        	ROS_INFO("Plan found");
-        	return true;
+            ROS_INFO("Plan found");
+            return true;
         }
 
         auto pi_n = findBestConfiguration(pi);
@@ -75,15 +75,15 @@ bool Astar::makePlanImpl()
 
         if(pi_n != PI_NULL)
         {
-        	if(!open.contains(pi_n))
-        	{
-        		g[pi_n] = std::numeric_limits<double>::infinity();
-        	}
+            if(!open.contains(pi_n))
+            {
+                g[pi_n] = std::numeric_limits<double>::infinity();
+            }
 
-        	updateConfiguration(pi, pi_n);
-        	double c_best = bestLeafCost(pi);
-        	double g_pi = g[pi];
-        	open.insert(pi, g_pi , c_best - g_pi);
+            updateConfiguration(pi, pi_n);
+            double c_best = bestLeafCost(pi);
+            double g_pi = g[pi];
+            open.insert(pi, g_pi, c_best - g_pi);
         }
     }
 
@@ -94,7 +94,7 @@ bool Astar::makePlanImpl()
 
 void Astar::updateConfiguration(Configuration& pi, Configuration& pi_n)
 {
-	double d = computeCost(pi, pi_n);
+    double d = computeCost(pi, pi_n);
 
     if(g[pi] + d  < g[pi_n])
     {
@@ -111,28 +111,28 @@ void Astar::updateConfiguration(Configuration& pi, Configuration& pi_n)
 
 double Astar::bestLeafCost(Configuration& pi)
 {
-	auto&& sonList = sons[pi];
+    auto&& sonList = sons[pi];
 
-	double best = numeric_limits<double>::infinity();
+    double best = numeric_limits<double>::infinity();
 
-	for(auto& son : sonList)
-	{
-		if(closed.count(son) == 0)
-		{
-			double current = g[son] + epsilon*computeHeuristic(son);
-			best = min(best, current);
-		}
-	}
+    for(auto& son : sonList)
+    {
+        if(closed.count(son) == 0)
+        {
+            double current = g[son] + epsilon*computeHeuristic(son);
+            best = min(best, current);
+        }
+    }
 
-	return best;
+    return best;
 }
 
 void Astar::clearInstanceSpecific()
 {
-	//Clear superclass stuff
-	LazyPlanner::clearInstanceSpecific();
+    //Clear superclass stuff
+    LazyPlanner::clearInstanceSpecific();
 
-	//Clear principal routine data structure
+    //Clear principal routine data structure
     open.clear();
     g.clear();
     sons.clear();

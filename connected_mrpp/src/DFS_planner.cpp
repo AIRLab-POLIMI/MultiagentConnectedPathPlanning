@@ -32,7 +32,7 @@ namespace connected_mrpp
 {
 
 DFS_Planner::DFS_Planner(Graph& graph, Objective* cost, Objective* heuristic, duration<double> Tmax)
-		: LazyPlanner(graph, cost, heuristic, Tmax)
+    : LazyPlanner(graph, cost, heuristic, Tmax)
 {
 
 }
@@ -58,8 +58,8 @@ bool DFS_Planner::makePlanImpl()
 
         if(pi == pi_goal)
         {
-        	ROS_INFO("Plan found");
-        	return true;
+            ROS_INFO("Plan found");
+            return true;
         }
 
         auto pi_n = findBestConfiguration(pi);
@@ -70,12 +70,12 @@ bool DFS_Planner::makePlanImpl()
 
         if(pi_n != PI_NULL)
         {
-        	stack.push_back(pi_n);
-        	parent[pi_n] = pi;
+            stack.push_back(pi_n);
+            parent[pi_n] = pi;
         }
         else
         {
-        	stack.pop_back();
+            stack.pop_back();
         }
     }
 
@@ -86,8 +86,8 @@ bool DFS_Planner::makePlanImpl()
 
 void DFS_Planner::clearInstanceSpecific()
 {
-	LazyPlanner::clearInstanceSpecific();
-	stack.clear();
+    LazyPlanner::clearInstanceSpecific();
+    stack.clear();
 }
 
 }

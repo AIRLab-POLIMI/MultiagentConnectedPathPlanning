@@ -33,114 +33,115 @@ namespace connected_mrpp
 {
 
 SampleBasedPlanner::SampleBasedPlanner(Graph& graph, Objective* utility, duration<double> Tmax, unsigned int numSamples)
-	: AbstractPlanner(graph, nullptr, utility, Tmax), numSamples(numSamples)
+    : AbstractPlanner(graph, nullptr, utility, Tmax), numSamples(numSamples)
 {
 
 }
 
 bool SampleBasedPlanner::makePlanImpl()
 {
-	while(!timeOut())
-	{
-		visited_configs.clear();
-		visited_configs.insert(pi_start);
+    while(!timeOut())
+    {
+        visited_configs.clear();
+        visited_configs.insert(pi_start);
 
-		Configuration pi = pi_start;
+        Configuration pi = pi_start;
 
-		bool progress = true;
+        bool progress = true;
 
-		while(progress && !timeOut())
-		{
-			if(isOneStepReachable(pi, pi_goal))
-			{
-				parent[pi_goal] = pi;
-				ROS_INFO("Plan found");
-				return true;
-			}
-			else
-			{
-				std::vector<Configuration> candidates;
+        while(progress && !timeOut())
+        {
+            if(isOneStepReachable(pi, pi_goal))
+            {
+                parent[pi_goal] = pi;
+                ROS_INFO("Plan found");
+                return true;
+            }
+            else
+            {
+                std::vector<Configuration> candidates;
 
-				sampleConfigurations(pi, candidates);
+                sampleConfigurations(pi, candidates);
 
-				Configuration pi_best = selectConfiguration(candidates);
-				if (pi_best == PI_NULL || visited_configs.count(pi_best) != 0)
-				{
-					progress = false;
-				}
-				else
-				{
-					parent[pi_best] = pi;
-					pi = pi_best;
-					visited_configs.insert(pi);
-				}
-			}
+                Configuration pi_best = selectConfiguration(candidates);
+                if (pi_best == PI_NULL || visited_configs.count(pi_best) != 0)
+                {
+                    progress = false;
+                }
+                else
+                {
+                    parent[pi_best] = pi;
+                    pi = pi_best;
+                    visited_configs.insert(pi);
+                }
+            }
 
-		}
-	}
+        }
+    }
 
     ROS_INFO("No plan found");
 
-	return false;
+    return false;
 }
 
 
 void SampleBasedPlanner::clearInstanceSpecific()
 {
-	visited_configs.clear();
+    visited_configs.clear();
 }
 
 unsigned int SampleBasedPlanner::maxNextConfigurations(Configuration& pi)
 {
-	unsigned int counter = 1;
-	for(auto v : pi.agent)
-	{
-		unsigned int n = graph.degree(v) + 1;
-		counter *= n;
-	}
+    unsigned int counter = 1;
+    for(auto v : pi.agent)
+    {
+        unsigned int n = graph.degree(v) + 1;
+        counter *= n;
+    }
 
-	return counter - 1;
+    return counter - 1;
 }
 
 void SampleBasedPlanner::sampleConfigurations(Configuration& pi, std::vector<Configuration>& candidates)
 {
-	int maxConfs = maxNextConfigurations(pi);
-	for(int i = 0; i < numSamples && i < maxConfs; i++)
-	{
-		auto&& sample = sampleConfiguration(pi);
-		candidates.push_back(sample);
-	}
+    int maxConfs = maxNextConfigurations(pi);
+    for(int i = 0; i < numSamples && i < maxConfs; i++)
+    {
+        auto&& sample = sampleConfiguration(pi);
+        candidates.push_back(sample);
+    }
 }
 
 Configuration SampleBasedPlanner::sampleConfiguration(Configuration& pi)
 {
-	Configuration pi_n;
+    Configuration pi_n;
 
-	do
-	{
-		pi_n = pi;
-		for(int i = 0; i < pi.agent.size(); i++)
-		{
-			auto&& neighbours = graph.getNeighbors(pi_n.agent[i]);
-			neighbours.push_back(pi_n.agent[i]);
-			int index = RandomGenerator::sampleUniform(0, neighbours.size() - 1);
-			pi_n.agent[i] = neighbours[index];
-		}
-	} while(pi_n == pi);
+    do
+    {
+        pi_n = pi;
+        for(int i = 0; i < pi.agent.size(); i++)
+        {
+            auto&& neighbours = graph.getNeighbors(pi_n.agent[i]);
+            neighbours.push_back(pi_n.agent[i]);
+            int index = RandomGenerator::sampleUniform(0, neighbours.size() - 1);
+            pi_n.agent[i] = neighbours[index];
+        }
+    }
+    while(pi_n == pi);
 
-	return pi_n;
+    return pi_n;
 }
 
 double SampleBasedPlanner::computeUtility(const Configuration& pi)
 {
-	if(isConnected(pi))
-	{
-		return computeHeuristic(pi);
-	}
-	else
-	{
-		return std::numeric_limits<double>::infinity();
-	}
+    if(isConnected(pi))
+    {
+        return computeHeuristic(pi);
+    }
+    else
+    {
+        return std::numeric_limits<double>::infinity();
+    }
 }
 
 }

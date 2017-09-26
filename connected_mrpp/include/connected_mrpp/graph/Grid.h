@@ -35,7 +35,7 @@ namespace connected_mrpp
 class Grid : public Graph
 {
 public:
-	Grid(Map& map, double gridResolution);
+    Grid(Map& map, double gridResolution);
 
     virtual double cost(int v, int v_next) override;
     virtual double heuristic(int v, int v_next) override;
@@ -51,11 +51,11 @@ public:
 public:
     void convert(int v, int& x, int& y);
     int convert(int x, int y);
-	//int convertPose(const geometry_msgs::PoseStamped& msg);
+    //int convertPose(const geometry_msgs::PoseStamped& msg);
     Eigen::VectorXd toMapPose(int X, int Y);
 
 private:
-	Map& map;
+    Map& map;
 
     double gridResolution;
     unsigned int maxX;

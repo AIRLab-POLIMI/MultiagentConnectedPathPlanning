@@ -27,85 +27,103 @@
 namespace connected_mrpp
 {
 
-Experiment::Experiment(std::string basePath, std::string filename)
+Experiment::Experiment(std::string basePath, std::string filename, std::string logPath)
+	: expName(filename), logPath(logPath)
 {
     std::ifstream experiment(basePath + "/" + filename);
 
     if(!experiment.good())
     {
-    	throw std::runtime_error("File " + filename + " does not exist");
+        throw std::runtime_error("File " + filename + " does not exist");
     }
 
     std::string line;
     Experiment::Field field;
-    
+
     while(std::getline(experiment, line))
     {
         field = Experiment::NONE;
         std::istringstream iss(line);
         for(std::string s; iss >> s; )
         {
-            if(field == Experiment::NONE){
-                if (s == "phys_graph"){
+            if(field == Experiment::NONE)
+            {
+                if (s == "phys_graph")
+                {
                     field = Experiment::PHYS_GRAPH;
                 }
-                else if (s == "comm_graph"){
+                else if (s == "comm_graph")
+                {
                     field = Experiment::COMM_GRAPH;
                 }
-                else if (s == "start"){
+                else if (s == "start")
+                {
                     field = Experiment::START;
                 }
-                else if (s == "goal"){
+                else if (s == "goal")
+                {
                     field = Experiment::GOAL;
                 }
-                else{
+                else
+                {
                     std::cerr << "Parser error 1! Aborting.\n";
                     exit(1);
                 }
             }
-            else{
-                switch(field){
-                    case Experiment::PHYS_GRAPH:
-                        physGraph = basePath + "/" + s;
-                        break;
-                    case Experiment::COMM_GRAPH:
-                        commGraph = basePath + "/" + s;
-                        break;
-                    case Experiment::START:
-                        startConfig.push_back(atoi(s.c_str()));
-                        break;
-                    case Experiment::GOAL:
-                        goalConfig.push_back(atoi(s.c_str()));
-                        break;
-                    default:
-                        std::cerr << "Parser error 2! Aborting.\n";
-                        exit(1);
+            else
+            {
+                switch(field)
+                {
+                case Experiment::PHYS_GRAPH:
+                    physGraph = basePath + "/" + s;
+                    break;
+                case Experiment::COMM_GRAPH:
+                    commGraph = basePath + "/" + s;
+                    break;
+                case Experiment::START:
+                    startConfig.push_back(atoi(s.c_str()));
+                    break;
+                case Experiment::GOAL:
+                    goalConfig.push_back(atoi(s.c_str()));
+                    break;
+                default:
+                    std::cerr << "Parser error 2! Aborting.\n";
+                    exit(1);
                 }
             }
-        }           
+        }
     }
-    std::cout << "Experiment successfully read." <<std::endl;
 
 }
 
 std::string Experiment::getPhysGraph()
 {
-	return physGraph;
+    return physGraph;
 }
 
 std::string Experiment::getCommGraph()
 {
-	return commGraph;
+    return commGraph;
+}
+
+std::string Experiment::getLogPath()
+{
+	return logPath;
+}
+
+std::string Experiment::getExpName()
+{
+	return expName;
 }
 
 std::vector<int>& Experiment::getStartConfig()
 {
-	return startConfig;
+    return startConfig;
 }
 
 std::vector<int>& Experiment::getGoalConfig()
 {
-	return goalConfig;
+    return goalConfig;
 }
 
 };

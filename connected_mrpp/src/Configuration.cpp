@@ -34,69 +34,69 @@ Configuration::Configuration()
 }
 
 Configuration::Configuration(vector<int>& agent) :
-		agent(agent)
+    agent(agent)
 {
 
 }
 
 bool Configuration::operator==(const Configuration& rhs) const
 {
-	if(agent.size() == rhs.agent.size())
-	{
-		for(int i = 0; i < agent.size(); i++)
-		{
-			if(agent[i] != rhs.agent[i])
-			{
-				return false;
-			}
-		}
+    if(agent.size() == rhs.agent.size())
+    {
+        for(int i = 0; i < agent.size(); i++)
+        {
+            if(agent[i] != rhs.agent[i])
+            {
+                return false;
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 bool Configuration::operator< (const Configuration& rhs) const
 {
-	if(agent.size() == rhs.agent.size())
-	{
-		for(int i = 0; i < agent.size(); i++)
-		{
-			if(agent[i] < rhs.agent[i])
-			{
-				return true;
-			}
-			else if(agent[i] > rhs.agent[i])
-			{
-				return false;
-			}
-		}
-	}
+    if(agent.size() == rhs.agent.size())
+    {
+        for(int i = 0; i < agent.size(); i++)
+        {
+            if(agent[i] < rhs.agent[i])
+            {
+                return true;
+            }
+            else if(agent[i] > rhs.agent[i])
+            {
+                return false;
+            }
+        }
+    }
 
-	return false;
+    return false;
 }
 
 PartialConfiguration::PartialConfiguration(Configuration& configuration) :
-			Configuration(configuration.agent), count(0)
+    Configuration(configuration.agent), count(0)
 {
 
 }
 
 bool PartialConfiguration::operator==(const PartialConfiguration& rhs) const
 {
-	const Configuration& self = *this;
-	const Configuration& rhs_c = rhs;
+    const Configuration& self = *this;
+    const Configuration& rhs_c = rhs;
 
-	return self == rhs_c && count == rhs.count;
+    return self == rhs_c && count == rhs.count;
 }
 
 bool PartialConfiguration::operator< (const PartialConfiguration& rhs) const
 {
-	const Configuration& self = *this;
-	const Configuration& rhs_c = rhs;
+    const Configuration& self = *this;
+    const Configuration& rhs_c = rhs;
 
-	return count < rhs.count ||  (count == rhs.count && self < rhs_c);
+    return count < rhs.count ||  (count == rhs.count && self < rhs_c);
 }
 
 

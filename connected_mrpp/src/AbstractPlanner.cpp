@@ -37,13 +37,13 @@ const Configuration AbstractPlanner::PI_NULL;
 
 
 AbstractPlanner::AbstractPlanner(Graph& graph, Objective* cost, Objective* heuristic, duration<double> Tmax)
-	: graph(graph), cost(cost), heuristic(heuristic), Tmax(Tmax), Tcurrent(0)
+    : graph(graph), cost(cost), heuristic(heuristic), Tmax(Tmax), Tcurrent(0)
 {
 
 }
 
 bool AbstractPlanner::makePlan(const Configuration& start,
-        			   const Configuration& goal)
+                               const Configuration& goal)
 {
     clearInstance();
 
@@ -71,88 +71,88 @@ bool AbstractPlanner::makePlan(const Configuration& start,
     parent[pi_start] = pi_start;
     parent[pi_goal] = PI_NULL;
 
-	bool result = makePlanImpl();
-	steady_clock::now() - t0;
-	Tcurrent = steady_clock::now() - t0;
+    bool result = makePlanImpl();
+    steady_clock::now() - t0;
+    Tcurrent = steady_clock::now() - t0;
 
-	ROS_INFO_STREAM("Elapsed time: " << Tcurrent.count() << " s");
+    ROS_INFO_STREAM("Elapsed time: " << Tcurrent.count() << " s");
 
-	return result;
+    return result;
 }
 
 vector<Configuration> AbstractPlanner::getPlan()
 {
-	vector<Configuration> plan;
+    vector<Configuration> plan;
 
-	auto& current = pi_goal;
+    auto& current = pi_goal;
 
-	while(current != pi_start && current != PI_NULL)
-	{
-		plan.push_back(current);
-		current = parent[current];
-	}
+    while(current != pi_start && current != PI_NULL)
+    {
+        plan.push_back(current);
+        current = parent[current];
+    }
 
-	plan.push_back(pi_start);
+    plan.push_back(pi_start);
 
-	reverse(plan.begin(), plan.end());
+    reverse(plan.begin(), plan.end());
 
-	return plan;
+    return plan;
 }
 
 double AbstractPlanner::getElapsedTime()
 {
-	return Tcurrent.count();
+    return Tcurrent.count();
 }
 
 bool AbstractPlanner::timeOut()
 {
-	auto deltaT = steady_clock::now() - t0;
+    auto deltaT = steady_clock::now() - t0;
 
-	if(deltaT > Tmax)
-	{
-		ROS_INFO("Computational time excedeed");
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+    if(deltaT > Tmax)
+    {
+        ROS_INFO("Computational time excedeed");
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 double AbstractPlanner::computeCost(const Configuration& pi, const Configuration& pi_n)
 {
-	return cost->computeValue(pi, pi_n);
+    return cost->computeValue(pi, pi_n);
 }
 
 double AbstractPlanner::computeHeuristic(const Configuration& pi)
 {
-	return heuristic->computeValue(pi, pi_goal);
+    return heuristic->computeValue(pi, pi_goal);
 }
 
 bool AbstractPlanner::isOneStepReachable(const Configuration& pi, const Configuration& pi_n)
 {
-	for(int i = 0; i < pi.agent.size(); i++)
-	{
-		if(!graph.isNeighbor(pi.agent[i], pi_n.agent[i])
-					&& pi.agent[i] != pi_n.agent[i])
-		{
-			return false;
-		}
-	}
+    for(int i = 0; i < pi.agent.size(); i++)
+    {
+        if(!graph.isNeighbor(pi.agent[i], pi_n.agent[i])
+                && pi.agent[i] != pi_n.agent[i])
+        {
+            return false;
+        }
+    }
 
-	return true;
+    return true;
 }
 
 bool AbstractPlanner::isConnected(const Configuration& pi)
 {
-	return graph.isConnected(pi.agent);
+    return graph.isConnected(pi.agent);
 }
 
 
 void AbstractPlanner::clearInstance()
 {
-	parent.clear();
-	clearInstanceSpecific();
+    parent.clear();
+    clearInstanceSpecific();
 }
 
 AbstractPlanner::~AbstractPlanner()

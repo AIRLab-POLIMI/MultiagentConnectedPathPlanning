@@ -37,7 +37,7 @@ namespace connected_mrpp
 class AbstractPlanner
 {
 public:
-	AbstractPlanner(Graph& graph, Objective* cost, Objective* heuristic, std::chrono::duration<double> Tmax);
+    AbstractPlanner(Graph& graph, Objective* cost, Objective* heuristic, std::chrono::duration<double> Tmax);
 
     bool makePlan(const Configuration& start,
                   const Configuration& goal);

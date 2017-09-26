@@ -39,11 +39,11 @@ struct DefaultCmp
     bool operator()(const FrontierNode<T>* a, const FrontierNode<T>* b) const
     {
         return (a->getCost() < b->getCost()) ||
-                ((a->getCost() == b->getCost()) &&
-                		(a->getDistance() > b->getDistance()))||
-				((a->getCost() == b->getCost()) &&
-						(a->getDistance() == b->getDistance()) &&
-						(a->getNode() < b->getNode()));
+               ((a->getCost() == b->getCost()) &&
+                (a->getDistance() > b->getDistance()))||
+               ((a->getCost() == b->getCost()) &&
+                (a->getDistance() == b->getDistance()) &&
+                (a->getNode() < b->getNode()));
     }
 };
 
@@ -51,15 +51,15 @@ template<class T, class C=DefaultCmp<T>>
 class PriorityQueue
 {
 public:
-	PriorityQueue()
-	{
-	}
+    PriorityQueue()
+    {
+    }
 
-	PriorityQueue(C&& comparator) :
-			open(comparator)
-	{
+    PriorityQueue(C&& comparator) :
+        open(comparator)
+    {
 
-	}
+    }
 
     void insert(const T& node, double g, double h)
     {

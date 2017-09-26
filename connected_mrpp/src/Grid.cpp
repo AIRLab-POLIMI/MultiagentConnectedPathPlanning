@@ -65,8 +65,8 @@ vector<int> Grid::getNeighbors(int v)
 
 std::vector<int> Grid::getObstacles(int v)
 {
-	int X, Y;
-	convert(v, X, Y);
+    int X, Y;
+    convert(v, X, Y);
 
     vector<int> obstacles;
 
@@ -112,8 +112,8 @@ double Grid::heuristic(int v, int v_next)
 
 bool Grid::isConnected(const std::vector<int>& v_list)
 {
-	//TODO implement
-	return true;
+    //TODO implement
+    return true;
 }
 
 Grid::~Grid()
@@ -150,8 +150,8 @@ Eigen::VectorXd Grid::toMapPose(int X, int Y)
 
 bool Grid::isFree(int v)
 {
-	int X, Y;
-	convert(v, X, Y);
+    int X, Y;
+    convert(v, X, Y);
 
     Eigen::VectorXd pos = toMapPose(X, Y);
 
@@ -160,13 +160,13 @@ bool Grid::isFree(int v)
 
 void Grid::convert(int v, int& x, int& y)
 {
-	x = v % maxX;
-	y = v / maxX;
+    x = v % maxX;
+    y = v / maxX;
 }
 
 int Grid::convert(int x, int y)
 {
-	return x + maxX*y;
+    return x + maxX*y;
 }
 
 }

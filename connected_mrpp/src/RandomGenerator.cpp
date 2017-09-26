@@ -39,9 +39,9 @@ int RandomGenerator::sampleUniform(int a, int b)
 
 int RandomGenerator::sampleDiscrete(std::vector<double>& p)
 {
-	std::discrete_distribution<int> d(p.begin(), p.end());
+    std::discrete_distribution<int> d(p.begin(), p.end());
 
-	return d(gen);
+    return d(gen);
 }
 
 }

@@ -33,13 +33,13 @@ Objective::~Objective()
 
 double ZeroObjective::computeValue(const Configuration& pi, const Configuration& pi_n)
 {
-	return 0;
+    return 0;
 }
 
 
 double StepObjective::computeValue(const Configuration& pi, const Configuration& pi_n)
 {
-	return 1;
+    return 1;
 }
 
 GraphObjective::GraphObjective(Graph& graph) : graph(graph)
@@ -55,15 +55,15 @@ DistanceObjective::DistanceObjective(Graph& graph) : GraphObjective(graph)
 
 double DistanceObjective::computeValue(const Configuration& pi, const Configuration& pi_n)
 {
-	double J = 0;
-	for(unsigned int i = 0; i < pi.agent.size(); i++)
-	{
-		auto v = pi.agent[i];
-		auto v_n = pi_n.agent[i];
-		J += graph.cost(v, v_n);
-	}
+    double J = 0;
+    for(unsigned int i = 0; i < pi.agent.size(); i++)
+    {
+        auto v = pi.agent[i];
+        auto v_n = pi_n.agent[i];
+        J += graph.cost(v, v_n);
+    }
 
-	return J;
+    return J;
 }
 
 
@@ -74,17 +74,17 @@ ShortestPathObjective::ShortestPathObjective(Graph& graph) : GraphObjective(grap
 
 double ShortestPathObjective::computeValue(const Configuration& pi, const Configuration& pi_n)
 {
-	double J = 0;
-	for(unsigned int i = 0; i < pi.agent.size(); i++)
-	{
-		auto v = pi.agent[i];
-		auto v_n = pi_n.agent[i];
-		double Jnew = graph.heuristic(v, v_n);
+    double J = 0;
+    for(unsigned int i = 0; i < pi.agent.size(); i++)
+    {
+        auto v = pi.agent[i];
+        auto v_n = pi_n.agent[i];
+        double Jnew = graph.heuristic(v, v_n);
 
-		J = std::min(J, Jnew);
-	}
+        J = std::min(J, Jnew);
+    }
 
-	return J;
+    return J;
 }
 
 
@@ -95,15 +95,15 @@ SumShortestPathObjective::SumShortestPathObjective(Graph& graph) : GraphObjectiv
 
 double SumShortestPathObjective::computeValue(const Configuration& pi, const Configuration& pi_n)
 {
-	double J = 0;
-	for(unsigned int i = 0; i < pi.agent.size(); i++)
-	{
-		auto v = pi.agent[i];
-		auto v_n = pi_n.agent[i];
-		J += graph.heuristic(v, v_n);
-	}
+    double J = 0;
+    for(unsigned int i = 0; i < pi.agent.size(); i++)
+    {
+        auto v = pi.agent[i];
+        auto v_n = pi_n.agent[i];
+        J += graph.heuristic(v, v_n);
+    }
 
-	return J;
+    return J;
 }
 
 }

@@ -35,8 +35,8 @@ class Astar : public LazyPlanner
 {
 
 public:
-	Astar(Graph& graph, Objective* cost, Objective* heuristic,
-		  std::chrono::duration<double> Tmax, double epsilon = 1.0);
+    Astar(Graph& graph, Objective* cost, Objective* heuristic,
+          std::chrono::duration<double> Tmax, double epsilon = 1.0);
 
 
 protected:

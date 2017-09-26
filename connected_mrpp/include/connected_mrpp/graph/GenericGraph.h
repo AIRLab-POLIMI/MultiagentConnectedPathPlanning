@@ -34,13 +34,13 @@ namespace connected_mrpp
 {
 
 typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS,
-		boost::property<boost::vertex_color_t, boost::default_color_type>> GraphStructure;
+        boost::property<boost::vertex_color_t, boost::default_color_type>> GraphStructure;
 
 class GenericGraph : public Graph
 {
 public:
-	GenericGraph(GraphStructure& physicalGraph,
-				GraphStructure& comunicationGraph);
+    GenericGraph(GraphStructure& physicalGraph,
+                 GraphStructure& comunicationGraph);
 
     virtual double cost(int v, int v_next) override;
     virtual double heuristic(int v, int v_next) override;
@@ -52,8 +52,8 @@ public:
     virtual ~GenericGraph();
 
 private:
-    GraphStructure& physicalGraph;
-    GraphStructure& comunicationGraph;
+    GraphStructure physicalGraph;
+    GraphStructure comunicationGraph;
 
     std::map<int, std::vector<size_t>> costmaps;
 };

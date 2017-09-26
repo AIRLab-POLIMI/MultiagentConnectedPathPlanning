@@ -33,7 +33,7 @@ namespace connected_mrpp
 class SampleBasedPlanner : public AbstractPlanner
 {
 public:
-	SampleBasedPlanner(Graph& graph, Objective* utility, std::chrono::duration<double> Tmax, unsigned int numSamples);
+    SampleBasedPlanner(Graph& graph, Objective* utility, std::chrono::duration<double> Tmax, unsigned int numSamples);
 
 protected:
     virtual bool makePlanImpl() override;

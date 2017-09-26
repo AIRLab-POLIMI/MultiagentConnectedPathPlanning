@@ -34,10 +34,10 @@ namespace connected_mrpp
 class Birk : public SampleBasedPlanner
 {
 public:
-	Birk(Graph& graph, Objective* utility, std::chrono::duration<double> Tmax, unsigned int numSamples = 100);
+    Birk(Graph& graph, Objective* utility, std::chrono::duration<double> Tmax, unsigned int numSamples = 100);
 
 protected:
-	virtual Configuration selectConfiguration(const std::vector<Configuration>& candidates) override;
+    virtual Configuration selectConfiguration(const std::vector<Configuration>& candidates) override;
 
 };
 

@@ -46,8 +46,8 @@ public:
 
     inline double getDistance() const
     {
-    	return g;
-	}
+        return g;
+    }
 
 private:
     T node;

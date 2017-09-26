@@ -33,51 +33,51 @@ namespace connected_mrpp
 class Objective
 {
 public:
-	virtual double computeValue(const Configuration& pi, const Configuration& pi_n) = 0;
-	virtual ~Objective();
+    virtual double computeValue(const Configuration& pi, const Configuration& pi_n) = 0;
+    virtual ~Objective();
 
 };
 
 class ZeroObjective : public Objective
 {
 public:
-	virtual double computeValue(const Configuration& pi, const Configuration& pi_n);
+    virtual double computeValue(const Configuration& pi, const Configuration& pi_n);
 };
 
 class StepObjective : public Objective
 {
 public:
-	virtual double computeValue(const Configuration& pi, const Configuration& pi_n);
+    virtual double computeValue(const Configuration& pi, const Configuration& pi_n);
 };
 
 class GraphObjective : public Objective
 {
 public:
-	GraphObjective(Graph& graph);
+    GraphObjective(Graph& graph);
 protected:
-	Graph& graph;
+    Graph& graph;
 };
 
 class DistanceObjective : public GraphObjective
 {
 public:
-	DistanceObjective(Graph& graph);
-	virtual double computeValue(const Configuration& pi, const Configuration& pi_n);
+    DistanceObjective(Graph& graph);
+    virtual double computeValue(const Configuration& pi, const Configuration& pi_n);
 };
 
 class ShortestPathObjective : public GraphObjective
 {
 public:
-	ShortestPathObjective(Graph& graph);
-	virtual double computeValue(const Configuration& pi, const Configuration& pi_n);
+    ShortestPathObjective(Graph& graph);
+    virtual double computeValue(const Configuration& pi, const Configuration& pi_n);
 
 };
 
 class SumShortestPathObjective : public GraphObjective
 {
 public:
-	SumShortestPathObjective(Graph& graph);
-	virtual double computeValue(const Configuration& pi, const Configuration& pi_n);
+    SumShortestPathObjective(Graph& graph);
+    virtual double computeValue(const Configuration& pi, const Configuration& pi_n);
 };
 
 }

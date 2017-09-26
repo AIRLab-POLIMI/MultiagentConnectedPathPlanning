@@ -33,14 +33,14 @@ namespace connected_mrpp
 class GreedyRandomized : public SampleBasedPlanner
 {
 public:
-	GreedyRandomized(Graph& graph, Objective* utility, std::chrono::duration<double> Tmax,
-			SamplingStrategy& sampler, unsigned int numSamples = 100);
+    GreedyRandomized(Graph& graph, Objective* utility, std::chrono::duration<double> Tmax,
+                     SamplingStrategy& sampler, unsigned int numSamples = 100);
 
 protected:
-	virtual Configuration selectConfiguration(const std::vector<Configuration>& candidates) override;
+    virtual Configuration selectConfiguration(const std::vector<Configuration>& candidates) override;
 
 private:
-	SamplingStrategy& sampler;
+    SamplingStrategy& sampler;
 
 };
 

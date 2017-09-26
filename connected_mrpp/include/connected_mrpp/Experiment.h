@@ -30,7 +30,7 @@
 #include <string>
 #include <vector>
 
-#include <stdlib.h> 
+#include <stdlib.h>
 
 namespace connected_mrpp
 {
@@ -41,20 +41,24 @@ class Experiment
 public:
     enum Field {PHYS_GRAPH, COMM_GRAPH, START, GOAL, NONE};
 
-	Experiment(std::string basePath, std::string filename);
+    Experiment(std::string basePath, std::string filename, std::string logPath);
 
     std::string getPhysGraph();
     std::string getCommGraph();
+    std::string getLogPath();
+    std::string getExpName();
     std::vector<int>& getStartConfig();
     std::vector<int>& getGoalConfig();
 
 private:
     std::string physGraph;
     std::string commGraph;
+    std::string logPath;
+    std::string expName;
     std::vector<int> startConfig;
     std::vector<int> goalConfig;
 
-    
+
 };
 
 }

@@ -33,20 +33,20 @@ namespace connected_mrpp
 
 Configuration SamplingStrategy::sample(const std::vector<Configuration>& candidates, const std::vector<double>& costs)
 {
-	std::vector<ConfigurationValue> pairs;
+    std::vector<ConfigurationValue> pairs;
 
-	for(int i = 0; i < candidates.size(); i++)
-	{
-		pairs.push_back(std::make_pair(costs[i], candidates[i]));
-	}
+    for(int i = 0; i < candidates.size(); i++)
+    {
+        pairs.push_back(std::make_pair(costs[i], candidates[i]));
+    }
 
-	std::sort(pairs.begin(), pairs.end());
+    std::sort(pairs.begin(), pairs.end());
 
-	auto&& w = sampleWeights(pairs);
+    auto&& w = sampleWeights(pairs);
 
-	auto index = RandomGenerator::sampleDiscrete(w);
+    auto index = RandomGenerator::sampleDiscrete(w);
 
-	return pairs[index].second;
+    return pairs[index].second;
 }
 
 SamplingStrategy::~SamplingStrategy()
@@ -61,28 +61,28 @@ PolynomialSamplingStrategy::PolynomialSamplingStrategy(double exponent) : expone
 
 std::vector<double> PolynomialSamplingStrategy::sampleWeights(const std::vector<ConfigurationValue>& candidates)
 {
-	std::vector<double> w;
+    std::vector<double> w;
 
-	for(int i = 0; i < candidates.size(); i++)
-	{
-		double v = 1.0/std::pow(1.0+i, exponent);
-		w.push_back(v);
-	}
+    for(int i = 0; i < candidates.size(); i++)
+    {
+        double v = 1.0/std::pow(1.0+i, exponent);
+        w.push_back(v);
+    }
 
-	return w;
+    return w;
 }
 
 std::vector<double> LogarithmicSamplingStrategy::sampleWeights(const std::vector<ConfigurationValue>& candidates)
 {
-	std::vector<double> w;
+    std::vector<double> w;
 
-	for(int i = 0; i < candidates.size(); i++)
-	{
-		double v = 1.0/(1.0+std::log(1.0f+i));
-		w.push_back(v);
-	}
+    for(int i = 0; i < candidates.size(); i++)
+    {
+        double v = 1.0/(1.0+std::log(1.0f+i));
+        w.push_back(v);
+    }
 
-	return w;
+    return w;
 }
 
 

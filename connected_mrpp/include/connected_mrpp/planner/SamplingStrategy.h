@@ -34,15 +34,15 @@ namespace connected_mrpp
 class SamplingStrategy
 {
 protected:
-	typedef std::pair<double, Configuration> ConfigurationValue;
+    typedef std::pair<double, Configuration> ConfigurationValue;
 
 public:
-	virtual Configuration sample(const std::vector<Configuration>& candidates, const std::vector<double>& costs);
+    virtual Configuration sample(const std::vector<Configuration>& candidates, const std::vector<double>& costs);
 
-	virtual ~SamplingStrategy();
+    virtual ~SamplingStrategy();
 
 protected:
-	virtual std::vector<double> sampleWeights(const std::vector<ConfigurationValue>& candidates) = 0;
+    virtual std::vector<double> sampleWeights(const std::vector<ConfigurationValue>& candidates) = 0;
 
 };
 
@@ -50,13 +50,13 @@ protected:
 class PolynomialSamplingStrategy : public SamplingStrategy
 {
 public:
-	PolynomialSamplingStrategy(double exponent);
+    PolynomialSamplingStrategy(double exponent);
 
 protected:
-	virtual std::vector<double> sampleWeights(const std::vector<ConfigurationValue>& candidates);
+    virtual std::vector<double> sampleWeights(const std::vector<ConfigurationValue>& candidates);
 
 private:
-	double exponent;
+    double exponent;
 
 };
 
@@ -64,7 +64,7 @@ class LogarithmicSamplingStrategy : public SamplingStrategy
 {
 
 protected:
-	virtual std::vector<double> sampleWeights(const std::vector<ConfigurationValue>& candidates);
+    virtual std::vector<double> sampleWeights(const std::vector<ConfigurationValue>& candidates);
 
 };
 

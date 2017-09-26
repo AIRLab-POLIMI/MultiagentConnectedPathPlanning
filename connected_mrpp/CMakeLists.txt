@@ -12,7 +12,7 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 # ----------------------- LIBRARIES ---------------------------
 
 find_package(Eigen3 REQUIRED)
-find_package(Boost 1.53 REQUIRED COMPONENTS graph)
+find_package(Boost 1.53 REQUIRED COMPONENTS graph program_options)
 
 include_directories(${EIGEN3_INCLUDE_DIR})
 
