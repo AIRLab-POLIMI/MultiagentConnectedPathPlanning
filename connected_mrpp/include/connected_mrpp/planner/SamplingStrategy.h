@@ -68,6 +68,20 @@ protected:
 
 };
 
+class BoltzmannSamplingStrategy : public SamplingStrategy
+{
+
+public:
+    BoltzmannSamplingStrategy(double exponent);
+
+protected:
+    virtual std::vector<double> sampleWeights(const std::vector<ConfigurationValue>& candidates);
+
+private:
+    double exponent;
+
+};
+
 }
 
 

@@ -47,7 +47,6 @@ CommandLineParser::CommandLineParser()
     ("heuristic,H", boost::program_options::value<std::string>(), "set the heuristic") //
     ("epsilon,e", boost::program_options::value<double>()->default_value(1.0), "set the psilon for the A* algorithm")
     ("alpha,A", boost::program_options::value<double>(), "set the alpha parameter for the RRSB algorithm") //
-    ("beta,B", boost::program_options::value<double>(), "set the beta parameter for the RRSB algorithm")
     ("strategy,s", boost::program_options::value<std::string>(), "set the sampling strategy for the RSB algorithm") //
     ("exponent,e", boost::program_options::value<double>()->default_value(3.0), "set the exponent for the polynomial sampling startegy for the RSB algorithm");
 
@@ -199,6 +198,12 @@ SamplingStrategy& CommandLineParser::getStrategy(const std::string& name)
     {
         double exponent = vm["exponent"].as<double>();
         strategy = new PolynomialSamplingStrategy(exponent);
+    }
+    else if(name == "boltz")
+    {
+
+        double exponent = vm["exponent"].as<double>();
+        strategy = new BoltzmannSamplingStrategy(exponent);
     }
     else
     {

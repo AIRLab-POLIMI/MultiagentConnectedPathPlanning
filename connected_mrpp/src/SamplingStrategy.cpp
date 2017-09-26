@@ -85,5 +85,27 @@ std::vector<double> LogarithmicSamplingStrategy::sampleWeights(const std::vector
     return w;
 }
 
+BoltzmannSamplingStrategy::BoltzmannSamplingStrategy(double exponent) : exponent(exponent)
+{
+
+}
+
+std::vector<double> BoltzmannSamplingStrategy::sampleWeights(const std::vector<ConfigurationValue>& candidates)
+{
+    std::vector<double> w;
+
+    double minH = candidates[0].first;
+
+    for(auto& c : candidates)
+    {
+        double deltaH = c.first - minH;
+        double v = std::exp(-exponent*deltaH);
+        w.push_back(v);
+    }
+
+    return w;
+}
+
+
 
 }
