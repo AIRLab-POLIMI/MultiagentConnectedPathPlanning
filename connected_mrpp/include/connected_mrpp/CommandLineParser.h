@@ -31,10 +31,10 @@
 #include <string>
 
 #include "connected_mrpp/graph/GenericGraph.h"
-#include "connected_mrpp/planner/Astar.h"
-#include "connected_mrpp/planner/DFS_Planner.h"
-#include "connected_mrpp/planner/Birk.h"
-#include "connected_mrpp/planner/GreedyRandomized.h"
+#include "connected_mrpp/planner/AbstractPlanner.h"
+#include "connected_mrpp/planner/SamplingStrategy.h"
+#include "connected_mrpp/planner/Objective.h"
+
 #include "connected_mrpp/Experiment.h"
 
 #include <boost/graph/graphml.hpp>

@@ -23,6 +23,12 @@
 
 #include "connected_mrpp/CommandLineParser.h"
 
+#include "connected_mrpp/planner/Astar.h"
+#include "connected_mrpp/planner/DFS_Planner.h"
+#include "connected_mrpp/planner/Birk.h"
+#include "connected_mrpp/planner/GreedyRandomized.h"
+#include "connected_mrpp/planner/RestartingGreedyRandomized.h"
+
 using namespace std;
 using namespace boost;
 
@@ -41,7 +47,7 @@ CommandLineParser::CommandLineParser()
     ("heuristic,H", boost::program_options::value<std::string>(), "set the heuristic") //
     ("epsilon,e", boost::program_options::value<double>()->default_value(1.0), "set the psilon for the A* algorithm")
     ("alpha,A", boost::program_options::value<double>(), "set the alpha parameter for the RRSB algorithm") //
-    ("beta,B", boost::program_options::value<double>(), "set the alpha parameter for the RRSB algorithm")
+    ("beta,B", boost::program_options::value<double>(), "set the beta parameter for the RRSB algorithm")
     ("strategy,s", boost::program_options::value<std::string>(), "set the sampling startegy for the RSB algorithm") //
     ("exponent,e", boost::program_options::value<double>()->default_value(3.0), "set the exponent for the polynomial sampling startegy for the RSB algorithm");
 
@@ -78,7 +84,7 @@ AbstractPlanner* CommandLineParser::getPlanner(int argc, char **argv)
 
 std::string CommandLineParser::getPlannerName()
 {
-	return vm["algorithm"].as<std::string>();
+    return vm["algorithm"].as<std::string>();
 }
 
 Experiment& CommandLineParser::getExperiment()
@@ -111,9 +117,9 @@ CommandLineParser::~CommandLineParser()
 
 void CommandLineParser::printParameters()
 {
-	std::cout << "Experiment:    " << vm["exp_file"].as<std::string>() << std::endl;
-	std::cout << "Algorithm:     " << vm["algorithm"].as<std::string>() << std::endl;
-	std::cout << "Time deadline: " << vm["deadline"].as<double>() << std::endl;
+    std::cout << "Experiment:    " << vm["exp_file"].as<std::string>() << std::endl;
+    std::cout << "Algorithm:     " << vm["algorithm"].as<std::string>() << std::endl;
+    std::cout << "Time deadline: " << vm["deadline"].as<double>() << std::endl;
 }
 
 void CommandLineParser::loadExperiment()
@@ -128,7 +134,7 @@ void CommandLineParser::loadExperiment()
 
     if(vm.count("subfolder") != 0)
     {
-    	logPath += "/" + vm["subfolder"].as<std::string>();
+        logPath += "/" + vm["subfolder"].as<std::string>();
     }
 
     exp = new Experiment(dataPath, expName, logPath);
@@ -161,9 +167,13 @@ inline Objective* CommandLineParser::getObjective(const std::string& name)
     {
         o = new DistanceObjective(*graph);
     }
-    else if(name == "shortest_path")
+    else if(name == "max_shortest_path")
     {
-        o = new ShortestPathObjective(*graph);
+        o = new MaxShortestPathObjective(*graph);
+    }
+    else if(name == "mean_shortest_path")
+    {
+        o = new MeanShortestPathObjective(*graph);
     }
     else if(name == "sum_shortest_path")
     {
@@ -171,7 +181,7 @@ inline Objective* CommandLineParser::getObjective(const std::string& name)
     }
     else
     {
-    	throw boost::program_options::error("The " + name + " objective is not implemented");
+        throw boost::program_options::error("The " + name + " objective is not implemented");
     }
 
     obj.push_back(o);
@@ -192,7 +202,7 @@ SamplingStrategy& CommandLineParser::getStrategy(const std::string& name)
     }
     else
     {
-    	throw boost::program_options::error("The " + name + " sampling strategy is not implemented");
+        throw boost::program_options::error("The " + name + " sampling strategy is not implemented");
     }
 
     return *strategy;
@@ -229,9 +239,16 @@ AbstractPlanner* CommandLineParser::getPlanner(const std::string& alg)
 
         planner = new GreedyRandomized(*graph, getObjective(heuristic), Tmax, *strategy);
     }
+    else if(alg == "rrsb")
+    {
+        auto heuristic = vm["heuristic"].as<std::string>();
+        auto alpha = vm["alpha"].as<double>();
+
+        planner = new RestartingGreedyRandomized(*graph, getObjective(heuristic), Tmax, *strategy, alpha);
+    }
     else
     {
-    	throw boost::program_options::error("The " + alg + " algorithm is not implemented");
+        throw boost::program_options::error("The " + alg + " algorithm is not implemented");
     }
 
     return planner;

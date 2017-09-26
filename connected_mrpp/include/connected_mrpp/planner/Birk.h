@@ -31,7 +31,7 @@
 namespace connected_mrpp
 {
 
-class Birk : public SampleBasedPlanner
+class Birk : public NoLoopSampleBasedPlanner
 {
 public:
     Birk(Graph& graph, Objective* utility, std::chrono::duration<double> Tmax, unsigned int numSamples = 100);

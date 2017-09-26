@@ -28,7 +28,7 @@ namespace connected_mrpp
 {
 
 Experiment::Experiment(std::string basePath, std::string filename, std::string logPath)
-	: expName(filename), logPath(logPath)
+    : expName(filename), logPath(logPath)
 {
     std::ifstream experiment(basePath + "/" + filename);
 
@@ -108,12 +108,12 @@ std::string Experiment::getCommGraph()
 
 std::string Experiment::getLogPath()
 {
-	return logPath;
+    return logPath;
 }
 
 std::string Experiment::getExpName()
 {
-	return expName;
+    return expName;
 }
 
 std::vector<int>& Experiment::getStartConfig()

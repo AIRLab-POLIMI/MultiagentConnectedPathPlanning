@@ -29,7 +29,7 @@ namespace connected_mrpp
 {
 
 Birk::Birk(Graph& graph, Objective* utility, duration<double> Tmax, unsigned int numSamples)
-    : SampleBasedPlanner(graph, utility, Tmax, numSamples)
+    : NoLoopSampleBasedPlanner(graph, utility, Tmax, numSamples)
 {
 
 }

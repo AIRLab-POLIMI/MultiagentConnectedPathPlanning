@@ -34,14 +34,14 @@ using namespace connected_mrpp;
 int main(int argc, char** argv)
 {
 
-	CommandLineParser parser;
+    CommandLineParser parser;
 
-	auto planner = parser.getPlanner(argc, argv);
-	auto& exp = parser.getExperiment();
+    auto planner = parser.getPlanner(argc, argv);
+    auto& exp = parser.getExperiment();
 
-	auto alg = parser.getPlannerName();
-	auto logPath = exp.getLogPath();
-	auto expName = exp.getExpName();
+    auto alg = parser.getPlannerName();
+    auto logPath = exp.getLogPath();
+    auto expName = exp.getExpName();
 
     Configuration start(exp.getStartConfig());
     Configuration goal(exp.getGoalConfig());

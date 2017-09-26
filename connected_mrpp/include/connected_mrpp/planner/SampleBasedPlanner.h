@@ -36,24 +36,30 @@ public:
     SampleBasedPlanner(Graph& graph, Objective* utility, std::chrono::duration<double> Tmax, unsigned int numSamples);
 
 protected:
-    virtual bool makePlanImpl() override;
-    virtual void clearInstanceSpecific() override;
-
     virtual Configuration selectConfiguration(const std::vector<Configuration>& candidates) = 0;
 
 protected:
     double computeUtility(const Configuration& pi);
-
-private:
     unsigned int maxNextConfigurations(Configuration& pi);
     void sampleConfigurations(Configuration& pi, std::vector<Configuration>& candidates);
     Configuration sampleConfiguration(Configuration& pi);
 
 private:
-    std::set<Configuration> visited_configs;
-
     const unsigned int numSamples;
 
+};
+
+class NoLoopSampleBasedPlanner : public SampleBasedPlanner
+{
+public:
+    NoLoopSampleBasedPlanner(Graph& graph, Objective* utility, std::chrono::duration<double> Tmax, unsigned int numSamples);
+
+protected:
+    virtual bool makePlanImpl() override;
+    virtual void clearInstanceSpecific() override;
+
+private:
+    std::set<Configuration> visited_configs;
 };
 
 }

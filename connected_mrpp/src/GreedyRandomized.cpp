@@ -30,7 +30,7 @@ namespace connected_mrpp
 
 GreedyRandomized::GreedyRandomized(Graph& graph, Objective* utility, duration<double> Tmax,
                                    SamplingStrategy& sampler, unsigned int numSamples)
-    : SampleBasedPlanner(graph, utility, Tmax, numSamples), sampler(sampler)
+    : NoLoopSampleBasedPlanner(graph, utility, Tmax, numSamples), sampler(sampler)
 {
 
 }

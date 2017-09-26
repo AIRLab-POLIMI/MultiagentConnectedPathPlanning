@@ -21,8 +21,8 @@
  *  along with connected_mrpp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDE_CONNECTED_MRPP_PLANNER_GREEDYRANDOMIZED_H_
-#define INCLUDE_CONNECTED_MRPP_PLANNER_GREEDYRANDOMIZED_H_
+#ifndef INCLUDE_CONNECTED_MRPP_PLANNER_RESTARTINGGREEDYRANDOMIZED_H_
+#define INCLUDE_CONNECTED_MRPP_PLANNER_RESTARTINGGREEDYRANDOMIZED_H_
 
 #include "connected_mrpp/planner/SampleBasedPlanner.h"
 #include "connected_mrpp/planner/SamplingStrategy.h"
@@ -30,21 +30,24 @@
 namespace connected_mrpp
 {
 
-class GreedyRandomized : public NoLoopSampleBasedPlanner
+class RestartingGreedyRandomized : public SampleBasedPlanner
 {
 public:
-    GreedyRandomized(Graph& graph, Objective* utility, std::chrono::duration<double> Tmax,
-                     SamplingStrategy& sampler, unsigned int numSamples = 100);
+    RestartingGreedyRandomized(Graph& graph, Objective* utility, std::chrono::duration<double> Tmax,
+                               SamplingStrategy& sampler, double alpha, unsigned int numSamples = 100);
 
 protected:
+    virtual bool makePlanImpl() override;
+    virtual void clearInstanceSpecific() override;
     virtual Configuration selectConfiguration(const std::vector<Configuration>& candidates) override;
+
 
 private:
     SamplingStrategy& sampler;
-
+    double alpha;
 };
 
 }
 
 
-#endif /* INCLUDE_CONNECTED_MRPP_PLANNER_GREEDYRANDOMIZED_H_ */
+#endif /* INCLUDE_CONNECTED_MRPP_PLANNER_RESTARTINGGREEDYRANDOMIZED_H_ */

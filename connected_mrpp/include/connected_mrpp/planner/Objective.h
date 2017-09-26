@@ -65,10 +65,18 @@ public:
     virtual double computeValue(const Configuration& pi, const Configuration& pi_n);
 };
 
-class ShortestPathObjective : public GraphObjective
+class MaxShortestPathObjective : public GraphObjective
 {
 public:
-    ShortestPathObjective(Graph& graph);
+    MaxShortestPathObjective(Graph& graph);
+    virtual double computeValue(const Configuration& pi, const Configuration& pi_n);
+
+};
+
+class MeanShortestPathObjective : public GraphObjective
+{
+public:
+    MeanShortestPathObjective(Graph& graph);
     virtual double computeValue(const Configuration& pi, const Configuration& pi_n);
 
 };

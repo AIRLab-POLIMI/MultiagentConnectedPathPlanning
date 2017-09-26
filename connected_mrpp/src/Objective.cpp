@@ -67,12 +67,12 @@ double DistanceObjective::computeValue(const Configuration& pi, const Configurat
 }
 
 
-ShortestPathObjective::ShortestPathObjective(Graph& graph) : GraphObjective(graph)
+MaxShortestPathObjective::MaxShortestPathObjective(Graph& graph) : GraphObjective(graph)
 {
 
 }
 
-double ShortestPathObjective::computeValue(const Configuration& pi, const Configuration& pi_n)
+double MaxShortestPathObjective::computeValue(const Configuration& pi, const Configuration& pi_n)
 {
     double J = 0;
     for(unsigned int i = 0; i < pi.agent.size(); i++)
@@ -81,8 +81,28 @@ double ShortestPathObjective::computeValue(const Configuration& pi, const Config
         auto v_n = pi_n.agent[i];
         double Jnew = graph.heuristic(v, v_n);
 
-        J = std::min(J, Jnew);
+        J = std::max(J, Jnew);
     }
+
+    return J;
+}
+
+MeanShortestPathObjective::MeanShortestPathObjective(Graph& graph) : GraphObjective(graph)
+{
+
+}
+
+double MeanShortestPathObjective::computeValue(const Configuration& pi, const Configuration& pi_n)
+{
+    double J = 0;
+    for(unsigned int i = 0; i < pi.agent.size(); i++)
+    {
+        auto v = pi.agent[i];
+        auto v_n = pi_n.agent[i];
+        J += graph.heuristic(v, v_n);
+    }
+
+    J /= pi.agent.size();
 
     return J;
 }
