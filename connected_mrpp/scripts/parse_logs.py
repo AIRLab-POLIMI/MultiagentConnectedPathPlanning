@@ -25,7 +25,7 @@ gflags.DEFINE_string('phys_discr_type', 'uniform_grid', 'environment discretizat
 gflags.DEFINE_integer('cell_size', 11, 'pixels making 1 grid cell (only for uniform grid discretization)')
 
 gflags.DEFINE_integer('min_range', 50, 'min communication range (in pixels)')
-gflags.DEFINE_integer('max_range', 201, 'max communication range (in pixels)')
+gflags.DEFINE_integer('max_range', 151, 'max communication range (in pixels)')
 gflags.DEFINE_integer('step_range', 50, 'communication range step (in pixels)')
 
 gflags.DEFINE_integer('max_robots', 10, 'maximum number of robots')
@@ -43,7 +43,7 @@ gflags.DEFINE_string('latex_tab', 'latex_tab.tex', 'file containing latex-format
 
 
 comm_discr_types = ['range']
-algorithms = ['birk', 'dfs']
+algorithms = ['birk', 'gr2', 'gr3', 'dfs']
 
 
 def joyplot(data, ax=None, 
@@ -127,16 +127,20 @@ if __name__ == "__main__":
     for r in xrange(2, gflags.FLAGS.max_robots + 1) :
         avg_time[r] = dict()
         sol_found[r] = dict()
-        for c in [25] + range(gflags.FLAGS.min_range, gflags.FLAGS.max_range, gflags.FLAGS.step_range) :
+        for c in range(gflags.FLAGS.min_range, gflags.FLAGS.max_range, gflags.FLAGS.step_range) :
             avg_time[r][c] = dict()
             sol_found[r][c] = dict()
 
+    aggr_data = dict()
+
+    for alg in algorithms :
+        aggr_data[alg] = 0
 
     for comm_discr_type in comm_discr_types:
         print 'Comm discr type: ', comm_discr_type
         data[comm_discr_type] = {}
 
-        for max_dist in [25] + range(gflags.FLAGS.min_range, gflags.FLAGS.max_range, gflags.FLAGS.step_range):
+        for max_dist in range(gflags.FLAGS.min_range, gflags.FLAGS.max_range, gflags.FLAGS.step_range):
             data[comm_discr_type][max_dist] = {}
             
             print '\tRange: ', max_dist
@@ -241,6 +245,7 @@ if __name__ == "__main__":
 
                 for alg in algorithms:
                     print '\t\tWinner feas/unfeas ', alg, ': ', p_dict[alg]['winner']
+                    aggr_data[alg] += p_dict[alg]['winner']
                 
                 for alg in algorithms:
                     print '\t\tWinner time-optimal ', alg, ': ', p_dict[alg]['time_opt']
@@ -306,9 +311,15 @@ if __name__ == "__main__":
                 t_dataset = t_dataset + avg_time[r][c][alg]
                 n_dataset = n_dataset + [r for j in avg_time[r][c][alg]]
                 if alg == "birk" :
-                    a_dataset = a_dataset + ["RB" for j in avg_time[r][c][alg]]
-                else :
+                    a_dataset = a_dataset + ["SB" for j in avg_time[r][c][alg]]
+                elif alg == "dfs" :
                     a_dataset = a_dataset + ["DFS" for j in avg_time[r][c][alg]]
+                elif alg == "gr2" :
+                    a_dataset = a_dataset + ["RSB" for j in avg_time[r][c][alg]]
+                elif alg == "gr3" :
+                    a_dataset = a_dataset + ["RSB" for j in avg_time[r][c][alg]]
+                else :
+                    a_dataset = a_dataset + [alg for j in avg_time[r][c][alg]]
                 c_dataset = c_dataset + [c for j in avg_time[r][c][alg]]
 
     #dset = {'times' : pd.Series(t_dataset), 'agents' : pd.Series(n_dataset), 'alg': pd.Series(a_dataset)}
@@ -350,7 +361,7 @@ if __name__ == "__main__":
     latex_file.write('|}\n\\hline\n')
 
     for c in comm_radii :
-        latex_file.write('& \\multicolumn{' + str(len(algorithms) + 1) + '}{|c|}{Range: ' + str(c) + 'px} ')
+        latex_file.write('& \\multicolumn{' + str(len(algorithms)) + '}{|c|}{Range: ' + str(c) + 'px} ')
 
     latex_file.write('\\\\ \\hline\n')
 
@@ -376,12 +387,29 @@ if __name__ == "__main__":
                     latex_file.write('\\textbf{' + tab_cell + '} ')
                 else :
                     latex_file.write(tab_cell + ' ')
+                fpos = latex_file.tell()
                 latex_file.write('& ')
 
-            latex_file.write(str(sol_found[r][c]['tot']) + ' ')
-            if c != comm_radii[-1] :
-                latex_file.write('& ')
+            #if c != comm_radii[-1] :
+            #    latex_file.write('& ')
 
+        latex_file.seek(fpos)
         latex_file.write('\\\\ \\hline\n')
 
     latex_file.write('\\end{tabular}')
+
+    tot_aggr_data = 0
+    total_exp = (int(gflags.FLAGS.max_robots) - 1) * len(comm_radii) * int(gflags.FLAGS.n_exp)
+
+    for alg in algorithms :
+        tot_aggr_data += aggr_data[alg]
+
+    for alg in algorithms :
+        print "Aggr_data " + alg + ": " + str(float(aggr_data[alg]) / float(tot_aggr_data) * 100)
+
+    # Print aggregate data
+    print "\nAggr_data: " + str(float(tot_aggr_data) / float(total_exp) * 100) + "\n"
+
+
+
+

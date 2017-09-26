@@ -1,0 +1,56 @@
+\documentclass[letterpaper]{article}
+\usepackage{times}
+\usepackage{helvet}
+\usepackage{courier}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{url}
+\usepackage[lined, boxed]{algorithm2e}
+\SetKwRepeat{Do}{do}{while}
+\usepackage{multirow}
+\usepackage{rotating}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+\usepackage{epstopdf} 
+\usepackage{natbib}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{multicol}
+\usepackage{tabularx, booktabs}
+\usepackage{graphicx}
+\usepackage{color}
+
+\begin{document}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+& \multicolumn{4}{|c|}{Range: 50px} & \multicolumn{4}{|c|}{Range: 100px} & \multicolumn{4}{|c|}{Range: 150px} \\ \hline
+\# Robots & birk & dfs & gr2 & Tot. & birk & dfs & gr2 & Tot. & birk & dfs & gr2 & Tot. \\ \hline
+2 & 41 & 42 & \textbf{43} & 43 & 42 & \textbf{43} & 42 & 44 & 38 & \textbf{48} & 39 & 49 \\ \hline
+3 & 37 & \textbf{41} & 38 & 41 & 40 & \textbf{44} & 38 & 44 & 30 & \textbf{38} & 27 & 40 \\ \hline
+4 & 42 & \textbf{45} & 41 & 45 & \textbf{40} & \textbf{40} & 37 & 44 & 29 & 32 & \textbf{34} & 38 \\ \hline
+5 & 32 & \textbf{33} & 32 & 37 & \textbf{33} & 31 & \textbf{33} & 38 & 25 & \textbf{26} & 25 & 29 \\ \hline
+6 & 36 & 32 & \textbf{37} & 40 & 29 & 25 & \textbf{30} & 32 & \textbf{33} & 26 & 31 & 34 \\ \hline
+7 & \textbf{35} & 27 & \textbf{35} & 36 & \textbf{33} & 28 & 32 & 33 & 25 & 18 & \textbf{28} & 30 \\ \hline
+8 & \textbf{32} & 21 & 31 & 34 & \textbf{28} & 18 & 24 & 30 & \textbf{21} & 14 & 20 & 23 \\ \hline
+9 & \textbf{30} & 24 & 20 & 31 & \textbf{31} & 19 & 28 & 33 & \textbf{27} & 18 & 25 & 31 \\ \hline
+10 & \textbf{33} & 16 & 16 & 35 & \textbf{22} & 14 & 20 & 23 & \textbf{21} & 10 & 15 & 23 \\ \hline
+\end{tabular}
+
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+& \multicolumn{4}{|c|}{Range: 50px} & \multicolumn{4}{|c|}{Range: 100px} & \multicolumn{4}{|c|}{Range: 150px} \\ \hline
+\# Robots & birk & gr2 & gr3 & dfs & birk & gr2 & gr3 & dfs & birk & gr2 & gr3 & dfs \\ \hline
+2 & \textbf{50} & \textbf{50} & \textbf{50} & \textbf{50} & 49 & 46 & 48 & \textbf{50} & \textbf{50} & \textbf{50} & \textbf{50} & \textbf{50} \\ \hline
+3 & \textbf{50} & \textbf{50} & \textbf{50} & \textbf{50} & 43 & 44 & 39 & \textbf{50} & \textbf{50} & 49 & 49 & \textbf{50} \\ \hline
+4 & 49 & 49 & 49 & \textbf{50} & 40 & 41 & 42 & \textbf{44} & \textbf{50} & 49 & 49 & 49 \\ \hline
+5 & \textbf{48} & 47 & 47 & 44 & 43 & 44 & \textbf{47} & 41 & \textbf{50} & \textbf{50} & \textbf{50} & \textbf{50} \\ \hline
+6 & \textbf{49} & 41 & 44 & 35 & \textbf{49} & 43 & 46 & 35 & \textbf{50} & 49 & 49 & 46 \\ \hline
+7 & \textbf{45} & 34 & 44 & 32 & \textbf{46} & 42 & 45 & 29 & \textbf{50} & \textbf{50} & \textbf{50} & 46 \\ \hline
+8 & \textbf{48} & 29 & 39 & 26 & \textbf{45} & 33 & 44 & 24 & \textbf{50} & \textbf{50} & \textbf{50} & 47 \\ \hline
+9 & \textbf{45} & 18 & 24 & 20 & \textbf{49} & 35 & 40 & 27 & \textbf{50} & \textbf{50} & \textbf{50} & 47 \\ \hline
+10 & \textbf{41} & 20 & 25 & 22 & \textbf{42} & 34 & 35 & 21 & \textbf{50} & \textbf{50} & \textbf{50} & 41 \\ \hline
+\end{tabular}
+\end{document}
