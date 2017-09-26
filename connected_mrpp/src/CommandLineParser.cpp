@@ -48,7 +48,7 @@ CommandLineParser::CommandLineParser()
     ("epsilon,e", boost::program_options::value<double>()->default_value(1.0), "set the psilon for the A* algorithm")
     ("alpha,A", boost::program_options::value<double>(), "set the alpha parameter for the RRSB algorithm") //
     ("beta,B", boost::program_options::value<double>(), "set the beta parameter for the RRSB algorithm")
-    ("strategy,s", boost::program_options::value<std::string>(), "set the sampling startegy for the RSB algorithm") //
+    ("strategy,s", boost::program_options::value<std::string>(), "set the sampling strategy for the RSB algorithm") //
     ("exponent,e", boost::program_options::value<double>()->default_value(3.0), "set the exponent for the polynomial sampling startegy for the RSB algorithm");
 
     planner = nullptr;
@@ -236,15 +236,17 @@ AbstractPlanner* CommandLineParser::getPlanner(const std::string& alg)
     else if(alg == "rsb")
     {
         auto heuristic = vm["heuristic"].as<std::string>();
+        auto strategyName = vm["strategy"].as<std::string>();
 
-        planner = new GreedyRandomized(*graph, getObjective(heuristic), Tmax, *strategy);
+        planner = new GreedyRandomized(*graph, getObjective(heuristic), Tmax, getStrategy(strategyName));
     }
     else if(alg == "rrsb")
     {
         auto heuristic = vm["heuristic"].as<std::string>();
+        auto strategyName = vm["strategy"].as<std::string>();
         auto alpha = vm["alpha"].as<double>();
 
-        planner = new RestartingGreedyRandomized(*graph, getObjective(heuristic), Tmax, *strategy, alpha);
+        planner = new RestartingGreedyRandomized(*graph, getObjective(heuristic), Tmax, getStrategy(strategyName), alpha);
     }
     else
     {
