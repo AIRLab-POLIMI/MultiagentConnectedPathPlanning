@@ -48,7 +48,7 @@ CommandLineParser::CommandLineParser()
     ("epsilon,e", boost::program_options::value<double>()->default_value(1.0), "set the psilon for the A* algorithm")
     ("alpha,A", boost::program_options::value<double>(), "set the alpha parameter for the RRSB algorithm") //
     ("strategy,s", boost::program_options::value<std::string>(), "set the sampling strategy for the RSB algorithm") //
-    ("exponent,e", boost::program_options::value<double>()->default_value(3.0), "set the exponent for the polynomial sampling startegy for the RSB algorithm");
+    ("exponent,E", boost::program_options::value<double>()->default_value(3.0), "set the exponent for the polynomial sampling startegy for the RSB algorithm");
 
     planner = nullptr;
     strategy = nullptr;
