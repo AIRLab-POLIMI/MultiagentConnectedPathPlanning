@@ -113,6 +113,12 @@ Configuration RestartingGreedyRandomized::selectConfiguration(const std::vector<
         }
     }
 
+    if(samples.size() == 0)
+    {
+        samples.push_back(PI_NULL);
+        costs.push_back(std::numeric_limits<double>::infinity());
+    }
+
     return sampler.sample(samples, costs);
 }
 

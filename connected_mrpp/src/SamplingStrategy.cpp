@@ -33,11 +33,6 @@ namespace connected_mrpp
 
 Configuration SamplingStrategy::sample(const std::vector<Configuration>& candidates, const std::vector<double>& costs)
 {
-    if(candidates.size() == 0)
-    {
-        return PI_NULL;
-    }
-
     std::vector<ConfigurationValue> pairs;
 
     for(int i = 0; i < candidates.size(); i++)
