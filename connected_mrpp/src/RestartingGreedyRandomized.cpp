@@ -59,7 +59,7 @@ bool RestartingGreedyRandomized::makePlanImpl()
             {
                 parent[pi_goal] = pi;
                 ROS_INFO("Plan found");
-		ROS_INFO("Number of epochs: %u", epoch);
+                ROS_INFO("Number of epochs: %u", epoch);
                 return true;
             }
             else
@@ -73,11 +73,11 @@ bool RestartingGreedyRandomized::makePlanImpl()
                 {
                     break;
                 }
-		if (visited_configs.count(pi_best) == 0)
-		{
+                if (visited_configs.count(pi_best) == 0)
+                {
                 	parent[pi_best] = pi;
                 }
-		pi = pi_best;
+                pi = pi_best;
             }
 
             i++;
@@ -104,7 +104,12 @@ Configuration RestartingGreedyRandomized::selectConfiguration(const std::vector<
     for(auto& pi : candidates)
     {
         double c = computeUtility(pi);
-        costs.push_back(c);
+
+        if(c < std::numeric_limits<double>::infinity())
+            costs.push_back(c);
+
+        else
+            candidates.esare(pi)
     }
 
     return sampler.sample(candidates, costs);

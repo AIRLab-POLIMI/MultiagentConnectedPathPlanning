@@ -14,6 +14,7 @@ import sys
 from utils import get_graphs_and_image_from_exp, plot_plan
 
 gflags.DEFINE_string('exp_name', 'prova', 'name of the experiment (matching .exp files)')
+gflags.DEFINE_string('log_folder', 'prova', 'name of the log folder')
 gflags.DEFINE_string('alg', 'birk', 'name of the algorithm (to select the correletad .log file)')
 gflags.DEFINE_integer('speed', 0.5, 'time between two plan steps (in seconds)')
 
@@ -40,7 +41,7 @@ if __name__ == "__main__":
     exp_file = '../data/' + gflags.FLAGS.exp_name + '.exp'
     G_E, G_C, im_array = get_graphs_and_image_from_exp(exp_file)
 
-    log_file = '../logs/' + gflags.FLAGS.exp_name + '_' + gflags.FLAGS.alg + '.log'
+    log_file = '../logs/' + gflags.FLAGS.log_folder + '/' + gflags.FLAGS.exp_name + '_' + gflags.FLAGS.alg + '.log'
     plan = get_plan(log_file)
 
     fig = pl.figure()

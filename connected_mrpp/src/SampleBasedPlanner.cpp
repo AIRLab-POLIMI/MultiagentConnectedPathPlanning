@@ -44,10 +44,8 @@ double SampleBasedPlanner::computeUtility(const Configuration& pi)
     {
         return computeHeuristic(pi);
     }
-    else
-    {
-        return std::numeric_limits<double>::infinity();
-    }
+    
+    return std::numeric_limits<double>::infinity();
 }
 
 
