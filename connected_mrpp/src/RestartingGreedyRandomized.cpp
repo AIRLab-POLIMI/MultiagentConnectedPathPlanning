@@ -99,6 +99,7 @@ void RestartingGreedyRandomized::clearInstanceSpecific()
 
 Configuration RestartingGreedyRandomized::selectConfiguration(const std::vector<Configuration>& candidates)
 {
+    std::vector<Configuration> samples;
     std::vector<double> costs;
 
     for(auto& pi : candidates)
@@ -106,13 +107,13 @@ Configuration RestartingGreedyRandomized::selectConfiguration(const std::vector<
         double c = computeUtility(pi);
 
         if(c < std::numeric_limits<double>::infinity())
+        {
+            samples.push_back(pi);
             costs.push_back(c);
-
-        else
-            candidates.esare(pi)
+        }
     }
 
-    return sampler.sample(candidates, costs);
+    return sampler.sample(samples, costs);
 }
 
 }
