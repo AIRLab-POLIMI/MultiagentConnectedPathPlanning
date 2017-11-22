@@ -45,12 +45,16 @@ bool RestartingGreedyRandomized::makePlanImpl()
 
     while(!timeOut())
     {
-        Configuration pi = pi_start;
+	Configuration pi = pi_start;
 
         unsigned int i = 0;
 
+	std::set<Configuration> visited_configs;
+
         while(!timeOut() && i < bottleneck*std::exp(alpha*epoch))
         {
+	    visited_configs.insert(pi);
+
             if(isOneStepReachable(pi, pi_goal))
             {
                 parent[pi_goal] = pi;
@@ -69,9 +73,11 @@ bool RestartingGreedyRandomized::makePlanImpl()
                 {
                     break;
                 }
-
-                parent[pi_best] = pi;
-                pi = pi_best;
+		if (visited_configs.count(pi_best) == 0)
+		{
+                	parent[pi_best] = pi;
+                }
+		pi = pi_best;
             }
 
             i++;

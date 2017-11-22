@@ -34,7 +34,7 @@ class RestartingGreedyRandomized : public SampleBasedPlanner
 {
 public:
     RestartingGreedyRandomized(Graph& graph, Objective* utility, std::chrono::duration<double> Tmax,
-                               SamplingStrategy& sampler, double alpha, unsigned int numSamples = 100);
+                               SamplingStrategy& sampler, double alpha, unsigned int numSamples = 1);
 
 protected:
     virtual bool makePlanImpl() override;
