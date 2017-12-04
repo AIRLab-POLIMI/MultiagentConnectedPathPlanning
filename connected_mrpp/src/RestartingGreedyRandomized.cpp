@@ -45,15 +45,14 @@ bool RestartingGreedyRandomized::makePlanImpl()
 
     while(!timeOut())
     {
-	Configuration pi = pi_start;
+        Configuration pi = pi_start;
 
         unsigned int i = 0;
+        std::set<Configuration> visited_configs;
 
-	std::set<Configuration> visited_configs;
-
-        while(!timeOut() && i < bottleneck*std::exp(alpha*epoch))
+        while(!timeOut() && i < bottleneck * std::exp(1 + alpha * epoch))
         {
-	    visited_configs.insert(pi);
+            visited_configs.insert(pi);
 
             if(isOneStepReachable(pi, pi_goal))
             {
