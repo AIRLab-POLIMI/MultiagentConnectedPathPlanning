@@ -84,7 +84,7 @@ bool RestartingGreedyRandomized::makePlanImpl()
         }
 
         epoch++;
-        ROS_INFO("New epoch: ", bottleneck * (1 + std::exp(alpha * epoch)));
+        ROS_INFO("New epoch: %u", bottleneck * (1 + std::exp(alpha * epoch)));
     }
 
     ROS_INFO("No plan found");
