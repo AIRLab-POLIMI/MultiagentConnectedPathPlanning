@@ -49,15 +49,17 @@ bool RestartingGreedyRandomized::makePlanImpl()
 
         unsigned int i = 0;
         std::set<Configuration> visited_configs;
-	visited_configs.clear();
+        visited_configs.clear();
 
         while(!timeOut())
         {
-	    if( i > bottleneck * (1 + std::exp(alpha * epoch)) )
+            if( i > bottleneck * (1 + std::exp(alpha * epoch)) )
             {
                 ROS_INFO_STREAM("last increment " << i);
+                epoch++;
                 break;
             }
+            
             visited_configs.insert(pi);
 
             if(isOneStepReachable(pi, pi_goal))
@@ -89,7 +91,6 @@ bool RestartingGreedyRandomized::makePlanImpl()
             i++;
         }
 
-        epoch++;
         ROS_INFO_STREAM("New epoch th: " << bottleneck * (1 + std::exp(alpha * epoch)) );
     }
 
