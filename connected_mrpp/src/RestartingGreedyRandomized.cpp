@@ -49,16 +49,22 @@ bool RestartingGreedyRandomized::makePlanImpl()
 
         unsigned int i = 0;
         std::set<Configuration> visited_configs;
+	visited_configs.clear();
 
-        while( !timeOut() && i < bottleneck * (1 + std::exp(alpha * epoch)) )
+        while(!timeOut())
         {
+	    if( i > bottleneck * (1 + std::exp(alpha * epoch)) )
+            {
+                ROS_INFO_STREAM("last increment " << i);
+                break;
+            }
             visited_configs.insert(pi);
 
             if(isOneStepReachable(pi, pi_goal))
             {
                 parent[pi_goal] = pi;
                 ROS_INFO("Plan found");
-                ROS_INFO("Number of epochs: %u", (epoch + 1));
+                ROS_INFO_STREAM("Number of epochs: " << epoch + 1);
                 
                 return true;
             }
@@ -84,11 +90,11 @@ bool RestartingGreedyRandomized::makePlanImpl()
         }
 
         epoch++;
-        ROS_INFO("New epoch th: %u", bottleneck * (1 + std::exp(alpha * epoch)) );
+        ROS_INFO_STREAM("New epoch th: " << bottleneck * (1 + std::exp(alpha * epoch)) );
     }
 
     ROS_INFO("No plan found");
-    ROS_INFO("Number of epochs: %u", (epoch + 1));
+    ROS_INFO_STREAM("Number of epochs: " << epoch + 1);
 
     return false;
 }
