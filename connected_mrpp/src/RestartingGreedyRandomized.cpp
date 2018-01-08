@@ -50,7 +50,7 @@ bool RestartingGreedyRandomized::makePlanImpl()
         unsigned int i = 0;
         std::set<Configuration> visited_configs;
 
-        while(!timeOut() && i < bottleneck * std::exp(1 + alpha * epoch))
+        while( !timeOut() && i < bottleneck * (1 + std::exp(alpha * epoch)) )
         {
             visited_configs.insert(pi);
 
@@ -84,6 +84,7 @@ bool RestartingGreedyRandomized::makePlanImpl()
         }
 
         epoch++;
+        ROS_INFO("New epoch: ", bottleneck * (1 + std::exp(alpha * epoch)));
     }
 
     ROS_INFO("No plan found");
