@@ -58,7 +58,7 @@ bool RestartingGreedyRandomized::makePlanImpl()
             {
                 parent[pi_goal] = pi;
                 ROS_INFO("Plan found");
-                ROS_INFO("Number of epochs: %u", epoch);
+                ROS_INFO("Number of epochs: %u", epoch+1);
                 return true;
             }
             else
