@@ -33,7 +33,7 @@ RestartingGreedyRandomized::RestartingGreedyRandomized(Graph& graph, Objective* 
         SamplingStrategy& sampler, double alpha, unsigned int numSamples) :
     SampleBasedPlanner(graph, utility, Tmax, numSamples), sampler(sampler), alpha(alpha)
 {
-
+    ROS_INFO_STREAM(numSamples);
 }
 
 bool RestartingGreedyRandomized::makePlanImpl()
@@ -79,6 +79,8 @@ bool RestartingGreedyRandomized::makePlanImpl()
                 Configuration pi_best = selectConfiguration(candidates);
                 if (pi_best == PI_NULL)
                 {
+                    ROS_INFO_STREAM("Prev state: " << pi);
+                    for(auto c: candidates) ROS_INFO_STREAM(c);
                     break;
                 }
                 if (visited_configs.count(pi_best) == 0)

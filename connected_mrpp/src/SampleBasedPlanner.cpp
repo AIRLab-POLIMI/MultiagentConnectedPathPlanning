@@ -63,8 +63,7 @@ unsigned int SampleBasedPlanner::maxNextConfigurations(Configuration& pi)
 
 void SampleBasedPlanner::sampleConfigurations(Configuration& pi, std::vector<Configuration>& candidates)
 {
-    int maxConfs = maxNextConfigurations(pi);
-    for(int i = 0; i < numSamples && i < maxConfs; i++)
+    for(int i = 0; i < numSamples; i++)
     {
         auto&& sample = sampleConfiguration(pi);
         candidates.push_back(sample);
