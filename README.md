@@ -14,3 +14,9 @@ To cite this paper:
   year={2018}
 }
 ```
+
+## Installation
+1. Install [ROS](http://www.ros.org/)
+2. Install the required dependencies (Eigen3, Boost 1.53)
+3. Clone the repository into the ROS workspace
+4. Compile the ROS workspace using catkin_make
