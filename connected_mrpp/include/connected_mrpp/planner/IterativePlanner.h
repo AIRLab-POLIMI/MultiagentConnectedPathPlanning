@@ -33,7 +33,7 @@ namespace connected_mrpp
 class IterativePlanner : public AbstractPlanner
 {
 public:
-    IterativePlanner(Graph& graph, Objective* utility, std::chrono::duration<double> Tmax);
+    IterativePlanner(Graph& graph, Objective* utility, std::chrono::duration<double> Tmax, unsigned int numSamples);
 
 protected:
     virtual Configuration selectConfiguration(const std::vector<Configuration>& candidates) = 0;
@@ -49,10 +49,10 @@ private:
 
 };
 
-class NoLoopSampleBasedPlanner : public IterativePlanner
+/*class NoLoopSampleBasedPlanner : public IterativePlanner
 {
 public:
-    NoLoopSampleBasedPlanner(Graph& graph, Objective* utility, std::chrono::duration<double> Tmax);
+    NoLoopSampleBasedPlanner(Graph& graph, Objective* utility, std::chrono::duration<double> Tmax, unsigned int numSamples=100);
 
 protected:
     virtual bool makePlanImpl() override;
@@ -62,7 +62,7 @@ private:
     std::set<Configuration> visited_configs;
 };
 
-}
+}*/
 
 
 

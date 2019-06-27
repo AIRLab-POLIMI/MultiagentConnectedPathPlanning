@@ -21,19 +21,20 @@
  *  along with connected_mrpp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "connected_mrpp/planner/IterativePlanner.h"
+/*#include "connected_mrpp/planner/IterativePlanner.h"
 
 #include "connected_mrpp/utils/RandomGenerator.h"
 #include <cmath>
-#include <ros/ros.h>
+//#include <ros/ros.h>
 
-using namespace std::chrono;
+using namespace std;
+//using namespace std::chrono;
 
 namespace connected_mrpp
 {
 
-SampleBasedPlanner::IterativePlanner(Graph& graph, Objective* utility, duration<double> Tmax)
-    : AbstractPlanner(graph, nullptr, utility, Tmax)
+IterativePlanner::IterativePlanner(Graph& graph, Objective* utility, duration<double> Tmax, unsigned int numSamples)
+    : AbstractPlanner(graph, nullptr, utility, Tmax), numSamples(numSamples)
 {
 
 }
@@ -91,8 +92,8 @@ Configuration IterativePlanner::sampleConfiguration(Configuration& pi)
     return pi_n;
 }
 
-NoLoopSampleBasedPlanner::NoLoopSampleBasedPlanner(Graph& graph, Objective* utility, duration<double> Tmax):
-    IterativePlanner(graph, utility, Tmax)
+NoLoopSampleBasedPlanner::NoLoopSampleBasedPlanner(Graph& graph, Objective* utility, duration<double> Tmax, unsigned int numSamples):
+    IterativePlanner(graph, utility, Tmax, numSamples)
 {
 
 }
@@ -149,4 +150,4 @@ void NoLoopSampleBasedPlanner::clearInstanceSpecific()
     visited_configs.clear();
 }
 
-}
+}*/
