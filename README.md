@@ -4,9 +4,9 @@ This package contains the experiments for the [paper](https://aaai.org/ocs/index
 
 _Tateo, D., Banfi, J., Riva, A., Amigoni, F., & Bonarini, A. (2018, April). **Multiagent connected path planning: PSPACE-completeness and how to deal with it**. In Thirty-Second AAAI Conference on Artificial Intelligence._
 
-To cite this work, please use the following bibtex entry:
+To cite this paper:
 
-```
+```bibtex
 @inproceedings{tateo2018multiagent,
   title={Multiagent connected path planning: PSPACE-completeness and how to deal with it},
   author={Tateo, Davide and Banfi, Jacopo and Riva, Alessandro and Amigoni, Francesco and Bonarini, Andrea},
